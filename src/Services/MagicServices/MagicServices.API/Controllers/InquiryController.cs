@@ -14,11 +14,11 @@ namespace MagicServices.API.Controllers
 
         [HttpPost("inquiry")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(BadRequestException), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(BadRequestException), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(BadRequestException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(BadRequestException), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(InternalServerException), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<InquiryResponseDto>> Inquiry(
            [FromBody] InquiryRequestDto model, CancellationToken cancellationToken = default)
             => Ok(await Mediator.Send(new InquiryCommand(model), cancellationToken));
