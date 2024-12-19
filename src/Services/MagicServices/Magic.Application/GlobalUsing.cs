@@ -1,0 +1,11 @@
+﻿global using BuildingBlocks.CQRS;
+global using FluentValidation;
+global using Magic.Application.Data;
+global using Magic.Application.Dtos;
+global using Magic.Application.Dtos.Common;
+global using Magic.Application.Extensions;
+global using Magic.Domain.Models;
+global using Magic.Domain.Models.Lookups;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using DomainEnums = Magic.Domain.Enums;
