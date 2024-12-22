@@ -4,6 +4,7 @@ using Magic.Application.Common.Inquiry.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
+using Serilog;
 using System.Reflection;
 
 namespace Magic.Application;
@@ -21,6 +22,9 @@ public static class DependencyInjection
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
             config.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddSingleton(Log.Logger); // Register Serilog as a singleton
+
         });
 
         services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();

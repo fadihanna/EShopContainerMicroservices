@@ -2,18 +2,21 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace BuildingBlocks.Exceptions.Handler;
-public class CustomExceptionHandler
-    (ILogger<CustomExceptionHandler> logger)
-    : IExceptionHandler
+public class CustomExceptionHandler : IExceptionHandler
 {
+    private readonly ILogger _logger;
+    public CustomExceptionHandler(ILogger logger)
+    {
+        _logger = logger;
+    }
+
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
-        logger.LogError(
-            "Error Message: {exceptionMessage}, Time of occurrence {time}",
-            exception.Message, DateTime.UtcNow);
+        _logger.Error("Error occurred at {Time}: {Message}. Exception: {@Exception}",
+            DateTime.UtcNow, exception.Message, exception);
 
         (string Detail, string Title, int StatusCode) details = exception switch
         {
@@ -63,6 +66,11 @@ public class CustomExceptionHandler
         {
             problemDetails.Extensions.Add("ValidationErrors", validationException.Errors);
         }
+
+        // Log additional context
+        _logger.ForContext("TraceId", context.TraceIdentifier)
+           .ForContext("StatusCode", details.StatusCode)
+           .Error("Problem Details: {@ProblemDetails}", problemDetails);
 
         await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
         return true;

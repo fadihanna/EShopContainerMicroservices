@@ -4,6 +4,7 @@ using Magic.Infrastructure;
 using Magic.Infrastructure.Data.Extensions;
 using Magic.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -16,6 +17,13 @@ builder.Services
     .AddApiServices(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
+// Configure Serilog from appsettings.json
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .Enrich.FromLogContext();
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
