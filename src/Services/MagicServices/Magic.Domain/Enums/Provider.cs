@@ -1,6 +1,7 @@
 ﻿namespace Magic.Domain.Enums;
 public enum Provider
 {
-    Masary = 1,
-    Momkn = 2
+    Orange = 1,
+    Masary = 2,
+    Momkn = 3
 }
