@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MagicServices.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class InquiryController : ApiControllerBase
     {
         public InquiryController(IHostEnvironment environment) : base(environment)
@@ -20,8 +18,8 @@ namespace MagicServices.API.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<InquiryResponseDto>> Inquiry(
-           [FromBody] InquiryRequestDto model, CancellationToken cancellationToken = default)
-            => Ok(await Mediator.Send(new InquiryCommand(model), cancellationToken));
+           [FromBody] InquiryCommand model, CancellationToken cancellationToken = default)
+            => Ok(await Mediator.Send(new InquiryCommand(model.Request), cancellationToken));
 
     }
 }

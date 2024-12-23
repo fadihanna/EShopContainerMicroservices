@@ -15,7 +15,10 @@
                 .MaximumLength(50).WithMessage("External ID cannot exceed 50 characters.");
 
             RuleFor(x => x.Request.DenominationId)
-                .NotEmpty().WithMessage("Denomination ID is required.");
+                .NotNull().WithMessage("Denomination ID cannot be null.")
+                .NotEqual(0).WithMessage("Denomination ID cannot be Zero.")
+                .GreaterThan(0).WithMessage("Denomination ID must be greater than 0.")
+                .NotEmpty().WithMessage("Denomination ID cannot be empty.");
         }
     }
 }

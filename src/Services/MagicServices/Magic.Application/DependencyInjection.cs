@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Behaviors;
 using FluentValidation.AspNetCore;
 using Magic.Application.Common.Inquiry.Commands;
+using Magic.Application.Denominations.Queries.Denominations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
@@ -17,21 +18,27 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices
         (this IServiceCollection services, IConfiguration configuration)
     {
+        // Register MediatR and Pipeline Behaviors
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
-            config.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddSingleton(Log.Logger); // Register Serilog as a singleton
-
         });
 
-        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
-        services.AddValidatorsFromAssemblyContaining<InquiryCommandValidator>();
+        // Register Validation and Logging Pipeline Behaviors
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
+        // Register FluentValidation
+        services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
+        services.AddValidatorsFromAssemblyContaining<InquiryCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<GetDenominationByIdValidator>();
+
+        // Add Feature Management (optional, if used)
         services.AddFeatureManagement();
-        //services.AddMessageBroker(configuration, Assembly.GetExecutingAssembly());
+
+        // Add Serilog Logging
+        services.AddSingleton(Log.Logger);
 
         return services;
     }

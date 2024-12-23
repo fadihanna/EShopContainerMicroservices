@@ -21,6 +21,8 @@ public class LoggingBehavior<TRequest, TResponse>
         if (request is ITransactionRequest denominationRequest)
             _logger.Information("Processing request: {RequestType} with DenominationId: {DenominationId}, ExternalId: {ExternalId}",
                             typeof(TRequest).Name, denominationRequest.DenominationId, denominationRequest.ExternalId);
+        else
+            return await next();
 
         var timer = Stopwatch.StartNew(); // Start the timer
 

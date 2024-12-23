@@ -2,6 +2,8 @@
 
 namespace MagicServices.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ApiControllerBase : ControllerBase
     {
         readonly IHostEnvironment environment;
