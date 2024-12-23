@@ -13,7 +13,7 @@
                     .Where(o => o.Id.Equals(query.Id))
                     .FirstOrDefaultAsync(cancellationToken);
 
-            return new GetDenominationByIdResponse(denomination.ToDenominationDto());
+            return new GetDenominationByIdResponse(denomination!.ToDenominationDto());
         }
     }
 }
