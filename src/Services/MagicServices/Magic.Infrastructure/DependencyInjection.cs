@@ -1,4 +1,6 @@
 ﻿using Magic.Application.Data;
+using Magic.Domain.Specifications;
+using Magic.Infrastructure.Data.Specifications;
 using Magic.Infrastructure.Services.External;
 using Magic.Infrastructure.Services.External.Masary.Services;
 using Magic.Infrastructure.Services.External.Momkn.Services;
@@ -29,6 +31,8 @@ public static class DependencyInjection
         services.AddTransient<MomknApiWrapper>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<IExternalApiProviderFactory, ExternalApiProviderFactory>();
+        services.AddScoped<IDenominationSpecification, DenominationSpecification>();
+
         return services;
     }
 }

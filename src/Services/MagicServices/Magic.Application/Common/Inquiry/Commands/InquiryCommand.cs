@@ -1,5 +1,6 @@
 ﻿using Magic.Application.Common.Interfaces;
 using Magic.Application.Denominations.Queries.Denominations;
+using Magic.Domain.Specifications;
 
 namespace Magic.Application.Common.Inquiry.Commands
 {
@@ -11,23 +12,23 @@ namespace Magic.Application.Common.Inquiry.Commands
 
     public class InquiryCommandHandler : IRequestHandler<InquiryCommand, InquiryResponseDto>
     {
+        private readonly IDenominationSpecification _denominationSpecification;
         private readonly IExternalApiProviderFactory _providerFactory;
-        private readonly IMediator _mediator;
-        public InquiryCommandHandler(IExternalApiProviderFactory providerFactory, IMediator mediator)
+        public InquiryCommandHandler(IExternalApiProviderFactory providerFactory, IDenominationSpecification denominationSpecification)
         {
             _providerFactory = providerFactory;
-            _mediator = mediator;
+            _denominationSpecification = denominationSpecification;
         }
 
         public async Task<InquiryResponseDto> Handle(InquiryCommand request, CancellationToken cancellationToken)
         {
             //Get DenominationById Details
-            var denomination = await _mediator.Send(new GetDenominationByIdQuery(request.Request.DenominationId), cancellationToken);
+            var denomination = await _denominationSpecification.GetByIdAsync(request.DenominationId, cancellationToken);
 
             //check if denomination is active
 
             // Step 1: Get the appropriate provider implementation based on the flag
-            var provider = _providerFactory.GetProvider((DomainEnums.Provider)denomination.denominationDto.ProviderId);
+            var provider = _providerFactory.GetProvider((DomainEnums.Provider)denomination.ProviderId);
             var response = await provider.SendInquiryRequestAsync(request.Request);
             return response;
         }
