@@ -5,7 +5,6 @@ public static class DenominationExtensions
     public static IEnumerable<DenominationDto> ToDenominationDtoList(this IEnumerable<Denomination> denominations)
     {
         return denominations.Select(denomination => new DenominationDto(
-            Id: denomination.Id,
             NameEN: denomination.NameEN,
             NameAR: denomination.NameAR,
             Value: denomination.Value,
@@ -27,7 +26,6 @@ public static class DenominationExtensions
     private static DenominationDto DtoFromDenomination(Denomination denomination)
     {
         return new DenominationDto(
-            Id: denomination.Id,
             NameEN: denomination.NameEN,
             NameAR: denomination.NameAR,
             Value: denomination.Value,

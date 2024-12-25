@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Behaviors;
 using FluentValidation.AspNetCore;
 using Magic.Application.Common.Inquiry.Commands;
+using Magic.Application.Denominations.Commands;
 using Magic.Application.Denominations.Queries.Denominations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,7 @@ public static class DependencyInjection
                 .AddFluentValidationClientsideAdapters();
         services.AddValidatorsFromAssemblyContaining<InquiryCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<GetDenominationByIdValidator>();
+        services.AddValidatorsFromAssemblyContaining<InsertDenominationValidator>();
 
         // Add Feature Management (optional, if used)
         services.AddFeatureManagement();

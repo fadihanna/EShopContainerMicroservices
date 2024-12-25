@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Exceptions.Handler;
-using Carter;
 using HealthChecks.UI.Client;
 using MagicServices.API.Endpoints;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;

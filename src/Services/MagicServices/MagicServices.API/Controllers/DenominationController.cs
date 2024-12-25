@@ -1,4 +1,5 @@
-﻿using Magic.Application.Denominations.Queries.Denominations;
+﻿using Magic.Application.Denominations.Commands;
+using Magic.Application.Denominations.Queries.Denominations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicServices.API.Controllers
@@ -29,5 +30,15 @@ namespace MagicServices.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<InquiryResponseDto>> GetDenominationList(CancellationToken cancellationToken = default) => 
             Ok(await Mediator.Send(new GetDenominationsQuery(), cancellationToken));
+
+        [HttpPost("insert-denomination")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> InsertDenomination([FromBody] InsertDenominationCommand model, CancellationToken cancellationToken = default) => 
+            Ok(await Mediator.Send(new InsertDenominationCommand(model.Denomination), cancellationToken));
     }
 }

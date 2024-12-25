@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Exceptions;
-using Magic.Application.Common.Inquiry.Commands;
+﻿using Magic.Application.Common.Inquiry.Commands;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicServices.API.Controllers

@@ -10,6 +10,14 @@ namespace Magic.Infrastructure.Data.Specifications
         {
             _dbContext = dbContext;
         }
+        public async Task<int> InsertDenominationAsync(Denomination denomination, CancellationToken cancellationToken)
+        {
+            _dbContext.Denominations.Add(denomination);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return denomination.Id;
+        }
+
         public async Task<List<Denomination>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _dbContext.Denominations.AsNoTracking().ToListAsync();

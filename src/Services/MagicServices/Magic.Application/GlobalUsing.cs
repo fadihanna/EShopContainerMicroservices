@@ -1,7 +1,6 @@
 ﻿global using BuildingBlocks.CQRS;
 global using BuildingBlocks.Interfaces;
 global using FluentValidation;
-global using Magic.Application.Data;
 global using Magic.Application.Dtos;
 global using Magic.Application.Dtos.Common;
 global using Magic.Application.Extensions;
