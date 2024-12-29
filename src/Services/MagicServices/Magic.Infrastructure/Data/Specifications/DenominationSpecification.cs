@@ -25,7 +25,7 @@ namespace Magic.Infrastructure.Data.Specifications
 
         public async Task<Denomination> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Denominations.AsNoTracking().Where(o => o.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
+            return await _dbContext.Denominations.AsNoTracking().Where(o => o.IsActive && o.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

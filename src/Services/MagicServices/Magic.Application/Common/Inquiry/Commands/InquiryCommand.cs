@@ -1,5 +1,4 @@
 ﻿using Magic.Application.Common.Interfaces;
-using Magic.Application.Denominations.Queries.Denominations;
 using Magic.Domain.Specifications;
 
 namespace Magic.Application.Common.Inquiry.Commands
