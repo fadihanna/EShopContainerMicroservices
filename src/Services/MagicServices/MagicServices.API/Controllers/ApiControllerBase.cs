@@ -3,11 +3,13 @@
 namespace MagicServices.API.Controllers
 {
     [Route("api/[controller]")]
+    [Route("api/{culture?}/[controller]")]
     [ApiController]
     public class ApiControllerBase : ControllerBase
     {
         readonly IHostEnvironment environment;
-        public ApiControllerBase(IHostEnvironment environment) {
+        public ApiControllerBase(IHostEnvironment environment)
+        {
             this.environment = environment;
         }
         private IMediator? _mediator;

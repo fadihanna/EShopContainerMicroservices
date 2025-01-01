@@ -8,3 +8,4 @@ global using System.Text.Json;
 global using Magic.Application.Dtos.Common;
 global using Magic.Application.Common.Interfaces;
 global using DomainEnums = Magic.Domain.Enums;
+global using Magic.Application.Common;

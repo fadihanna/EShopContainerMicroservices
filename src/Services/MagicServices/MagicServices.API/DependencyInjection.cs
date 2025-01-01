@@ -1,6 +1,7 @@
-﻿using BuildingBlocks.Exceptions.Handler;
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
+using MagicServices.API.Configurations;
 using MagicServices.API.Endpoints;
+using MagicServices.API.Middlewares;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 
@@ -11,8 +12,8 @@ public static class DependencyInjection
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCarter();
-
-        services.AddExceptionHandler<CustomExceptionHandler>();
+        services.Configure<AppSettings>(configuration);
+        //services.AddExceptionHandler<CustomExceptionHandler>();
         services.AddHealthChecks()
             .AddSqlServer(configuration.GetConnectionString("Database")!);
         services.AddControllers();
@@ -37,8 +38,8 @@ public static class DependencyInjection
     public static WebApplication UseApiServices(this WebApplication app)
     {
         app.MapCarter();
-
-        app.UseExceptionHandler(options => { });
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+        //app.UseExceptionHandler(options => { });
         app.UseHealthChecks("/health",
             new HealthCheckOptions
             {
@@ -53,6 +54,7 @@ public static class DependencyInjection
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic Services API v1");
             });
             app.UseRouting();
+            app.UseMiddleware<LanguageMiddleware>();
             app.MapControllers(); // Map controllers
         }
         return app;

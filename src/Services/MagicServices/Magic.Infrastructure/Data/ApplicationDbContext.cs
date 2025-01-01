@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
 
     public DbSet<Provider> Providers => Set<Provider>();
+    public DbSet<InternalErrorCodeLookup> InternalErrorCodeLookups => Set<InternalErrorCodeLookup>();
     public DbSet<ServiceCategory> ServiceCategories => Set<ServiceCategory>();
     public DbSet<Service> Services => Set<Service>();
     public DbSet<Denomination> Denominations => Set<Denomination>();

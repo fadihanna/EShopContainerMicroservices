@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using Serilog;
 using System.Reflection;
+using System.Resources;
 
 namespace Magic.Application;
 /// <summary>
@@ -35,6 +36,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<InquiryCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<GetDenominationByIdValidator>();
         services.AddValidatorsFromAssemblyContaining<InsertDenominationValidator>();
+        services.AddSingleton(new ResourceManager(typeof(Resources.Resources)));
 
         // Add Feature Management (optional, if used)
         services.AddFeatureManagement();

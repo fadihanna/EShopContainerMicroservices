@@ -12,19 +12,23 @@ namespace Magic.Application.Common.Inquiry.Commands
     public class InquiryCommandHandler : IRequestHandler<InquiryCommand, InquiryResponseDto>
     {
         private readonly IDenominationSpecification _denominationSpecification;
+        private readonly ILookUpSpecification _lookUpSpecification;
         private readonly IExternalApiProviderFactory _providerFactory;
-        public InquiryCommandHandler(IExternalApiProviderFactory providerFactory, IDenominationSpecification denominationSpecification)
+        private readonly ILanguageService _languageService;
+        public InquiryCommandHandler(IExternalApiProviderFactory providerFactory, IDenominationSpecification denominationSpecification, ILookUpSpecification lookUpSpecification, ILanguageService languageService)
         {
             _providerFactory = providerFactory;
             _denominationSpecification = denominationSpecification;
+            _lookUpSpecification = lookUpSpecification;
+            _languageService = languageService;
         }
 
         public async Task<InquiryResponseDto> Handle(InquiryCommand request, CancellationToken cancellationToken)
         {
-            //Get DenominationById Details
             var denomination = await _denominationSpecification.GetByIdAsync(request.DenominationId, cancellationToken);
 
-            //check if denomination is active
+            if (denomination is null)
+                throw new InquiryResponseException((int)DomainEnums.InternalErrorCode.EntityNotFound, _lookUpSpecification, _languageService.GetLanguage());
 
             // Step 1: Get the appropriate provider implementation based on the flag
             var provider = _providerFactory.GetProvider((DomainEnums.Provider)denomination.ProviderId);
