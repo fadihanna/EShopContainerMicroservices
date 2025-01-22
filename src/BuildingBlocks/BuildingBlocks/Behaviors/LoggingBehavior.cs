@@ -20,7 +20,7 @@ public class LoggingBehavior<TRequest, TResponse>
         // Log request details
         if (request is ITransactionRequest denominationRequest)
             _logger.Information("Processing request: {RequestType} with DenominationId: {DenominationId}, ExternalId: {ExternalId}",
-                            typeof(TRequest).Name, denominationRequest.DenominationId, denominationRequest.ExternalId);
+                            typeof(TRequest).Name, denominationRequest.DenominationId);
         else
             return await next();
 

@@ -9,7 +9,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         : base(options) { }
 
 
-    public DbSet<Provider> Providers => Set<Provider>();
+    public DbSet<Lookups.Provider> Providers => Set<Lookups.Provider>();
     public DbSet<InternalErrorCodeLookup> InternalErrorCodeLookups => Set<InternalErrorCodeLookup>();
     public DbSet<ServiceCategory> ServiceCategories => Set<ServiceCategory>();
     public DbSet<Service> Services => Set<Service>();

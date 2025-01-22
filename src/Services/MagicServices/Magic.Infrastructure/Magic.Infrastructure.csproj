@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.21.5" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.49.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.49.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -16,15 +22,16 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Services\External\Momkn\Mapper\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Services\External\IExternalModelMapper.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Magic.Application\Magic.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\ExternalProviders\Provider.Grpc\Protos\providerinquiryservice.proto" GrpcServices="Client">
+      <Link>Protos\providerinquiryservice.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

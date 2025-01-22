@@ -3,12 +3,11 @@ using Magic.Domain.Specifications;
 using Magic.Infrastructure.Data.Cache;
 using Magic.Infrastructure.Data.Specifications;
 using Magic.Infrastructure.Services.External;
-using Magic.Infrastructure.Services.External.Masary.Services;
-using Magic.Infrastructure.Services.External.Momkn.Services;
 using Magic.Infrastructure.Services.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Provider.Grpc.Protos;
 
 namespace Magic.Infrastructure;
 public static class DependencyInjection
@@ -28,18 +27,18 @@ public static class DependencyInjection
         });
         services.AddHttpClient();
         services.AddMemoryCache();
-        services.AddTransient<MomknApiClient>();
-        services.AddTransient<MasaryApiClient>();
-        services.AddTransient<MasaryApiWrapper>();
-        services.AddTransient<MomknApiWrapper>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-        services.AddScoped<IExternalApiProviderFactory, ExternalApiProviderFactory>();
         services.AddScoped<IDenominationSpecification, DenominationSpecification>();
+        services.AddScoped<IExternalProviderInquiryService, ExternalProviderInquiryService>();
         services.AddScoped<ILookUpSpecification, LookUpSpecification>();
         services.AddScoped<IInternalErrorCodeMapper, InternalErrorCodeMapper>(); 
         services.AddScoped<ICacheService, CacheService>();
         services.AddScoped<ILocalizationService, LocalizationService>();
         services.AddScoped<ILanguageService, LanguageService>();
+        services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
+        {
+            options.Address = new Uri("http://localhost:6001");
+        });
         return services;
     }
 }
