@@ -1,0 +1,316 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "PayMobAPIService";
+
+package payment;
+
+// Payment service definition (can be extended for other providers)
+service PaymentService {
+  // Method to initiate a Paymob payment
+  rpc InitiateLogin (InitiateLoginRequest) returns (LoginResponse);
+
+  // Method to check Paymob payment status
+ // rpc InitiateCreateOrderRequest (InitiateCreateOrderRequest) returns (CreateOrderResponse);
+  
+ // rpc InitiatePayment (InitiatePaymentRequest) returns (PaymentRequest);
+}
+
+
+
+message InitiateLoginRequest {
+    string username = 1;
+    string password = 2;
+}
+// Login Response message
+message LoginResponse {
+    Profile profile = 1;
+    string token = 2;
+}
+
+// Nested message for User
+message User {
+    int32 id = 1;
+    string username = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string email = 5;
+    string date_joined = 6; // ISO 8601 format for dates.
+    bool is_active = 7;
+    bool is_staff = 8;
+    bool is_superuser = 9;
+    string last_login = 10; // Optional, can be null.
+    repeated string groups = 11; // Converted to strings for simplicity.
+    repeated int32 user_permissions = 12;
+}
+
+// Nested message for BankStaffs
+message BankStaffs {}
+
+// Nested message for Profile
+message Profile {
+    int32 id = 1;
+    User user = 2;
+    string created_at = 3; // ISO 8601 format for dates.
+    bool active = 4;
+    string profile_type = 5;
+    repeated string phones = 6;
+    repeated string company_emails = 7;
+    string company_name = 8;
+    string state = 9;
+    string country = 10;
+    string city = 11;
+    string postal_code = 12;
+    string street = 13;
+    bool email_notification = 14;
+    string order_retrieval_endpoint = 15;
+    string delivery_update_endpoint = 16;
+    string logo_url = 17;
+    bool is_mobadra = 18;
+    string sector = 19;
+    bool is_2fa_enabled = 20;
+    string otp_sent_to = 21;
+    int32 activation_method = 22;
+    int32 signed_up_through = 23;
+    int32 failed_attempts = 24;
+    repeated string custom_export_columns = 25;
+    repeated string server_IP = 26;
+    string username = 27;
+    string primary_phone_number = 28;
+    bool primary_phone_verified = 29;
+    bool is_temp_password = 30;
+    string otp_2fa_sent_at = 31;
+    string otp_2fa_attempt = 32;
+    string otp_sent_at = 33;
+    string otp_validated_at = 34;
+    string awb_banner = 35;
+    string email_banner = 36;
+    string identification_number = 37;
+    string delivery_status_callback = 38;
+    string merchant_external_link = 39;
+    int32 merchant_status = 40;
+    bool deactivated_by_bank = 41;
+    string bank_deactivation_reason = 42;
+    int32 bank_merchant_status = 43;
+    string national_id = 44;
+    string super_agent = 45;
+    string wallet_limit_profile = 46;
+    string address = 47;
+    string commercial_registration = 48;
+    string commercial_registration_area = 49;
+    string distributor_code = 50;
+    string distributor_branch_code = 51;
+    bool allow_terminal_order_id = 52;
+    bool allow_encryption_bypass = 53;
+    string wallet_phone_number = 54;
+    int32 suspicious = 55;
+    string latitude = 56;
+    string longitude = 57;
+    BankStaffs bank_staffs = 58;
+    string bank_rejection_reason = 59;
+    bool bank_received_documents = 60;
+    int32 bank_merchant_digital_status = 61;
+    string bank_digital_rejection_reason = 62;
+    bool filled_business_data = 63;
+    string day_start_time = 64;
+    string day_end_time = 65;
+    bool withhold_transfers = 66;
+    bool manual_settlement = 67;
+    string sms_sender_name = 68;
+    string withhold_transfers_reason = 69;
+    string withhold_transfers_notes = 70;
+    bool can_bill_deposit_with_card = 71;
+    bool can_topup_merchants = 72;
+    string topup_transfer_id = 73;
+    bool referral_eligible = 74;
+    bool is_eligible_to_be_ranger = 75;
+    bool eligible_for_manual_refunds = 76;
+    bool is_ranger = 77;
+    bool is_poaching = 78;
+    bool paymob_app_merchant = 79;
+    string settlement_frequency = 80;
+    string day_of_the_week = 81;
+    string day_of_the_month = 82;
+    bool allow_transaction_notifications = 83;
+    bool allow_transfer_notifications = 84;
+    double sallefny_amount_whole = 85;
+    double sallefny_fees_whole = 86;
+    string paymob_app_first_login = 87;
+    string paymob_app_last_activity = 88;
+    bool payout_enabled = 89;
+    bool payout_terms = 90;
+    bool is_bills_new = 91;
+    bool can_process_multiple_refunds = 92;
+    int32 settlement_classification = 93;
+    bool instant_settlement_enabled = 94;
+    bool instant_settlement_transaction_otp_verified = 95;
+    string preferred_language = 96;
+    bool ignore_flash_callbacks = 97;
+    string acq_partner = 98;
+    string dom = 99;
+    string bank_related = 100;
+    repeated string permissions = 101;
+}
+
+///////////////////////////////////////////////
+
+// CreateOrder request 
+// Item message for the order
+
+//message CreateOrderRequest {
+// string auth_token = 1; 
+// string delivery_needed = 1; 
+// string amount_cents = 1; 
+// string currency = 1;
+// int merchant_order_id =1;
+// List<Item>? items; 
+// ShippingData? shipping_data; 
+// ShippingDetails? shipping_details;
+//}
+//
+//message Item {
+//  string name = 1;
+//  string amount_cents = 2;
+//  string description = 3;
+//  string quantity = 4;
+//}
+//
+//message ShippingData {
+//  string apartment = 1;
+//  string email = 1;
+//  string floor = 1;
+//  string first_name = 1;
+//  string street = 1;
+//  string building = 1;
+//  string phone_number = 1;
+//  string postal_code = 1;
+//  string extra_description = 1;
+//  string city = 1;
+//  string country = 1;
+//  string last_name = 1;
+//  string state = 1;
+//}
+//message ShippingDetails {
+// string notes = 1;
+// int number_of_packages = 1;
+// int weight = 1;
+// string weight_unit = 1;
+// int length = 1;
+// int width = 1;
+// int height = 1;
+// string contents = 1;
+//}
+////
+//
+//
+//// Represents the CreateOrderResponse.
+//message CreateOrderResponse {
+//    int32 id = 1;
+//    string created_at = 2; // Use string to handle datetime
+//    bool delivery_needed = 3;
+//    Merchant merchant = 4;
+//    string collector = 5; // Changed from object to string for simplicity
+//    int32 amount_cents = 6;
+//    ShippingData shipping_data = 7;
+//    string currency = 8;
+//    bool is_payment_locked = 9;
+//    bool is_return = 10;
+//    bool is_cancel = 11;
+//    bool is_returned = 12;
+//    bool is_canceled = 13;
+//    string merchant_order_id = 14;
+//    string wallet_notification = 15; // Changed from object to string
+//    int32 paid_amount_cents = 16;
+//    bool notify_user_with_email = 17;
+//    repeated Item items = 18;
+//    string order_url = 19;
+//    int32 commission_fees = 20;
+//    int32 delivery_fees_cents = 21;
+//    int32 delivery_vat_cents = 22;
+//    string payment_method = 23;
+//    string merchant_staff_tag = 24; // Changed from object to string
+//    string api_source = 25;
+//    Data data = 26;
+//    string token = 27;
+//    string url = 28;
+//}
+//
+//// CreateOrder Response//////////
+//// Represents the Data object.
+//message Data {}
+//
+//// Represents an Item in the order.
+//message Item {
+//    string name = 1;
+//    string description = 2;
+//    int32 amount_cents = 3;
+//    int32 quantity = 4;
+//}
+//
+//// Represents the Merchant object.
+//message Merchant {
+//    int32 id = 1;
+//    string created_at = 2; // Use string to handle datetime
+//    repeated string phones = 3;
+//    repeated string company_emails = 4;
+//    string company_name = 5;
+//    string state = 6;
+//    string country = 7;
+//    string city = 8;
+//    string postal_code = 9;
+//    string street = 10;
+//}
+//
+//// Represents the Shipping Data object.
+//message ShippingData {
+//    int32 id = 1;
+//    string first_name = 2;
+//    string last_name = 3;
+//    string street = 4;
+//    string building = 5;
+//    string floor = 6;
+//    string apartment = 7;
+//    string city = 8;
+//    string state = 9;
+//    string country = 10;
+//    string email = 11;
+//    string phone_number = 12;
+//    string postal_code = 13;
+//    string extra_description = 14;
+//    string shipping_method = 15;
+//    int32 order_id = 16;
+//    int32 order = 17;
+//}
+
+
+// PaymentRequest. //////////////////
+message PaymentRequest {
+    string auth_token = 1;
+    string amount_cents = 2;
+    int32 expiration = 3;
+    string order_id = 4;
+    BillingData billing_data = 5;
+    string currency = 6;
+    int32 integration_id = 7;
+    string lock_order_when_paid = 8;
+}
+// Payment Request
+// Represents the BillingData object.
+message BillingData {
+    string apartment = 1;
+    string email = 2;
+    string floor = 3;
+    string first_name = 4;
+    string street = 5;
+    string building = 6;
+    string phone_number = 7;
+    string shipping_method = 8;
+    string postal_code = 9;
+    string city = 10;
+    string country = 11;
+    string last_name = 12;
+    string state = 13;
+}
+
+message PaymentResponse {
+    string token = 1;
+}

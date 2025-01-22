@@ -1,4 +1,8 @@
 ﻿using Magic.Infrastructure.Services.External.Momkn.Models;
+using MagicPaymentAPI.DTO.Login;
+using MagicPaymentAPI.DTO.Order.Request;
+using MagicPaymentAPI.DTO.Order.Response;
+using MagicPaymentAPI.DTO.Payment;
 
 namespace Magic.Infrastructure.Services.External.Momkn.Services
 {
@@ -42,5 +46,19 @@ namespace Magic.Infrastructure.Services.External.Momkn.Services
             throw new NotImplementedException();
         }
 
+        public Task<LoginResponse> SendLoginPayMobRequestAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CreateOrderResponse> SendCreateOrderPayMobRequestAsync(CreateOrderRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PaymentResponse> SendPaymentPayMobRequestAsync(PaymentRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

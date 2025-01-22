@@ -8,8 +8,8 @@ public static class DatabaseExtentions
     {
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.MigrateAsync().GetAwaiter().GetResult();
-        await SeedAsync(context);
+        //context.Database.MigrateAsync().GetAwaiter().GetResult();
+       // await SeedAsync(context);
     }
     private static async Task SeedAsync(ApplicationDbContext context)
     {

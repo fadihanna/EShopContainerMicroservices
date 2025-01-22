@@ -6,4 +6,4 @@ public interface IExternalModelMapper<TInquiryRequest, TInquiryResponse, TPaymen
     InquiryResponseDto MapInquiryResponse(TInquiryResponse providerResponse);
     TPaymentRequest MapPaymentRequest(PaymentRequestDto inquiryRequest);
     PaymentResponseDto MapPaymentResponse(TPaymentResponse providerResponse);
-}
+}   
