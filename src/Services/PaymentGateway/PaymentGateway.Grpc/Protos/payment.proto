@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "PaymentGateway.Grpc";
+
+service PaymentGateway {
+  rpc ProcessPayment (PaymentRequest) returns (PaymentResponse);
+}
+
+message PaymentRequest {
+  string provider = 1; // e.g., "Paymob"
+  double amount = 2;
+  string currency = 3;
+}
+
+message PaymentResponse {
+  bool success = 1;
+  string message = 2;
+  string paymentprovidertransaction_id = 3; 
+}

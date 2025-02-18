@@ -7,6 +7,8 @@ using Magic.Infrastructure.Services.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Payment.Service;
+using PaymentGateway.Grpc.Services.PayMob;
 using Provider.Grpc.Protos;
 
 namespace Magic.Infrastructure;
@@ -35,6 +37,11 @@ public static class DependencyInjection
         services.AddScoped<ICacheService, CacheService>();
         services.AddScoped<ILocalizationService, LocalizationService>();
         services.AddScoped<ILanguageService, LanguageService>();
+        services.AddScoped<IBalanceSpecification, BalanceSpecification>();
+        services.AddScoped<ITransactionSpecification, TransactionSpecification>();
+        services.AddScoped<IPaymentGatewayService,PaymentGatewayService>();
+        services.AddScoped<IPayMobService, PayMobService>();
+        services.AddScoped<IRequestSepecification, RequestSpecification>();
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {
             options.Address = new Uri("http://localhost:6001");

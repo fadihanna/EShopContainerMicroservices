@@ -10,5 +10,9 @@ public interface IApplicationDbContext
     DbSet<ServiceCategory> ServiceCategories { get; }
     DbSet<Service> Services { get; }
     DbSet<Denomination> Denominations { get; }
+    DbSet<Balance> Balances { get; }
+    DbSet<Transaction> Transactions { get; }
+    DbSet<PaymentProvider> PaymentProviders { get; }
+    DbSet<Request> Requests { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

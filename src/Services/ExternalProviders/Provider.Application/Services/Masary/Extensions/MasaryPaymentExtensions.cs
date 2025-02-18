@@ -27,7 +27,7 @@ namespace Provider.Application.Services.Masary.Extensions
                             amount: 0,
                             service_charge: 0,
                             total_amount: 0,
-                            inquiry_transaction_id: inquiryRequestModel.TransactionId)
+                            inquiry_transaction_id: inquiryRequestModel.RefrenceTransactionId)
             );
         }
         public static PaymentResponseModel MasaryToStandard(this MasaryPaymentResponse masaryPaymentResponse)

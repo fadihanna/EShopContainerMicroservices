@@ -20,6 +20,9 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .ReadFrom.Configuration(context.Configuration)
         .Enrich.FromLogContext();
 });
+
+builder.Services.AddSingleton<PaymentGatewayClientService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

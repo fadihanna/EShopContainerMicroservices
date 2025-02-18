@@ -18,6 +18,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<DenominationGroup> DenominationGroups => Set<DenominationGroup>();
     public DbSet<DenominationInputParameter> DenominationInputParameters => Set<DenominationInputParameter>();
     public DbSet<DenominationProviderCode> DenominationProviderCodes => Set<DenominationProviderCode>();
+    public DbSet<Balance> Balances => Set<Balance>();
+    public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<PaymentProvider> PaymentProviders => Set<PaymentProvider>();
+    public DbSet<Request> Requests => Set<Request>();
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
