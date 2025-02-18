@@ -38,7 +38,9 @@ namespace MagicServices.API.Middlewares
                 Status: statusCode.ToString(),
                 StatusText: message,
                 DateTime: DateTime.UtcNow.ToString(),
-                DetailsList: new List<Details>()
+                DetailsList: new List<Details>(),
+                Amount:0,
+                Fees:0
             );
 
             context.Response.StatusCode = statusCode;

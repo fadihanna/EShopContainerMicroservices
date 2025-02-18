@@ -1,11 +1,12 @@
-﻿namespace Magic.Application.Dtos.Common;
-public record InquiryResponseDto(
+﻿namespace BuildingBlocks.Models;
+
+public record InquiryResponseModel(
     string TransactionId,
     string Status,
     string StatusText,
     string DateTime,
     double Amount, 
-    double Fees,
+    double Fees,  
     List<Details> DetailsList
 );
 
@@ -13,3 +14,4 @@ public record Details(
     string Key,
     string Value
 );
+
