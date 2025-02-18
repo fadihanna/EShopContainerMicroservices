@@ -1,6 +1,5 @@
 ﻿using Provider.Application.Services.Masary;
 using Provider.Application.Services.Masary.Models;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
@@ -15,7 +14,6 @@ public class MasaryApiClient : IMasaryApiClient
         _httpClient = httpClient;
     }
 
-
     public async Task<MasaryInquiryResponse> SendInquiryRequestAsync(MasaryInquiryRequest providerRequest, string URL)
     {
         return await SendRequestAsync<MasaryInquiryRequest, MasaryInquiryResponse>(providerRequest, URL, "Inquiry");
@@ -28,7 +26,6 @@ public class MasaryApiClient : IMasaryApiClient
 
     private async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest providerRequest, string URL, string requestType)
     {
-
         var json = JsonSerializer.Serialize(providerRequest);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
@@ -44,4 +41,3 @@ public class MasaryApiClient : IMasaryApiClient
         return JsonSerializer.Deserialize<TResponse>(result) ?? throw new Exception($"Deserialization failed.");
     }
 }
-

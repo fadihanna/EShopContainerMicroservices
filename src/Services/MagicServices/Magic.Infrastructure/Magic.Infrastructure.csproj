@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ExternalProviders\Provider.Application\Provider.Application.csproj" />
     <ProjectReference Include="..\Magic.Application\Magic.Application.csproj" />
   </ItemGroup>
 

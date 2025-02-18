@@ -1,4 +1,6 @@
-﻿namespace Magic.Application.Common.Interfaces
+﻿using Provider.Application.Common.Interfaces;
+
+namespace Magic.Application.Common.Interfaces
 {
     public interface IExternalApiProviderFactory
     {

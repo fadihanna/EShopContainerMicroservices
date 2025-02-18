@@ -5,7 +5,7 @@ public interface IApplicationDbContext
     DbSet<DenominationGroup> DenominationGroups { get; }
     DbSet<DenominationInputParameter> DenominationInputParameters { get; }
     DbSet<DenominationProviderCode> DenominationProviderCodes { get; }
-    DbSet<Provider> Providers { get; }
+    DbSet<Domain.Models.Lookups.Provider> Providers { get; }
     DbSet<InternalErrorCodeLookup> InternalErrorCodeLookups { get; }
     DbSet<ServiceCategory> ServiceCategories { get; }
     DbSet<Service> Services { get; }

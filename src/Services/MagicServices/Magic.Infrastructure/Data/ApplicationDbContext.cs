@@ -9,7 +9,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         : base(options) { }
 
 
-    public DbSet<Provider> Providers => Set<Provider>();
+    public DbSet<Domain.Models.Lookups.Provider> Providers => Set<Domain.Models.Lookups.Provider>();
     public DbSet<InternalErrorCodeLookup> InternalErrorCodeLookups => Set<InternalErrorCodeLookup>();
     public DbSet<ServiceCategory> ServiceCategories => Set<ServiceCategory>();
     public DbSet<Service> Services => Set<Service>();
@@ -18,6 +18,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<DenominationGroup> DenominationGroups => Set<DenominationGroup>();
     public DbSet<DenominationInputParameter> DenominationInputParameters => Set<DenominationInputParameter>();
     public DbSet<DenominationProviderCode> DenominationProviderCodes => Set<DenominationProviderCode>();
+    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);

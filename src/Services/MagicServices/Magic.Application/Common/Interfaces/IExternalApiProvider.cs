@@ -1,6 +1,10 @@
-﻿namespace Magic.Application.Common.Interfaces;
-public interface IExternalApiProvider
+﻿using BuildingBlocks.Models;
+
+namespace Provider.Application.Common.Interfaces
 {
-    Task<InquiryResponseDto> SendInquiryRequestAsync(InquiryRequestDto providerRequest);
-    Task<PaymentResponseDto> SendPaymentRequestAsync(PaymentRequestDto providerRequest);
+    public interface IExternalApiProvider
+    {
+        Task<InquiryResponseModel> SendInquiryRequestAsync(InquiryRequestModel providerRequest);
+        Task<PaymentResponseModel> SendPaymentRequestAsync(PaymentRequestModel providerRequest);
+    }
 }

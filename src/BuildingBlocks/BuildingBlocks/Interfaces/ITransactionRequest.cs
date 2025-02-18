@@ -8,6 +8,5 @@
     public interface ITransactionRequest
     {
         int DenominationId { get; }
-        string ExternalId { get; }
     }
 }

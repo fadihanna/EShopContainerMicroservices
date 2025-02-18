@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Services\External\Momkn\Services\" />
   </ItemGroup>
 
   <ItemGroup>

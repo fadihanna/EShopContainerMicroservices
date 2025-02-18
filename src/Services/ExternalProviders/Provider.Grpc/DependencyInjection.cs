@@ -1,7 +1,4 @@
-﻿using Provider.Application.Common;
-using Provider.Application.Configuration;
-using Provider.Application.Services.Masary;
-using Provider.Application.Services.Momkn;
+﻿using Provider.Application.Configuration;
 
 namespace Provider.Grpc
 {

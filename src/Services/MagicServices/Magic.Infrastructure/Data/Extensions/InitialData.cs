@@ -3,12 +3,12 @@ namespace Magic.Infrastructure.Data.Extensions
 {
     internal class InitialData
     {
-        public static IEnumerable<Provider> Providers =>
-        new List<Provider>
+        public static IEnumerable<Domain.Models.Lookups.Provider> Providers =>
+        new List<Domain.Models.Lookups.Provider>
         {
-            Provider.Create("Orange","اورانج",true,1),
-            Provider.Create("Masary","مصاري",true,2),
-            Provider.Create("Momkn","ممكن",true,3)
+            Domain.Models.Lookups.Provider.Create("Orange","اورانج",true,1),
+            Domain.Models.Lookups.Provider.Create("Masary","مصاري",true,2),
+            Domain.Models.Lookups.Provider.Create("Momkn","ممكن",true,3)
         };
         public static IEnumerable<ServiceCategory> ServiceCategories =>
         new List<ServiceCategory>

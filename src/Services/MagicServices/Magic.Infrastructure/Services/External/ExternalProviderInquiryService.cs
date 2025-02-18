@@ -38,9 +38,9 @@ namespace Magic.Infrastructure.Services.External
                 Status: response.Status,
                 StatusText: response.StatusText,
                 DateTime: response.DateTime,
-                Fees:0,
-                Amount:0,
-                DetailsList: response.DetailsList.Select(d => new Details (Key : d.Key, Value : d.Value)).ToList()
+                Amount: response.Amount,
+                Fees: response.Fees,
+                DetailsList: response.DetailsList.Select(d => new Details(Key: d.Key, Value: d.Value)).ToList()
            );
         }
     }

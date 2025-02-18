@@ -2,9 +2,7 @@
 public record InquiryRequestDto(
     List<InputParameter> InputParameterList,
     int DenominationId,
-    string BillingAccount,
-    string ExternalId
-);
+    string BillingAccount);
 public record InputParameter(
     string Key,
     string Value
