@@ -37,7 +37,7 @@ public static class DependencyInjection
         services.AddScoped<ILanguageService, LanguageService>();
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {
-            options.Address = new Uri("http://localhost:6001");
+            options.Address = new Uri("http://localhost:52527/");
         });
         return services;
     }

@@ -1,6 +1,8 @@
 ﻿using Magic.Application.Common.Interfaces;
 using Magic.Domain.Specifications;
 
+
+
 namespace Magic.Application.Common.Inquiry.Commands
 {
     public record InquiryCommand(InquiryRequestDto Request) : IRequest<InquiryResponseDto>, ITransactionRequest
@@ -26,12 +28,13 @@ namespace Magic.Application.Common.Inquiry.Commands
         {
             var denominationProvider = await _denominationSpecification.GetDenominationProviderCodeByIdAsync(request.DenominationId, cancellationToken);
 
-
             if (denominationProvider.IsNullResult)
                 throw new InquiryResponseException((int)DomainEnums.InternalErrorCode.EntityNotFound, _lookUpSpecification, _languageService.GetLanguage());
 
-            return null;
+            var inquiryRequestModel = request.Request.ToStandardRequest(denominationProvider.BillerCode, denominationProvider.ProviderId);
 
+            var response = await _externalProviderInquiryService.InquiryAsync(inquiryRequestModel, cancellationToken);
+            return response.ToModelResponse();
         }
     }
 }

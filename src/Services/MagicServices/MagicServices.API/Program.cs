@@ -11,7 +11,10 @@ builder.Services
     .AddApplicationServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration)
     .AddApiServices(builder.Configuration);
-
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ConfigureEndpointDefaults(lo => lo.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2);
+});
 builder.Services.AddEndpointsApiExplorer();
 // Configure Serilog from appsettings.json
 builder.Host.UseSerilog((context, services, configuration) =>
