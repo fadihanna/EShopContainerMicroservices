@@ -2,7 +2,6 @@
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Models;
 using Magic.Domain.Specifications;
-using PaymentGateway.Grpc;
 using IPaymentGatewayService = Payment.Service.IPaymentGatewayService;
 
 namespace Magic.Application.Common.Payment.Commands
@@ -33,20 +32,19 @@ namespace Magic.Application.Common.Payment.Commands
             if (denomination == null)
                 throw new NotFoundException("Denomination", command.Transaction.DenominationId);
 
+            var DPC = await _denominationSpecification.GetDenominationProviderCodeByIdAsync(denomination.Id, cancellationToken);
+
             var request = await _requestSepecification.InsertRequestAsync(new Request()
             {
                 Amount = command.Transaction.TotalAmount,
                 BillingAccount = command.Transaction.BillingAccount,
                 DenominationId = command.Transaction.DenominationId,
-                RequestDate = DateTime.UtcNow,
+                RequestDate = DateTime.UtcNow, //test
                 ResponseDate = DateTime.UtcNow, // test
                 Status = Convert.ToInt32(RequestStatus.PaymentInitiate),
                 UserId = "george" // test,
-
-
             }, cancellationToken);
 
-            // get btc 
             // call provider api
 
             await PaymentProcessor(command);
@@ -60,8 +58,8 @@ namespace Magic.Application.Common.Payment.Commands
 
             var paymentResponseModel = new PaymentResponseModel
             {
-                TransactionId = transaction.Id,
-                ProviderTransactionId = "20259238123",
+                TransactionId = transaction.Id, // invoiceId
+                ProviderTransactionId = "20259238123", // from api
                 UserId = "george",
                 TotalAmount = command.Transaction.TotalAmount,
                 Message = "Success",
@@ -77,12 +75,10 @@ namespace Magic.Application.Common.Payment.Commands
                 Provider = command.Transaction.PaymentProviderId.ToString(),
                 Currency = "EGP"
             };
-
             var paymentResponse = await _paymentGatewayService.ProcessPayment(paymentRequest, null);
 
             if (!paymentResponse.Success)
                 throw new Exception($"Payment failed: {paymentResponse.Message}");
-
             return paymentResponse;
         }
     }

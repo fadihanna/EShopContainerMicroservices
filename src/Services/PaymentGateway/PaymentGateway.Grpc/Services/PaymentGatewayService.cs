@@ -19,9 +19,9 @@ namespace Payment.Service
 
             return new PaymentResponse
             {
-                Success = true,
+                Success = result.Success,
                 PaymentprovidertransactionId = result.TransactionId,
-                Message = "Success"
+                Message = result.Message
             };
         }
         private IPaymentProvider GetPaymentProvider(string providerId)

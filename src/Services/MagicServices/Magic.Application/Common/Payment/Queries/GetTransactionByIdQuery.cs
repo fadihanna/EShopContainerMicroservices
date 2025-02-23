@@ -1,4 +1,5 @@
-﻿using Magic.Domain.Specifications;
+﻿using BuildingBlocks.Exceptions;
+using Magic.Domain.Specifications;
 
 namespace Magic.Application.Common.Payment.Queries
 {
@@ -16,6 +17,8 @@ namespace Magic.Application.Common.Payment.Queries
         public async Task<GetTransactionByIdResponse> Handle(GetTransactionByIdQuery query, CancellationToken cancellationToken)
         {
             var transaction = await _transactionSpecification.GetByInvoiceId(query.Id, cancellationToken);
+            if (transaction == null)
+                throw new NotFoundException("Transaction",query.Id);
             return new GetTransactionByIdResponse(transaction!.ToTransactionDto());
         }
     }
