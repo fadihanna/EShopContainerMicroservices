@@ -1,6 +1,4 @@
-﻿using Magic.Domain.Specifications;
-
-namespace Magic.Application.Denominations.Queries.Denominations
+﻿namespace Magic.Application.Denominations.Queries.Denominations
 {
     public record GetDenominationByIdQuery(int Id)
     : IQuery<GetDenominationByIdResponse>;
@@ -15,7 +13,11 @@ namespace Magic.Application.Denominations.Queries.Denominations
         }
         public async Task<GetDenominationByIdResponse> Handle(GetDenominationByIdQuery query, CancellationToken cancellationToken)
         {
-            var denomination = await _denominationSpecification.GetByIdAsync(query.Id, cancellationToken);
+            var denomination = await _denominationSpecification.GetByIdAsync(o => o.IsActive && o.Id.Equals(query.Id), cancellationToken);
+
+            if (denomination == null)
+                throw new InquiryResponseException(DomainEnums.InternalErrorCode.EntityNotFound);
+
             return new GetDenominationByIdResponse(denomination!.ToDenominationDto());
         }
     }

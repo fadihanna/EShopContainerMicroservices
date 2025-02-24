@@ -1,6 +1,4 @@
-﻿using BuildingBlocks.Models;
-
-namespace Magic.Application.Common.Interfaces
+﻿namespace Magic.Application.Common.Interfaces
 {
     public interface IExternalProviderInquiryService
     {

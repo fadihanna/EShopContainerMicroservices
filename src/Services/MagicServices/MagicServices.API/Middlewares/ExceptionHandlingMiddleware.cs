@@ -1,4 +1,7 @@
 ﻿using Magic.Application.Exceptions;
+using Magic.Domain.Enums;
+using Magic.Domain.Specifications;
+using Microsoft.AspNetCore.Identity;
 
 namespace MagicServices.API.Middlewares
 {
@@ -9,28 +12,39 @@ namespace MagicServices.API.Middlewares
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next)
+        // Make these fields private & set them in each request scope
+        private ILookUpSpecification _lookUpSpecification;
+
+        public ExceptionHandlingMiddleware(RequestDelegate next, IServiceScopeFactory serviceScopeFactory)
         {
             _next = next;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            try
+            // Create a service scope for each request
+            using (var scope = _serviceScopeFactory.CreateScope())
             {
-                await _next(context);
-            }
-            catch (InquiryResponseException ex)
-            {
-                await HandleExceptionAsync(context, ex.ErrorCode, ex.ErrorMessage ?? ex.Message);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, StatusCodes.Status500InternalServerError, ex.Message ?? ex.InnerException?.Message);
+                _lookUpSpecification = scope.ServiceProvider.GetRequiredService<ILookUpSpecification>();
+
+                try
+                {
+                    await _next(context);
+                }
+                catch (Exception ex)
+                {
+                    await (ex switch
+                    {
+                        InquiryResponseException inquiryEx => HandleInquiryExceptionAsync(context, inquiryEx.ErrorCode, inquiryEx),
+                        ForbiddenAccessException forbiddenEx => HandleForbiddenExceptionAsync(context, forbiddenEx.ErrorCode, forbiddenEx),
+                        _ => HandleExceptionAsync(context, StatusCodes.Status500InternalServerError, ex.Message ?? ex.InnerException?.Message)
+                    });
+                }
             }
         }
-
         private static async Task HandleExceptionAsync(HttpContext context, int statusCode, string message)
         {
             var response = new InquiryResponseDto(
@@ -42,6 +56,35 @@ namespace MagicServices.API.Middlewares
             );
 
             context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsJsonAsync(response);
+        }
+        private async Task HandleInquiryExceptionAsync(HttpContext context, InternalErrorCode statusCode, InquiryResponseException ex)
+        {
+            string errorMessage = _lookUpSpecification.GetErrorMessage(statusCode) ?? ex.Message;
+
+            var response = new InquiryResponseDto(
+                TransactionId: string.Empty,
+                Status: statusCode.ToString(),
+                StatusText: errorMessage,
+                DateTime: DateTime.UtcNow.ToString(),
+                DetailsList: new List<Details>()
+            );
+
+            context.Response.StatusCode = ((int)statusCode);
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsJsonAsync(response);
+        }
+
+        private async Task HandleForbiddenExceptionAsync(HttpContext context, InternalErrorCode statusCode, ForbiddenAccessException ex)
+        {
+            string errorMessage = _lookUpSpecification.GetErrorMessage(statusCode) ?? ex.Message;
+
+            var response = IdentityResult.Failed(
+                new IdentityError() { Code = ((int)statusCode).ToString(), Description = errorMessage }
+            );
+
+            context.Response.StatusCode = ((int)statusCode);
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsJsonAsync(response);
         }

@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Models;
-using BuildingBlocksModels = BuildingBlocks.Models;
+﻿using BuildingBlocksModels = BuildingBlocks.Models;
 using ApplicationModels = Magic.Application.Dtos.Common;
 
 namespace Magic.Application.Extensions

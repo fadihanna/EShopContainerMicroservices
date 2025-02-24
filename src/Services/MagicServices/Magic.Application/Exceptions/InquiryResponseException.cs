@@ -1,20 +1,13 @@
-﻿using BuildingBlocks.Exceptions;
-using Magic.Domain.Specifications;
+﻿using Magic.Domain.Enums;
 
 namespace Magic.Application.Exceptions
 {
-    public class InquiryResponseException : NotFoundException
+    public class InquiryResponseException : Exception
     {
-        public int ErrorCode { get; }
-        public string? ErrorMessage { get; }
-        public InquiryResponseException(int errorCode, ILookUpSpecification lookUpSpecification, string language) : base(errorCode)
+        public InternalErrorCode ErrorCode { get; }
+        public InquiryResponseException(InternalErrorCode errorCode)
         {
-            if (lookUpSpecification == null)
-                throw new ArgumentNullException(nameof(lookUpSpecification));
-
-            ErrorMessage = lookUpSpecification.GetErrorMessageAsync(errorCode, language, CancellationToken.None);
             ErrorCode = errorCode;
         }
-        public override string Message => ErrorMessage ?? base.Message;
     }
 }

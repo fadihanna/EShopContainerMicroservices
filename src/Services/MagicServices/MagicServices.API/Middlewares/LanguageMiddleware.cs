@@ -15,9 +15,7 @@ namespace MagicServices.API.Middlewares
         public async Task Invoke(HttpContext context, ILanguageService languageService, IConfiguration configuration)
         {
             var defaultCulture = configuration["Localization:DefaultCulture"] ?? Language.Arabic;
-            var language = context.Request.Headers["Accept-Language"].FirstOrDefault()
-                       ?? context.Request.RouteValues["culture"]?.ToString()
-                       ?? defaultCulture;
+            var language = context.Request.RouteValues["culture"]?.ToString() ?? defaultCulture;
 
             languageService.SetLanguage(language);
             await _next(context);

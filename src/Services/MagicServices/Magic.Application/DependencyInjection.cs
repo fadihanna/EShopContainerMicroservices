@@ -1,5 +1,7 @@
 ﻿using BuildingBlocks.Behaviors;
 using FluentValidation.AspNetCore;
+using Magic.Application.Behaviors;
+using Magic.Application.Common.Identity.User.Commads.Create;
 using Magic.Application.Common.Inquiry.Commands;
 using Magic.Application.Denominations.Commands;
 using Magic.Application.Denominations.Queries.Denominations;
@@ -27,6 +29,7 @@ public static class DependencyInjection
         });
 
         // Register Validation and Logging Pipeline Behaviors
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
@@ -34,6 +37,7 @@ public static class DependencyInjection
         services.AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();
         services.AddValidatorsFromAssemblyContaining<InquiryCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<GetDenominationByIdValidator>();
         services.AddValidatorsFromAssemblyContaining<InsertDenominationValidator>();
         services.AddSingleton(new ResourceManager(typeof(Resources.Resources)));

@@ -1,7 +1,8 @@
 ﻿using HealthChecks.UI.Client;
-using MagicServices.API.Configurations;
-using MagicServices.API.Endpoints;
+using Magic.Application.Common.Configurations;
+using Magic.Application.Common.Interfaces;
 using MagicServices.API.Middlewares;
+using MagicServices.API.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 
@@ -11,6 +12,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
+
+        services.AddHttpContextAccessor(); // Required for IHttpContextAccessor
+        services.AddScoped<IUser, CurrentUser>(); // Register CurrentUser as IUser
         services.AddCarter();
         services.Configure<AppSettings>(configuration);
         //services.AddExceptionHandler<CustomExceptionHandler>();
@@ -31,6 +35,30 @@ public static class DependencyInjection
                     Email = "support@magicservices.com"
                 }
             });
+            c.AddSecurityDefinition(name: "Bearer", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.ApiKey,
+                Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+                In = ParameterLocation.Header,
+                Name = "Authorization",
+                Scheme = "bearer",
+                BearerFormat = "JWT"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new List<string>()
+                }
+            });
         });
         return services;
     }
@@ -40,6 +68,10 @@ public static class DependencyInjection
         app.MapCarter();
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         //app.UseExceptionHandler(options => { });
+        app.UseMiddleware<LanguageMiddleware>();
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseHealthChecks("/health",
             new HealthCheckOptions
             {
@@ -53,18 +85,8 @@ public static class DependencyInjection
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic Services API v1");
             });
-            app.UseRouting();
-            app.UseMiddleware<LanguageMiddleware>();
             app.MapControllers(); // Map controllers
         }
-        return app;
-    }
-    public static WebApplication ConfigureEndpoints(this WebApplication app)
-    {
-        var servicesEndpoint = new ServicesEndpoint();
-        servicesEndpoint.AddRoutes(app);
-        var inquiryEndpoint = new InquiryEndpoint();
-        inquiryEndpoint.AddRoutes(app);
         return app;
     }
 }

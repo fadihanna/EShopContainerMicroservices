@@ -6,19 +6,61 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Magic.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ConsumerRole",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerRole", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsumerUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MobileNumber = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    NormalizedMobileNumber = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerUser", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "DenominationGroups",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameAR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -27,13 +69,33 @@ namespace Magic.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InternalErrorCodeLookups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ErrorCode = table.Column<int>(type: "int", nullable: false),
+                    MessageEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MessageAR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameAR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InternalErrorCodeLookups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Providers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NameEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameAR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -59,6 +121,137 @@ namespace Magic.Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServiceCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsumerRoleClaim",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerRoleClaim", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConsumerRoleClaim_ConsumerRole_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "ConsumerRole",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsumerUserClaim",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerUserClaim", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConsumerUserClaim_ConsumerUser_UserId",
+                        column: x => x.UserId,
+                        principalTable: "ConsumerUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsumerUserLogin",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerUserLogin", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_ConsumerUserLogin_ConsumerUser_UserId",
+                        column: x => x.UserId,
+                        principalTable: "ConsumerUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsumerUserRole",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerUserRole", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_ConsumerUserRole_ConsumerRole_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "ConsumerRole",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConsumerUserRole_ConsumerUser_UserId",
+                        column: x => x.UserId,
+                        principalTable: "ConsumerUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsumerUserToken",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsumerUserToken", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_ConsumerUserToken_ConsumerUser_UserId",
+                        column: x => x.UserId,
+                        principalTable: "ConsumerUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ConsumerUserId = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JwtId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiredAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshToken_ConsumerUser_ConsumerUserId",
+                        column: x => x.ConsumerUserId,
+                        principalTable: "ConsumerUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,6 +413,44 @@ namespace Magic.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "ConsumerRole",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConsumerRoleClaim_RoleId",
+                table: "ConsumerRoleClaim",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "ConsumerUser",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "ConsumerUser",
+                column: "NormalizedMobileNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConsumerUserClaim_UserId",
+                table: "ConsumerUserClaim",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConsumerUserLogin_UserId",
+                table: "ConsumerUserLogin",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConsumerUserRole_RoleId",
+                table: "ConsumerUserRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Denomination_ProviderId",
                 table: "Denomination",
                 column: "ProviderId");
@@ -250,6 +481,11 @@ namespace Magic.Infrastructure.Data.Migrations
                 column: "ProviderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RefreshToken_ConsumerUserId",
+                table: "RefreshToken",
+                column: "ConsumerUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Service_ServiceCategoryId",
                 table: "Service",
                 column: "ServiceCategoryId");
@@ -258,6 +494,21 @@ namespace Magic.Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ConsumerRoleClaim");
+
+            migrationBuilder.DropTable(
+                name: "ConsumerUserClaim");
+
+            migrationBuilder.DropTable(
+                name: "ConsumerUserLogin");
+
+            migrationBuilder.DropTable(
+                name: "ConsumerUserRole");
+
+            migrationBuilder.DropTable(
+                name: "ConsumerUserToken");
+
             migrationBuilder.DropTable(
                 name: "DenominationFee");
 
@@ -271,7 +522,19 @@ namespace Magic.Infrastructure.Data.Migrations
                 name: "DenominationProviderCode");
 
             migrationBuilder.DropTable(
+                name: "InternalErrorCodeLookups");
+
+            migrationBuilder.DropTable(
+                name: "RefreshToken");
+
+            migrationBuilder.DropTable(
+                name: "ConsumerRole");
+
+            migrationBuilder.DropTable(
                 name: "Denomination");
+
+            migrationBuilder.DropTable(
+                name: "ConsumerUser");
 
             migrationBuilder.DropTable(
                 name: "Providers");

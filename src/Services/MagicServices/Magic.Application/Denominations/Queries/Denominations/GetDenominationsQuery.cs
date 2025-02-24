@@ -1,6 +1,4 @@
-﻿using Magic.Domain.Specifications;
-
-namespace Magic.Application.Denominations.Queries.Denominations
+﻿namespace Magic.Application.Denominations.Queries.Denominations
 {
     public class GetDenominationsQuery: IQuery<GetDenominationsResponse>;
     public record GetDenominationsResponse(List<DenominationDto> denominationListDto);

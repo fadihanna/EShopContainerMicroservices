@@ -9,3 +9,5 @@ global using Microsoft.EntityFrameworkCore;
 global using CommonEnums = BuildingBlocks.Enums;
 global using DomainEnums = Magic.Domain.Enums;
 global using Lookups = Magic.Domain.Models.Lookups;
+global using Magic.Application.Common.Configurations;
+global using BuildingBlocks.Extensions;

@@ -1,32 +1,13 @@
-﻿using Magic.Application.Data;
-using Magic.Domain.Specifications;
+﻿using Magic.Domain.Specifications;
 
 namespace Magic.Infrastructure.Data.Specifications
 {
-    public class DenominationSpecification : IDenominationSpecification
+    public class DenominationSpecification : GenericRepository<Denomination>, IDenominationSpecification
     {
-        private readonly IApplicationDbContext _dbContext;
-        public DenominationSpecification(IApplicationDbContext dbContext)
+        public DenominationSpecification(ApplicationDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
-        }
-        public async Task<int> InsertDenominationAsync(Denomination denomination, CancellationToken cancellationToken)
-        {
-            _dbContext.Denominations.Add(denomination);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
-            return denomination.Id;
         }
 
-        public async Task<List<Denomination>> GetAllAsync(CancellationToken cancellationToken)
-        {
-            return await _dbContext.Denominations.AsNoTracking().ToListAsync();
-        }
-
-        public async Task<Denomination> GetByIdAsync(int id, CancellationToken cancellationToken)
-        {
-            return await _dbContext.Denominations.AsNoTracking().Where(o => o.IsActive && o.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
-        }
         public async Task<(int ProviderId, string BillerCode, bool IsNullResult)> GetDenominationProviderCodeByIdAsync(int id, CancellationToken cancellationToken)
         {
             var result = await (from d in _dbContext.Denominations

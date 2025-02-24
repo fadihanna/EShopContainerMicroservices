@@ -1,13 +1,13 @@
-﻿using Magic.Application.Data;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Magic.Infrastructure.Data.Identity.Entity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Magic.Infrastructure.Data;
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ConsumerUser, IdentityRole<int>, int>, IApplicationDbContext, IUnitOfWork
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
-
 
     public DbSet<Lookups.Provider> Providers => Set<Lookups.Provider>();
     public DbSet<InternalErrorCodeLookup> InternalErrorCodeLookups => Set<InternalErrorCodeLookup>();
@@ -18,16 +18,23 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<DenominationGroup> DenominationGroups => Set<DenominationGroup>();
     public DbSet<DenominationInputParameter> DenominationInputParameters => Set<DenominationInputParameter>();
     public DbSet<DenominationProviderCode> DenominationProviderCodes => Set<DenominationProviderCode>();
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
-        optionsBuilder.ConfigureWarnings(warnings =>
-            warnings.Ignore(RelationalEventId.PendingModelChangesWarning)); // Ignore PendingModelChangesWarning
-    }
+    public DbSet<ConsumerUser> ConsumerUsers => Set<ConsumerUser>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
+
+        builder.Entity<ConsumerUser>().ToTable("ConsumerUser");
+        builder.Entity<IdentityRole<int>>().ToTable("ConsumerRole");
+        builder.Entity<IdentityUserRole<int>>().ToTable("ConsumerUserRole");
+        builder.Entity<IdentityUserClaim<int>>().ToTable("ConsumerUserClaim");
+        builder.Entity<IdentityRoleClaim<int>>().ToTable("ConsumerRoleClaim");
+        builder.Entity<IdentityUserLogin<int>>().ToTable("ConsumerUserLogin");
+        builder.Entity<IdentityUserToken<int>>().ToTable("ConsumerUserToken");
+
+        //builder.ApplyConfiguration(new ConsumerUserConfiguration());
     }
 }

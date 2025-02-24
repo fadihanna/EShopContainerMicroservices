@@ -1,4 +1,4 @@
-﻿using Magic.Application.Data;
+﻿using Magic.Domain.Enums;
 using Magic.Domain.Specifications;
 
 namespace Magic.Infrastructure.Data.Specifications
@@ -7,21 +7,24 @@ namespace Magic.Infrastructure.Data.Specifications
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly ICacheService _cacheService;
+        private ILanguageService _languageService;
 
-        public LookUpSpecification(IApplicationDbContext dbContext, ICacheService cacheService)
+        public LookUpSpecification(IApplicationDbContext dbContext, ICacheService cacheService, ILanguageService languageService)
         {
             _dbContext = dbContext;
             _cacheService = cacheService;
+            _languageService = languageService;
         }
 
-        public string? GetErrorMessageAsync(int errorCode, string language, CancellationToken cancellationToken)
+        public string GetErrorMessage(InternalErrorCode errorCode)
         {
-            var errorCodeLookup = GetInternalErrorCodeLookupAsync(cancellationToken).Result
-            .Where(o => o.IsActive && o.ErrorCode.Equals(errorCode))
+            var errorCodeLookup = GetInternalErrorCodeLookupAsync().Result
+            .Where(o => o.IsActive && o.ErrorCode.Equals((int)errorCode))
             .FirstOrDefault();
 
             if (errorCodeLookup == null) return null;
 
+            string language = _languageService.GetLanguage();
             return language switch
             {
                 Language.Arabic => errorCodeLookup.MessageAR,
@@ -29,14 +32,14 @@ namespace Magic.Infrastructure.Data.Specifications
             };
         }
 
-        public async Task<List<InternalErrorCodeLookup>> GetInternalErrorCodeLookupAsync(CancellationToken cancellationToken)
+        public async Task<List<InternalErrorCodeLookup>> GetInternalErrorCodeLookupAsync()
         {
-            var cachedErrorCodes = await _cacheService.GetAsync<List<InternalErrorCodeLookup>>(Constants.ErrorCodesCache, cancellationToken);
+            var cachedErrorCodes = await _cacheService.GetAsync<List<InternalErrorCodeLookup>>(Constants.ErrorCodesCache);
             if (cachedErrorCodes != null)
                 return cachedErrorCodes;
 
-            var errorCodes = await _dbContext.InternalErrorCodeLookups.AsNoTracking().ToListAsync(cancellationToken);
-            await _cacheService.SetAsync(Constants.ErrorCodesCache, errorCodes, TimeSpan.FromHours(12), cancellationToken);
+            var errorCodes = await _dbContext.InternalErrorCodeLookups.AsNoTracking().ToListAsync();
+            await _cacheService.SetAsync(Constants.ErrorCodesCache, errorCodes, TimeSpan.FromHours(12));
 
             return errorCodes;
         }

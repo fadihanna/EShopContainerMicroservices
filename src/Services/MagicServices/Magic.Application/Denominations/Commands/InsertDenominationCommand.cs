@@ -1,7 +1,4 @@
-﻿using Magic.Application.Common.Interfaces;
-using Magic.Domain.Specifications;
-
-namespace Magic.Application.Denominations.Commands
+﻿namespace Magic.Application.Denominations.Commands
 {
     public record InsertDenominationCommand(DenominationDto Denomination)
         : ICommand<InsertDenominationResponse>;
@@ -19,7 +16,7 @@ namespace Magic.Application.Denominations.Commands
         public async Task<InsertDenominationResponse> Handle(InsertDenominationCommand command, CancellationToken cancellationToken)
         {
             var denomination = CreateNewDenomination(command.Denomination);
-            await _denominationSpecification.InsertDenominationAsync(denomination, cancellationToken);
+            await _denominationSpecification.InsertAsync(denomination, cancellationToken);
 
             return new InsertDenominationResponse(denomination.Id);
         }

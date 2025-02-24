@@ -9,14 +9,15 @@ public static class DatabaseExtentions
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         context.Database.MigrateAsync().GetAwaiter().GetResult();
-        await SeedAsync(context);
+        await SeedAsync(context, app);
     }
-    private static async Task SeedAsync(ApplicationDbContext context)
+    private static async Task SeedAsync(ApplicationDbContext context, WebApplication webApplication)
     {
         await SeedProviderAsync(context);
         await SeedServiceCategoryAsync(context);
         await SeedServiceAsync(context);
         await SeedDenominationAsync(context);
+        await IdentitySeeder.SeedIdentityAsync(webApplication);
     }
     private static async Task SeedProviderAsync(ApplicationDbContext context)
     {

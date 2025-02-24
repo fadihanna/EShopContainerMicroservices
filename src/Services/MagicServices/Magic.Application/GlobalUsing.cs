@@ -10,3 +10,8 @@ global using Magic.Application.Exceptions;
 global using MediatR;
 global using Microsoft.EntityFrameworkCore;
 global using DomainEnums = Magic.Domain.Enums;
+global using Magic.Application.Common.Interfaces;
+global using Magic.Application.Dtos.Identity;
+global using Microsoft.AspNetCore.Identity;
+global using BuildingBlocks.Models;
+global using Magic.Domain.Specifications;

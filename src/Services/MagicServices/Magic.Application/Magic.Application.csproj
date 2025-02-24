@@ -7,8 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\Identity\Role\**" />
+    <Compile Remove="Common\Identity\User\Commads\Delete\**" />
+    <Compile Remove="Common\Identity\User\Commads\Update\**" />
+    <Compile Remove="Common\Identity\User\Queries\**" />
     <Compile Remove="Common\Inquiry\Queries\**" />
+    <EmbeddedResource Remove="Common\Identity\Role\**" />
+    <EmbeddedResource Remove="Common\Identity\User\Commads\Delete\**" />
+    <EmbeddedResource Remove="Common\Identity\User\Commads\Update\**" />
+    <EmbeddedResource Remove="Common\Identity\User\Queries\**" />
     <EmbeddedResource Remove="Common\Inquiry\Queries\**" />
+    <None Remove="Common\Identity\Role\**" />
+    <None Remove="Common\Identity\User\Commads\Delete\**" />
+    <None Remove="Common\Identity\User\Commads\Update\**" />
+    <None Remove="Common\Identity\User\Queries\**" />
     <None Remove="Common\Inquiry\Queries\**" />
   </ItemGroup>
 

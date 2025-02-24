@@ -1,5 +1,6 @@
 ﻿using Magic.Application.Denominations.Commands;
 using Magic.Application.Denominations.Queries.Denominations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicServices.API.Controllers
@@ -21,6 +22,7 @@ namespace MagicServices.API.Controllers
            [FromBody] GetDenominationByIdQuery model, CancellationToken cancellationToken = default)
             => Ok(await Mediator.Send(new GetDenominationByIdQuery(model.Id), cancellationToken));
 
+        [Authorize]
         [HttpGet("get-denomination-list")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
