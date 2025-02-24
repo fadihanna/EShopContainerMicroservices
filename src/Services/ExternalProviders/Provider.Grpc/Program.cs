@@ -1,14 +1,12 @@
-﻿using Magic.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Provider.Application;
+﻿using Microsoft.EntityFrameworkCore;
+using Provider.Application.Common;
 using Provider.Application.Common.Helpers;
+using Provider.Application.Configuration;
 using Provider.Application.Data;
 using Provider.Application.Logging;
 using Provider.Application.Services.Masary;
 using Provider.Domain.Repositories.Masary;
-using Provider.Grpc;
 using Provider.Grpc.Services;
-using Provider.Infrastructure;
 using Provider.Infrastructure.Data;
 using Provider.Infrastructure.Mockup;
 using Provider.Infrastructure.Repository.Masary;
@@ -28,10 +26,10 @@ builder.Host.UseSerilog((context, services, configuration) =>
 builder.Services.AddSingleton<ResourceManager>(sp =>
    new ResourceManager("YourNamespace.Resources", typeof(Program).Assembly));
 
-builder.Services.AddGrpcServices(builder.Configuration)
-    .AddApplicationServices(builder.Configuration)
-    .AddInfrastructureServices(builder.Configuration);
 
+builder.Services.AddGrpc();
+
+builder.Services.AddGrpcReflection();
 builder.Services.AddDbContext<ProviderDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProviderDb")));
 
@@ -51,14 +49,19 @@ else
 builder.Services.AddTransient<LoggingHandler>();
 
 builder.Services.AddScoped<IMasaryRepository, MasaryRepository>();
+builder.Services.AddScoped<ProviderServiceInquiryImplement>();
+builder.Services.AddScoped<ExternalApiProviderFactory>();
+builder.Services.AddScoped<MasaryApiWrapper>();
+builder.Services.AddHttpClient();
 
- 
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Appsettings"));
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<ApiExceptionHandler>();
 var app = builder.Build();
 
 app.MapGrpcService<ProviderInquiryService>();
+app.MapGrpcReflectionService();
 
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-
 app.Run();
