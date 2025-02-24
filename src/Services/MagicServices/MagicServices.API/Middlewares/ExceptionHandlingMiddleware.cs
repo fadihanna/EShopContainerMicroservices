@@ -51,6 +51,8 @@ namespace MagicServices.API.Middlewares
                 TransactionId: string.Empty,
                 Status: statusCode.ToString(),
                 StatusText: message,
+                Amount:0,
+                Fees:0,
                 DateTime: DateTime.UtcNow.ToString(),
                 DetailsList: new List<Details>()
             );
@@ -67,6 +69,8 @@ namespace MagicServices.API.Middlewares
                 TransactionId: string.Empty,
                 Status: statusCode.ToString(),
                 StatusText: errorMessage,
+                Amount: 0,
+                Fees: 0,
                 DateTime: DateTime.UtcNow.ToString(),
                 DetailsList: new List<Details>()
             );

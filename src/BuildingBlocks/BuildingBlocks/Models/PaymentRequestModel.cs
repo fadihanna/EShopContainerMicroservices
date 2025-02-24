@@ -1,7 +1,15 @@
 ﻿namespace BuildingBlocks.Models
 {
-    public class PaymentRequestModel
-    {
-        public string TransactionId { get; set; }
-    }
+
+    public record PaymentRequestModel(
+     List<InputParameter> InputParameterList,
+     int DenominationId,
+     string BillingAccount,
+     string RequestId,
+     int ProviderId,
+     string BillerCode,
+        double Fees,
+        double Amount,
+        string InquiryReferenceNumber
+ );
 }

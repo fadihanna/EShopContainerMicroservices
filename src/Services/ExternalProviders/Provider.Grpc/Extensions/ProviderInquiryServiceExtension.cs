@@ -36,6 +36,8 @@ namespace Provider.Grpc.Extensions
                 Status = responseModel.Status,
                 StatusText = responseModel.StatusText,
                 DateTime = responseModel.DateTime,
+                Amount = responseModel.Amount,
+                Fees = responseModel.Fees,
                 DetailsList = { responseModel.DetailsList.Select(d => new Details { Key = d.Key, Value = d.Value }) }
             };
         }
