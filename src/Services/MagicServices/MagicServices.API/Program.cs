@@ -20,6 +20,8 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .ReadFrom.Configuration(context.Configuration)
         .Enrich.FromLogContext();
 });
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

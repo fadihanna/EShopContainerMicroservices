@@ -6,13 +6,19 @@
         public Status Status { get; set; }
         public PaymentResponseData? PaymentResponseData { get; set; }
 
+        public int TransactionId { get; set; }
+        public string ProviderTransactionId { get; set; }
+        public string UserId { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string Message { get; set; }
+        public string Code { get; set; }
     }
     public class PaymentResponseData
     {
         public string? RequestID { get; set; }
-        public double? Amount { get; set; }
-        public double? Fees { get; set; }
-        public double? TotalAmount { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? Fees { get; set; }
+        public decimal? TotalAmount { get; set; }
         public string? TransactionId { get; set; }
         public string? Datetime { get; set; }
         public string? ResponseCode { get; set; }

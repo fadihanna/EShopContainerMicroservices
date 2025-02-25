@@ -7,7 +7,3 @@ public record InquiryRequestModel(
     int ProviderId,
     string BillerCode
 );
-public record InputParameter(
-    string Key,
-    string Value
-);
