@@ -62,13 +62,22 @@ namespace Provider.Application.Services.Masary
                 }).ToList();
             }, "GetServiceParametersAsync");
         }
-
-        public async Task<double> GetChargeAsync(FeesRequestModel feesRequestModel)
+     public async Task<FeesResponseModel> SendInquiryFeesRequestAsync(FeesRequestModel feesRequestModel)
         {
             return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
             {
-                return await _masaryRepository.GetServiceChargeAsync(feesRequestModel.ServiceId, feesRequestModel.Amount);
+                var fees = await _masaryRepository.GetServiceChargeAsync(int.Parse(feesRequestModel.BillerCode), feesRequestModel.Amount);
+
+                return new FeesResponseModel(
+                    Status: "Success",
+                    StatusText: "Charge retrieved successfully",
+                    DateTime: DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                    Amount: feesRequestModel.Amount,
+                    Fees: fees,
+                    TotalFees: feesRequestModel.Amount + fees
+                );
             }, "GetChargeAsync");
         }
+
     }
 }

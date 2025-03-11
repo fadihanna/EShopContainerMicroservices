@@ -1,5 +1,7 @@
 ﻿namespace BuildingBlocks.Models;
 public record FeesRequestModel(
-    int ServiceId,
-    double Amount
+    int DenomiantionId,
+    double Amount,
+    int ProviderId,
+    string BillerCode
 );

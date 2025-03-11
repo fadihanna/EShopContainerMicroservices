@@ -17,18 +17,17 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ProviderDbContext>((sp, options) =>
-        {
-            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-            options.UseSqlServer(configuration.GetConnectionString("ProviderDb"));
-        });
-        services.AddHttpClient();
+         services.AddDbContext<ProviderDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("ProviderDb")));
         services.AddScoped<IProviderDbContext, ProviderDbContext>();
-        services.AddScoped<IMasaryRepository, MasaryRepository>();
-        services.AddHttpClient<IMasaryApiClient, MasaryApiClient>();
-        services.AddTransient<ILogger<MasaryApiClient>, Logger<MasaryApiClient>>();
-        services.AddTransient<MockHttpMessageHandler>();
 
+        services.AddScoped<IMasaryRepository, MasaryRepository>();
+
+         services.AddHttpClient<IMasaryApiClient, MasaryApiClient>();
+
+         services.AddTransient<MockHttpMessageHandler>();
+
+ 
         return services;
     }
 }

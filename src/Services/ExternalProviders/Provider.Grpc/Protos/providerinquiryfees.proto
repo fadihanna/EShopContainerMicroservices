@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "Provider.Grpc.Protos";
+package Provider;
+
+service ProviderInquiryFees {
+    rpc InquiryFees (InquiryFeesRequest) returns (InquiryFeesResponse);
+}
+
+ message InquiryFeesRequest {
+    int32 denomination_id = 1;  
+    int32 amount=2; 
+    int32 provider_id = 3;
+    string request_id =4;
+    string biller_code = 5;
+    string billing_account = 65;
+}
+
+ message InquiryFeesResponse {
+    string transaction_id = 1;
+    string status = 2;
+    string status_text = 3; 
+    string date_time = 4;
+    double amount = 6;
+    double Fees = 7;
+}
