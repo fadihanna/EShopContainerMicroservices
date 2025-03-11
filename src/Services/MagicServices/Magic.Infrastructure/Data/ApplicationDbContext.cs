@@ -24,6 +24,7 @@ public class ApplicationDbContext : IdentityDbContext<ConsumerUser, IdentityRole
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<PaymentProvider> PaymentProviders => Set<PaymentProvider>();
     public DbSet<Request> Requests => Set<Request>();
+    public DbSet<DenominationAmount> DenominationAmounts => Set<DenominationAmount>(); 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

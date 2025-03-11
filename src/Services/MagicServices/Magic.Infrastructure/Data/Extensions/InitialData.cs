@@ -1,4 +1,4 @@
-﻿
+﻿/*
 namespace Magic.Infrastructure.Data.Extensions
 {
     internal class InitialData
@@ -54,4 +54,4 @@ namespace Magic.Infrastructure.Data.Extensions
             Denomination.Create("WE Bills","فواتير وي",0,5,1000,false,1,12,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true),
         };
     }
-}
+}*/

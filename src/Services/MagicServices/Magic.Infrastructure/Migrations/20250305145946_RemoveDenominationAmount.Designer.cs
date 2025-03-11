@@ -4,16 +4,19 @@ using Magic.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Magic.Infrastructure.Data.Migrations
+namespace Magic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250305145946_RemoveDenominationAmount")]
+    partial class RemoveDenominationAmount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,9 +77,6 @@ namespace Magic.Infrastructure.Data.Migrations
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProviderId");
@@ -84,6 +84,39 @@ namespace Magic.Infrastructure.Data.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Denomination", (string)null);
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.DenominationAmount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DenominationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DenominationId");
+
+                    b.ToTable("Amounts");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.DenominationFee", b =>
@@ -161,6 +194,9 @@ namespace Magic.Infrastructure.Data.Migrations
                     b.Property<bool?>("IsVisible")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -186,6 +222,9 @@ namespace Magic.Infrastructure.Data.Migrations
 
                     b.Property<int?>("Sort")
                         .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -314,6 +353,75 @@ namespace Magic.Infrastructure.Data.Migrations
                     b.ToTable("Providers");
                 });
 
+            modelBuilder.Entity("Magic.Domain.Models.PaymentProvider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentProviders");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.Request", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BillingAccount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DenominationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviderTransactionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ResponseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Requests");
+                });
+
             modelBuilder.Entity("Magic.Domain.Models.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -326,6 +434,10 @@ namespace Magic.Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -372,6 +484,10 @@ namespace Magic.Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -395,6 +511,65 @@ namespace Magic.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServiceCategories");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BillingAccount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DenominationId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Fees")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsRefunded")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentProviderId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Magic.Infrastructure.Data.Identity.Entity.ConsumerUser", b =>
@@ -660,6 +835,17 @@ namespace Magic.Infrastructure.Data.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("Magic.Domain.Models.DenominationAmount", b =>
+                {
+                    b.HasOne("Magic.Domain.Models.Denomination", "Denomination")
+                        .WithMany("Amounts")
+                        .HasForeignKey("DenominationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Denomination");
+                });
+
             modelBuilder.Entity("Magic.Domain.Models.DenominationFee", b =>
                 {
                     b.HasOne("Magic.Domain.Models.Denomination", "Denomination")
@@ -710,6 +896,17 @@ namespace Magic.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ServiceCategory");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.Transaction", b =>
+                {
+                    b.HasOne("Magic.Domain.Models.PaymentProvider", "PaymentProvider")
+                        .WithMany()
+                        .HasForeignKey("PaymentProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PaymentProvider");
                 });
 
             modelBuilder.Entity("Magic.Infrastructure.Data.Identity.Entity.RefreshToken", b =>
@@ -776,6 +973,8 @@ namespace Magic.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Magic.Domain.Models.Denomination", b =>
                 {
+                    b.Navigation("Amounts");
+
                     b.Navigation("DenominationFees");
 
                     b.Navigation("DenominationInputParameters");

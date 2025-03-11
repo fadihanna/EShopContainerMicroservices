@@ -5,7 +5,7 @@
         // Properties
         public string NameEN { get; private set; } = string.Empty;
         public string NameAR { get; private set; } = string.Empty;
-        public decimal Value { get; private set; }
+      //  public decimal Value { get; private set; }
         public decimal MaxValue { get; private set; }
         public decimal MinValue { get; private set; }
         public bool IsInquiryRequired { get; private set; }
@@ -19,12 +19,13 @@
         public ICollection<DenominationFee> DenominationFees { get; set; }
         public ICollection<DenominationInputParameter> DenominationInputParameters { get; set; }
         public ICollection<DenominationProviderCode> DenominationProviderCodes { get; set; }
+        public ICollection<DenominationAmount> Amounts { get; private set; } = new List<DenominationAmount>();  // Added Amounts list
 
         // Factory Method for Creation
         public static Denomination Create(
             string nameEn,
             string nameAr,
-            decimal value,
+           // decimal value,
             decimal minValue,
             decimal maxValue,
             bool isInquiryRequired,
@@ -47,7 +48,7 @@
             {
                 NameEN = nameEn,
                 NameAR = nameAr,
-                Value = value,
+                //Value = value,
                 MaxValue = maxValue,
                 MinValue = minValue,
                 IsInquiryRequired = isInquiryRequired,
@@ -55,7 +56,8 @@
                 ServiceId = serviceId, // Foreign Key Value
                 PriceType = priceType,
                 ProviderId = providerId,
-                IsActive = isActive
+                IsActive = isActive,
+                Amounts = new List<DenominationAmount>() // addded this
             };
         }
 
@@ -63,7 +65,7 @@
         public void Update(
             string nameEn,
             string nameAr,
-            decimal value,
+           // decimal value,
             decimal maxValue,
             decimal minValue,
             bool isInquiryRequired,
@@ -84,7 +86,7 @@
 
             NameEN = nameEn;
             NameAR = nameAr;
-            Value = value;
+           // Value = value;
             MaxValue = maxValue;
             MinValue = minValue;
             IsInquiryRequired = isInquiryRequired;
@@ -93,6 +95,34 @@
             PriceType = priceType;
             ProviderId = providerId;
             IsActive = isActive;
+        }
+        public Denomination WithAmounts(List<decimal> amounts)
+        {
+            this.Amounts = amounts.Select(value => DenominationAmount.Create(value, this.Id)).ToList();
+            return this;
+        }
+        public Denomination WithInputParameters(List<DenominationInputParameter> inputParameters)
+        {
+            DenominationInputParameters = inputParameters;
+            return this;
+        }
+
+        public void UpdateAmounts(List<decimal> newAmounts)
+        {
+            Amounts.Clear();
+            foreach (var amount in newAmounts)
+            {
+                Amounts.Add(new DenominationAmount { Value = amount });
+            }
+        }
+
+        public void UpdateInputParameters(List<DenominationInputParameter> newInputParameters)
+        {
+            DenominationInputParameters.Clear();
+            foreach (var param in newInputParameters)
+            {
+                DenominationInputParameters.Add(param);
+            }
         }
     }
 }

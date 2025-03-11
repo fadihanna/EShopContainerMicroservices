@@ -16,7 +16,7 @@ public class GenericRepository<T> : IGenericRepositoryAsync<T> where T : class
         return await _dbContext.Set<T>().FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
-    public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
+    public virtual async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Set<T>().ToListAsync(cancellationToken);
     }

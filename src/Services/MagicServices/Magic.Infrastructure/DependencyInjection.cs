@@ -56,6 +56,9 @@ public static class DependencyInjection
         services.AddScoped<ITransactionSpecification, TransactionSpecification>();
         services.AddScoped<IPaymentGatewayClientService, PaymentGatewayClientService>();
         services.AddScoped<IRequestSepecification, RequestSpecification>();
+        services.AddScoped<IServiceCategorySpecification, ServiceCategorySpecification>();
+        services.AddScoped<IServiceSpecification, ServiceSpecification>();
+
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {
             options.Address = new Uri("http://localhost:6001");

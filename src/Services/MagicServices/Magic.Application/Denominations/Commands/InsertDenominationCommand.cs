@@ -15,30 +15,10 @@
         }
         public async Task<InsertDenominationResponse> Handle(InsertDenominationCommand command, CancellationToken cancellationToken)
         {
-            var denomination = CreateNewDenomination(command.Denomination);
+            var denomination = DenominationExtensions.DtoToDenomination(command.Denomination);
             await _denominationSpecification.InsertAsync(denomination, cancellationToken);
 
             return new InsertDenominationResponse(denomination.Id);
-        }
-
-        private Denomination CreateNewDenomination(DenominationDto denominationDto)
-        {
-
-            var newDenomination = Denomination.Create(
-                nameEn: denominationDto.NameEN,
-                nameAr: denominationDto.NameAR,
-                value: denominationDto.Value,
-                minValue: denominationDto.MinValue,
-                maxValue: denominationDto.MaxValue,
-                isInquiryRequired: denominationDto.IsInquiryRequired,
-                sortOrder: denominationDto.SortOrder,
-                serviceId: denominationDto.ServiceId,
-                priceType: denominationDto.PriceType,
-                providerId: denominationDto.ProviderId,
-                isActive: denominationDto.IsActive
-            );
-
-            return newDenomination;
         }
     }
 }

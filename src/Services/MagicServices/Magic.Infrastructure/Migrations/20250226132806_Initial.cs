@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Magic.Infrastructure.Data.Migrations
+namespace Magic.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,6 +89,20 @@ namespace Magic.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentProviders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentProviders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Providers",
                 columns: table => new
                 {
@@ -101,6 +115,30 @@ namespace Magic.Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Providers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    RequestDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ResponseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    BillingAccount = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProviderTransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DenominationId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -255,6 +293,38 @@ namespace Magic.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsRefunded = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Fees = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    RequestId = table.Column<int>(type: "int", nullable: false),
+                    DenominationId = table.Column<int>(type: "int", nullable: false),
+                    PaymentProviderId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    BillingAccount = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_PaymentProviders_PaymentProviderId",
+                        column: x => x.PaymentProviderId,
+                        principalTable: "PaymentProviders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Service",
                 columns: table => new
                 {
@@ -365,6 +435,8 @@ namespace Magic.Infrastructure.Data.Migrations
                     IsVisible = table.Column<bool>(type: "bit", nullable: true),
                     IsConfirmRequired = table.Column<bool>(type: "bit", nullable: true),
                     DenominationId = table.Column<int>(type: "int", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -489,6 +561,11 @@ namespace Magic.Infrastructure.Data.Migrations
                 name: "IX_Service_ServiceCategoryId",
                 table: "Service",
                 column: "ServiceCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_PaymentProviderId",
+                table: "Transactions",
+                column: "PaymentProviderId");
         }
 
         /// <inheritdoc />
@@ -528,6 +605,12 @@ namespace Magic.Infrastructure.Data.Migrations
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
+                name: "Requests");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
+
+            migrationBuilder.DropTable(
                 name: "ConsumerRole");
 
             migrationBuilder.DropTable(
@@ -535,6 +618,9 @@ namespace Magic.Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConsumerUser");
+
+            migrationBuilder.DropTable(
+                name: "PaymentProviders");
 
             migrationBuilder.DropTable(
                 name: "Providers");
