@@ -16,10 +16,12 @@ builder.Services.AddEndpointsApiExplorer();
 // Configure Serilog from appsettings.json
 builder.Host.UseSerilog((context, services, configuration) =>
 {
-    configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext();
+    //configuration
+    //    .ReadFrom.Configuration(context.Configuration)
+    //    .Enrich.FromLogContext();
 });
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

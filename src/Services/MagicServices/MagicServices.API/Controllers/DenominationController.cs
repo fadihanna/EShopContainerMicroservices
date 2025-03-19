@@ -22,7 +22,7 @@ namespace MagicServices.API.Controllers
            [FromBody] GetDenominationByIdQuery model, CancellationToken cancellationToken = default)
             => Ok(await Mediator.Send(new GetDenominationByIdQuery(model.Id), cancellationToken));
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("get-denomination-list")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -42,5 +42,25 @@ namespace MagicServices.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> InsertDenomination([FromBody] InsertDenominationCommand model, CancellationToken cancellationToken = default) => 
             Ok(await Mediator.Send(new InsertDenominationCommand(model.Denomination), cancellationToken));
+        
+        [HttpPost("update-denomination")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> UpdateDenomination([FromBody] UpdateDenominationCommand model,int Id, CancellationToken cancellationToken = default) =>
+                   Ok(await Mediator.Send(new UpdateDenominationCommand(model.Denomination,Id), cancellationToken));
+        
+        [HttpDelete("delete-denomination")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> DeleteDenomination(int Id, CancellationToken cancellationToken = default) =>
+                    Ok(await Mediator.Send(new DeleteDenominationCommand(Id), cancellationToken));
     }
 }

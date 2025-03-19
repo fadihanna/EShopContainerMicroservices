@@ -7,6 +7,7 @@ using Magic.Infrastructure.Data.Identity.Entity;
 using Magic.Infrastructure.Data.Specifications;
 using Magic.Infrastructure.Mapper;
 using Magic.Infrastructure.Services.External;
+using Magic.Infrastructure.Services.External.PaymentGateway;
 using Magic.Infrastructure.Services.Internal;
 using Mapster;
 using MapsterMapper;
@@ -17,6 +18,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PaymentGateway.Grpc.Protos;
 using Provider.Grpc.Protos;
 using System.Text;
 
@@ -51,9 +53,19 @@ public static class DependencyInjection
         services.AddScoped<IUserSpecification, UserSpecification>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<ITokenValidatorService, TokenValidatorService>();
+        services.AddScoped<ITransactionSpecification, TransactionSpecification>();
+        services.AddScoped<IPaymentGatewayClientService, PaymentGatewayClientService>();
+        services.AddScoped<IRequestSepecification, RequestSpecification>();
+        services.AddScoped<IServiceCategorySpecification, ServiceCategorySpecification>();
+        services.AddScoped<IServiceSpecification, ServiceSpecification>();
+
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {
             options.Address = new Uri("http://localhost:6001");
+        });
+        services.AddGrpcClient<PaymentGatewayProtoService.PaymentGatewayProtoServiceClient>(options =>
+        {
+            options.Address = new Uri("http://localhost:6002");
         });
 
         //Mapster
