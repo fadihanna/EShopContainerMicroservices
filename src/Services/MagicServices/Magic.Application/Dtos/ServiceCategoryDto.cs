@@ -2,6 +2,7 @@
 {
     public record ServiceCategoryDto
     (
+        int Id,
       string NameEN
     , string NameAR
     , int SortOrder

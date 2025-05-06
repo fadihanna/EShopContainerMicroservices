@@ -9,9 +9,10 @@
         public bool IsActive { get;  set; }
         public int ServiceCategoryId { get;  set; }
         public ServiceCategory ServiceCategory { get; set; }
+        public ICollection<Denomination> Denominations { get; set; }
+
         public string IconName { get; set; }
-        // Factory Method for Creation
-        public static Service Create(string nameEn, string nameAr,string iconName ,bool isActive, int sortOrder = 0, int serviceCategoryId = 0)
+         public static Service Create(string nameEn, string nameAr,string iconName ,bool isActive, int sortOrder = 0, int serviceCategoryId = 0)
         {
             if (string.IsNullOrWhiteSpace(nameEn)) throw new ArgumentException("English name cannot be empty.", nameof(nameEn));
             if (string.IsNullOrWhiteSpace(nameAr)) throw new ArgumentException("Arabic name cannot be empty.", nameof(nameAr));

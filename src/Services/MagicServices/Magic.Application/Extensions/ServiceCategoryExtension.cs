@@ -10,6 +10,7 @@
         private static ServiceCategoryDto DtoFromServiceCategory(this ServiceCategory serviceCategory)
         {
             return new ServiceCategoryDto(
+                Id:serviceCategory.Id,
                 NameAR: serviceCategory.NameAR,
                 NameEN: serviceCategory.NameEN,
                 SortOrder: serviceCategory.SortOrder,

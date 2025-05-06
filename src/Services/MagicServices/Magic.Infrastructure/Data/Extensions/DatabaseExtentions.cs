@@ -8,9 +8,19 @@ public static class DatabaseExtentions
     {
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.MigrateAsync().GetAwaiter().GetResult();
+
+         var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
+        {
+            return;
+            await context.Database.MigrateAsync();
+        }
+
+         if (await context.Providers.AnyAsync()) return;
+
         await SeedAsync(context, app);
     }
+
     private static async Task SeedAsync(ApplicationDbContext context, WebApplication webApplication)
     {
         await SeedProviderAsync(context);
@@ -23,7 +33,7 @@ public static class DatabaseExtentions
     {
         if (!await context.Providers.AnyAsync())
         {
-            await context.Providers.AddRangeAsync(InitialData.Providers);
+           // await context.Providers.AddRangeAsync(InitialData.Providers);
             await context.SaveChangesAsync();
         }
     }
@@ -31,7 +41,7 @@ public static class DatabaseExtentions
     {
         if (!await context.ServiceCategories.AnyAsync())
         {
-            await context.ServiceCategories.AddRangeAsync(InitialData.ServiceCategories);
+           /// await context.ServiceCategories.AddRangeAsync(InitialData.ServiceCategories);
             await context.SaveChangesAsync();
         }
     }
@@ -40,7 +50,7 @@ public static class DatabaseExtentions
     {
         if (!await context.Services.AnyAsync())
         {
-            await context.Services.AddRangeAsync(InitialData.Services);
+           // await context.Services.AddRangeAsync(InitialData.Services);
             await context.SaveChangesAsync();
         }
     }
@@ -48,7 +58,7 @@ public static class DatabaseExtentions
     {
         if (!await context.Denominations.AnyAsync())
         {
-            await context.Denominations.AddRangeAsync(InitialData.Denominations);
+          //  await context.Denominations.AddRangeAsync(InitialData.Denominations);
             await context.SaveChangesAsync();
         }
     }

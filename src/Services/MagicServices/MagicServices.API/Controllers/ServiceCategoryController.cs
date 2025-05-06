@@ -10,57 +10,34 @@ namespace MagicServices.API.Controllers
         public ServiceCategoryController(IHostEnvironment environment) : base(environment)
         {
         }
-       
-        [HttpPost("insert-serviceCategory")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<ActionResult<int>> InsertServiceCategory([FromBody] InsertServiceCategoryCommand model, CancellationToken cancellationToken = default) =>
-            Ok(await Mediator.Send(new InsertServiceCategoryCommand(model.serviceCategory), cancellationToken));
+        [HttpPost("insert-serviceCategory")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public async Task<ActionResult<int>> InsertServiceCategory([FromBody] InsertServiceCategoryCommand command, CancellationToken cancellationToken = default) =>
+            Ok(await Mediator.Send(command, cancellationToken));
 
         [HttpGet("get-serviceCategory-list")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(GetServiceCategoriesResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<GetServiceCategoriesResponse>> GetServiceCategoryList(CancellationToken cancellationToken = default) =>
             Ok(await Mediator.Send(new GetServiceCategoriesQuery(), cancellationToken));
 
-        [HttpGet("get-serviceCategory")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ServiceCategoryDto>> GetDenominationById(
-           int Id, CancellationToken cancellationToken = default)
-            => Ok(await Mediator.Send(new GetServiceCategoryByIdQuery(Id), cancellationToken));
+        [HttpGet("get-serviceCategory/{id}")]
+        [ProducesResponseType(typeof(ServiceCategoryDto), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ServiceCategoryDto>> GetServiceCategoryById(
+           int id, CancellationToken cancellationToken = default) =>
+            Ok(await Mediator.Send(new GetServiceCategoryByIdQuery(id), cancellationToken));
 
-        [HttpDelete("delete-serviceCategory")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> DeleteServiceCategory(int Id, CancellationToken cancellationToken = default) =>
-          Ok(await Mediator.Send(new DeleteServiceCategoryCommand(Id), cancellationToken));
+        [HttpDelete("delete-serviceCategory/{id}")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public async Task<ActionResult<int>> DeleteServiceCategory(int id, CancellationToken cancellationToken = default) =>
+            Ok(await Mediator.Send(new DeleteServiceCategoryCommand(id), cancellationToken));
 
-        [HttpPost("update-serviceCategory")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> UpdateServiceCategory([FromBody] UpdateServiceCategoryCommand model,int Id, CancellationToken cancellationToken = default) =>
-        Ok(await Mediator.Send(new UpdateServiceCategoryCommand(model.serviceCategory,Id), cancellationToken));
+        [HttpPut("update-serviceCategory/{id}")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public async Task<ActionResult<int>> UpdateServiceCategory([FromBody] UpdateServiceCategoryCommand command, int id, CancellationToken cancellationToken = default)
+        {
+            command.Id = id;
+            return Ok(await Mediator.Send(command, cancellationToken));
+        }
     }
 }

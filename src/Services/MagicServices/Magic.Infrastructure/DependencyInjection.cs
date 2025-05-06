@@ -1,4 +1,5 @@
 ﻿using Magic.Application.Exceptions;
+using Magic.Application.Interfaces.Specifications;
 using Magic.Domain.Enums;
 using Magic.Domain.Specifications;
 using Magic.Infrastructure.Data.Cache;
@@ -42,6 +43,7 @@ public static class DependencyInjection
         services.AddMemoryCache();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<IDenominationSpecification, DenominationSpecification>();
+        services.AddScoped<IProviderSpecification, ProviderSpecification>();
         services.AddScoped<IExternalProviderInquiryService, ExternalProviderInquiryService>();
         services.AddScoped<ILookUpSpecification, LookUpSpecification>();
         services.AddScoped<ICacheService, CacheService>();
@@ -128,7 +130,7 @@ public static class DependencyInjection
                 {
                     throw new ForbiddenAccessException(InternalErrorCode.Status401Unauthorized);
                 },
-                OnForbidden = context =>
+                OnForbidden = context =>    
                 {
                     throw new ForbiddenAccessException(InternalErrorCode.Status403Forbidden);
                 },
