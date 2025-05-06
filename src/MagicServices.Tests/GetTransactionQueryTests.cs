@@ -18,7 +18,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace MagicServices.Tests
 
-{ //Below Test Cases are Unit Tests for handling transaction queries from Database
+{    //Below Test Cases are Unit Tests for handling transaction queries from Database
     // using mocks to simulate the flow/logic (DB is not called)
     public class GetTransactionQueryTests
     {
@@ -53,7 +53,6 @@ namespace MagicServices.Tests
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => _mockGetTransactionByIdHandler.Handle(getTransactionByIdQuery, CancellationToken.None));
             Assert.Contains($"Entity \"Transaction\" ({getTransactionByIdQuery.Id})", exception.Message);
         }
-
         [Fact]
         public async Task Handle_ShouldThrowNotFoundException_When_Transaction_UserIdIsNotFound()
         {
