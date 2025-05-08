@@ -33,7 +33,6 @@
             command.Denomination.ProviderId,
             command.Denomination.IsActive
         );
-            existingDenomination.UpdateAmounts(command.Denomination.Amounts?.Select(a => a.Value).ToList());
             existingDenomination.UpdateInputParameters(command.Denomination.InputParamterList.ToDenominationInputParameters());
 
             var denomination = DenominationExtensions.DtoToDenomination(command.Denomination);

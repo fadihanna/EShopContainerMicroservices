@@ -40,7 +40,7 @@ namespace MagicServices.API.Controllers
         public async Task<ActionResult<int>> InsertService([FromBody] InsertServiceCommand model, CancellationToken cancellationToken = default) =>
             Ok(await Mediator.Send(new InsertServiceCommand(model.service), cancellationToken));
 
-        [HttpPost("delete-service")]
+        [HttpDelete("delete-service")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

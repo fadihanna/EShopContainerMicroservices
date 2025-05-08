@@ -16,6 +16,14 @@
                 IsActive = isActive
             };
         }
+        public void Update(string nameEn, string nameAr, bool isActive)
+        {
+            if (string.IsNullOrWhiteSpace(nameEn)) throw new ArgumentException("English name cannot be empty.", nameof(nameEn));
+            if (string.IsNullOrWhiteSpace(nameAr)) throw new ArgumentException("Arabic name cannot be empty.", nameof(nameAr));
 
+            NameEN = nameEn;
+            NameAR = nameAr;
+            IsActive = isActive;
+        }
     }
 }

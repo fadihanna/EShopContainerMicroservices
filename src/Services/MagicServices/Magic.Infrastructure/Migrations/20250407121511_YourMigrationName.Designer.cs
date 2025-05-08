@@ -4,6 +4,7 @@ using Magic.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Magic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407121511_YourMigrationName")]
+    partial class YourMigrationName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -789,9 +792,9 @@ namespace Magic.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Magic.Domain.Models.Service", "Service")
-                        .WithMany("Denominations")
+                        .WithMany()
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Provider");
@@ -936,11 +939,6 @@ namespace Magic.Infrastructure.Migrations
             modelBuilder.Entity("Magic.Domain.Models.Lookups.Provider", b =>
                 {
                     b.Navigation("DenominationProviderCodes");
-                });
-
-            modelBuilder.Entity("Magic.Domain.Models.Service", b =>
-                {
-                    b.Navigation("Denominations");
                 });
 #pragma warning restore 612, 618
         }

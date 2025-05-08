@@ -5,6 +5,7 @@
         public static IEnumerable<ServiceDto> ToServiceDtoList(this IEnumerable<Service> Services)
         {
             return Services.Select(Service => new ServiceDto(
+Id: Service.Id,
                 NameEN: Service.NameEN,
                 NameAR: Service.NameAR,
                 SortOrder: Service.SortOrder,
@@ -21,6 +22,7 @@
         private static ServiceDto DtoFromService(Service Service)
         {
             return new ServiceDto(
+                Id: Service.Id,
                 NameEN: Service.NameEN,
                 NameAR: Service.NameAR,
                 SortOrder: Service.SortOrder,

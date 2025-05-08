@@ -21,10 +21,6 @@ public static class DenominationExtensions
             PriceType: denomination.PriceType,
             ProviderId: denomination.ProviderId,
             IsActive: denomination.IsActive,
-            Amounts: denomination.Amounts?.Select(a => new AmountDto(
-                Id: a.Id,  
-                Value: a.Value
-            )).ToList() ?? new List<AmountDto>(), 
             InputParamterList: denomination.DenominationInputParameters?.Select(ip => new DenominationInputParameterList(
                 Key: ip.Key,
                 Value: ip.Value,
@@ -54,7 +50,6 @@ public static class DenominationExtensions
             dto.IsActive
         );
 
-        denomination.WithAmounts(dto.Amounts?.Select(a => a.Value).ToList() ?? new List<decimal>());
 
         denomination.WithInputParameters(dto.InputParamterList?.Select(ip =>
       DenominationInputParameter.Create(
