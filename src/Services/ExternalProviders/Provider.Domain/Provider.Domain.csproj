@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enums\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Abstractions\" />
-    <Folder Include="Models\" />
+    <Compile Remove="Abstractions\**" />
+    <Compile Remove="Enums\**" />
+    <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Abstractions\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Abstractions\**" />
+    <None Remove="Enums\**" />
+    <None Remove="Exceptions\**" />
   </ItemGroup>
 
 </Project>

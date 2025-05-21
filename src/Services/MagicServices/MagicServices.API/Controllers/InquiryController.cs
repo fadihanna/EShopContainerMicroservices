@@ -21,4 +21,4 @@ namespace MagicServices.API.Controllers
             => Ok(await Mediator.Send(new InquiryCommand(model.Request), cancellationToken));
 
     }
-}
+} 

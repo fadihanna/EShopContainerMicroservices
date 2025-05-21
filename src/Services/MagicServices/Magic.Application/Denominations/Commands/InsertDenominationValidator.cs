@@ -11,10 +11,10 @@
             RuleFor(x => x.Denomination.NameAR)
                 .NotNull().WithMessage("NameEN cannot be null.")
                 .NotEmpty().WithMessage("NameEN cannot be empty.");
-
+/*
             RuleFor(x => x.Denomination.Value)
                 .NotNull().WithMessage("Value cannot be null.")
-                .NotEmpty().WithMessage("Value cannot be empty.");
+                .NotEmpty().WithMessage("Value cannot be empty.");*/
 
             RuleFor(x => x.Denomination.MinValue)
                 .NotNull().WithMessage("MinValue cannot be null.")

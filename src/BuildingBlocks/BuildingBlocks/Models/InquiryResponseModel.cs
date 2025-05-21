@@ -5,6 +5,8 @@ public record InquiryResponseModel(
     string Status,
     string StatusText,
     string DateTime,
+    double Amount,
+    double Fees,
     List<Details> DetailsList
 );
 

@@ -16,11 +16,22 @@ builder.Services.AddEndpointsApiExplorer();
 // Configure Serilog from appsettings.json
 builder.Host.UseSerilog((context, services, configuration) =>
 {
-    configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext();
+    //configuration
+    //    .ReadFrom.Configuration(context.Configuration)
+    //    .Enrich.FromLogContext();
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+
+
 var app = builder.Build();
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 app.UseApiServices();

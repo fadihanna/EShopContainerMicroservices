@@ -15,5 +15,11 @@ namespace Provider.Application.Common
             var response = await providerService.SendInquiryRequestAsync(request);
             return response;
         }
+        public async Task<FeesResponseModel> GetFees(FeesRequestModel request)
+        {
+            var providerService = _providerFactory.GetProviderService((CommonEnums.Provider)request.ProviderId);
+            var response = await providerService.SendInquiryFeesRequestAsync(request);
+            return response;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Magic.Application.Common.Inquiry.Commands;
+﻿using BuildingBlocks.Models;
+using Magic.Application.Common.Inquiry.Commands;
 
 public class InquiryEndpoint : ICarterModule
 {

@@ -13,6 +13,39 @@
         public bool? IsVisible { get; set; }
         public bool? IsConfirmRequired { get; set; }
         public int DenominationId { get; set; }
+        public string? Key { get; set; }
+        public string? Value { get; set; }
         public Denomination Denomination { get; set; }
+
+
+        public static DenominationInputParameter Create(
+        string key,
+        string value,
+        int? minLength,
+        int? maxLength,
+        string nameEn,
+        string nameAr,
+        string code,
+        int? sort,
+        bool? isRequired,
+        int denominationId
+    )
+        {
+            return new DenominationInputParameter
+            {
+                Key = key,
+                Value = value,
+                MinLength = minLength,
+                MaxLength = maxLength,
+                NameEN = nameEn,
+                NameAR = nameAr,
+                Code = code,
+                Sort = sort,
+                IsRequired = isRequired,
+                DenominationId = denominationId
+            };
+        }
+
     }
 }
+

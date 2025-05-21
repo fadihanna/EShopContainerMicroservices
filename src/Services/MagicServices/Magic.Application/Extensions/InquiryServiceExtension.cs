@@ -1,5 +1,5 @@
-﻿using BuildingBlocksModels = BuildingBlocks.Models;
-using ApplicationModels = Magic.Application.Dtos.Common;
+﻿using ApplicationModels = Magic.Application.Dtos.Common;
+using BuildingBlocksModels = BuildingBlocks.Models;
 
 namespace Magic.Application.Extensions
 {
@@ -24,6 +24,8 @@ namespace Magic.Application.Extensions
                 Status: inquiryResponseDto.Status,
                 StatusText: inquiryResponseDto.StatusText,
                 DateTime: inquiryResponseDto.DateTime,
+                Amount: inquiryResponseDto.Amount,
+                Fees: inquiryResponseDto.Fees,
                 DetailsList: inquiryResponseDto.DetailsList.Select(p => new ApplicationModels.Details(Key: p.Key, Value: p.Value)).ToList()
             );
         }

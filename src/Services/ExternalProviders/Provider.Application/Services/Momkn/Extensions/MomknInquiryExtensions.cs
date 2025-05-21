@@ -24,6 +24,8 @@ namespace Provider.Application.Services.Momkn.Extensions
                 Status: string.Empty,
                 StatusText: string.Empty,
                 DateTime: string.Empty,
+                Fees: 0,
+                Amount: 0,
                 DetailsList: new List<Details>()
             );
         }

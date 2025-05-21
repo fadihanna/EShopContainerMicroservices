@@ -16,7 +16,7 @@ public class GenericRepository<T> : IGenericRepositoryAsync<T> where T : class
         return await _dbContext.Set<T>().FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
-    public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
+    public virtual async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Set<T>().ToListAsync(cancellationToken);
     }
@@ -41,7 +41,15 @@ public class GenericRepository<T> : IGenericRepositoryAsync<T> where T : class
 
     public async Task DeleteAsync(T entity, CancellationToken cancellationToken)
     {
-        _dbContext.Set<T>().Remove(entity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        try
+        {
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+             throw new Exception($"Error deleting entity of type {typeof(T).Name}: {ex.Message}", ex);
+        }
     }
+
 }

@@ -1,4 +1,5 @@
 ﻿using Magic.Application.Exceptions;
+using Magic.Application.Interfaces.Specifications;
 using Magic.Domain.Enums;
 using Magic.Domain.Specifications;
 using Magic.Infrastructure.Data.Cache;
@@ -7,6 +8,7 @@ using Magic.Infrastructure.Data.Identity.Entity;
 using Magic.Infrastructure.Data.Specifications;
 using Magic.Infrastructure.Mapper;
 using Magic.Infrastructure.Services.External;
+using Magic.Infrastructure.Services.External.PaymentGateway;
 using Magic.Infrastructure.Services.Internal;
 using Mapster;
 using MapsterMapper;
@@ -17,6 +19,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PaymentGateway.Grpc.Protos;
 using Provider.Grpc.Protos;
 using System.Text;
 
@@ -40,6 +43,7 @@ public static class DependencyInjection
         services.AddMemoryCache();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<IDenominationSpecification, DenominationSpecification>();
+        services.AddScoped<IProviderSpecification, ProviderSpecification>();
         services.AddScoped<IExternalProviderInquiryService, ExternalProviderInquiryService>();
         services.AddScoped<ILookUpSpecification, LookUpSpecification>();
         services.AddScoped<ICacheService, CacheService>();
@@ -51,9 +55,19 @@ public static class DependencyInjection
         services.AddScoped<IUserSpecification, UserSpecification>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<ITokenValidatorService, TokenValidatorService>();
+        services.AddScoped<ITransactionSpecification, TransactionSpecification>();
+        services.AddScoped<IPaymentGatewayClientService, PaymentGatewayClientService>();
+        services.AddScoped<IRequestSepecification, RequestSpecification>();
+        services.AddScoped<IServiceCategorySpecification, ServiceCategorySpecification>();
+        services.AddScoped<IServiceSpecification, ServiceSpecification>();
+
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {
             options.Address = new Uri("http://localhost:6001");
+        });
+        services.AddGrpcClient<PaymentGatewayProtoService.PaymentGatewayProtoServiceClient>(options =>
+        {
+            options.Address = new Uri("http://localhost:6002");
         });
 
         //Mapster
@@ -116,7 +130,7 @@ public static class DependencyInjection
                 {
                     throw new ForbiddenAccessException(InternalErrorCode.Status401Unauthorized);
                 },
-                OnForbidden = context =>
+                OnForbidden = context =>    
                 {
                     throw new ForbiddenAccessException(InternalErrorCode.Status403Forbidden);
                 },

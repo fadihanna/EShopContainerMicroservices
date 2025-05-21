@@ -24,20 +24,20 @@ namespace Provider.Grpc.Extensions
                 BillerCode: request.BillerCode
             );
         }
-        public static InquiryResponse ToGrpcResponse(this InquiryResponseModel inquiryResponseModel)
+        public static InquiryFeesResponse ToGrpcResponse(this FeesResponseModel inquiryResponseModel)
         {
             return StandardToGrpc(inquiryResponseModel);
         }
-        private static InquiryResponse StandardToGrpc(InquiryResponseModel responseModel)
+        private static InquiryFeesResponse StandardToGrpc(FeesResponseModel responseModel)
         {
-            return new InquiryResponse
+            return new InquiryFeesResponse
             {
-                TransactionId = responseModel.TransactionId,
                 Status = responseModel.Status,
                 StatusText = responseModel.StatusText,
                 DateTime = responseModel.DateTime,
-                DetailsList = { responseModel.DetailsList.Select(d => new Details { Key = d.Key, Value = d.Value }) }
-            };
+                Amount = responseModel.Amount,
+                Fees = responseModel.Fees
+             };
         }
     }
 }

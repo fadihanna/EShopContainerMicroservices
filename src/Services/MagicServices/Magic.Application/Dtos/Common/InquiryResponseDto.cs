@@ -4,6 +4,8 @@ public record InquiryResponseDto(
     string Status,
     string StatusText,
     string DateTime,
+    double Amount,
+    double Fees,
     List<Details> DetailsList
 );
 

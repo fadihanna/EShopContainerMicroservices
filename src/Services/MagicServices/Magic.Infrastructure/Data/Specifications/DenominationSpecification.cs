@@ -1,4 +1,5 @@
 ﻿using Magic.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Magic.Infrastructure.Data.Specifications
 {
@@ -6,6 +7,19 @@ namespace Magic.Infrastructure.Data.Specifications
     {
         public DenominationSpecification(ApplicationDbContext dbContext) : base(dbContext)
         {
+
+        }
+
+        public override async Task<List<Denomination>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext.Denominations
+                .Include(d => d.DenominationInputParameters).ToListAsync();
+        }
+        public override async Task<Denomination?> GetByIdAsync(Expression<Func<Denomination, bool>> predicate, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Denominations
+                .Include(d => d.DenominationInputParameters)
+                .FirstOrDefaultAsync(predicate, cancellationToken);
         }
 
         public async Task<(int ProviderId, string BillerCode, bool IsNullResult)> GetDenominationProviderCodeByIdAsync(int id, CancellationToken cancellationToken)

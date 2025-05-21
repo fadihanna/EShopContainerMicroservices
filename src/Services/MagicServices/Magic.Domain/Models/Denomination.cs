@@ -5,7 +5,7 @@
         // Properties
         public string NameEN { get; private set; } = string.Empty;
         public string NameAR { get; private set; } = string.Empty;
-        public decimal Value { get; private set; }
+      //  public decimal Value { get; private set; }
         public decimal MaxValue { get; private set; }
         public decimal MinValue { get; private set; }
         public bool IsInquiryRequired { get; private set; }
@@ -19,12 +19,12 @@
         public ICollection<DenominationFee> DenominationFees { get; set; }
         public ICollection<DenominationInputParameter> DenominationInputParameters { get; set; }
         public ICollection<DenominationProviderCode> DenominationProviderCodes { get; set; }
-
+ 
         // Factory Method for Creation
         public static Denomination Create(
             string nameEn,
             string nameAr,
-            decimal value,
+           // decimal value,
             decimal minValue,
             decimal maxValue,
             bool isInquiryRequired,
@@ -47,7 +47,7 @@
             {
                 NameEN = nameEn,
                 NameAR = nameAr,
-                Value = value,
+                //Value = value,
                 MaxValue = maxValue,
                 MinValue = minValue,
                 IsInquiryRequired = isInquiryRequired,
@@ -63,7 +63,7 @@
         public void Update(
             string nameEn,
             string nameAr,
-            decimal value,
+           // decimal value,
             decimal maxValue,
             decimal minValue,
             bool isInquiryRequired,
@@ -84,7 +84,7 @@
 
             NameEN = nameEn;
             NameAR = nameAr;
-            Value = value;
+           // Value = value;
             MaxValue = maxValue;
             MinValue = minValue;
             IsInquiryRequired = isInquiryRequired;
@@ -93,6 +93,23 @@
             PriceType = priceType;
             ProviderId = providerId;
             IsActive = isActive;
+        }
+     
+        public Denomination WithInputParameters(List<DenominationInputParameter> inputParameters)
+        {
+            DenominationInputParameters = inputParameters;
+            return this;
+        }
+
+       
+
+        public void UpdateInputParameters(List<DenominationInputParameter> newInputParameters)
+        {
+            DenominationInputParameters.Clear();
+            foreach (var param in newInputParameters)
+            {
+                DenominationInputParameters.Add(param);
+            }
         }
     }
 }

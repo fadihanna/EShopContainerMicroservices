@@ -1,20 +1,44 @@
-using Provider.Application;
-using Provider.Application.Common;
-using Provider.Grpc.Services;
+using Provider.Application.Logging;
+using Provider.Application.Services.Masary;
+using Provider.Grpc;
 using Provider.Infrastructure;
+using Provider.Infrastructure.Mockup;
+using Provider.Infrastructure.Services.External.Masary.Services;
+using Serilog;
+using Provider.Application;
+using Provider.Application.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Provider.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddGrpc(options => { options.EnableDetailedErrors = true; });
-
 builder.Services
-    .AddApplicationServices(builder.Configuration)
-    .AddInfrastructureServices(builder.Configuration);
-var app = builder.Build();
+    .AddInfrastructureServices(builder.Configuration)
+    .AddGrpcServices(builder.Configuration)
+    .AddApplicationServices(builder.Configuration);
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpClient<IMasaryApiClient, MasaryApiClient>()
+        .ConfigurePrimaryHttpMessageHandler(() => new MockHttpMessageHandler());
+}
+else
+{
+    builder.Services.AddHttpClient<IMasaryApiClient, MasaryApiClient>()
+        .AddHttpMessageHandler<LoggingHandler>();
+}
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .Enrich.FromLogContext();
+});
+ 
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Appsettings"));
 
-// Configure the HTTP request pipeline.
-app.MapGrpcService<ProviderInquiryService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+builder.Services.AddGrpc();
+builder.Services.AddGrpcReflection();
+
+builder.Services.AddHttpContextAccessor();
+var app = builder.Build();
+app.UseGrpcServices(builder.Services);
 
 app.Run();

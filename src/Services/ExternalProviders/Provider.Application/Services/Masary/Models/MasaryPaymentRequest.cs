@@ -18,9 +18,9 @@ public record MasaryPaymentRequestData
      string account_number,
      int service_id,
      string external_id,
-     double amount,
-     double service_charge,
-     double total_amount,
+     decimal amount,
+     decimal service_charge,
+     decimal total_amount,
      string inquiry_transaction_id
 );
 public record InputParameterList
