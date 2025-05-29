@@ -12,6 +12,7 @@ public record DenominationDto(
     , int PriceType
     , int ProviderId
     , bool IsActive,
+     int? DenominationGroupID,
     List<DenominationInputParameterList> InputParamterList
 );
 public record DenominationInputParameterList(

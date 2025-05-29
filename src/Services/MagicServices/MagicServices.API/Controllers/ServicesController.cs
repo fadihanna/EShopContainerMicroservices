@@ -1,4 +1,5 @@
 ﻿using Magic.Application.Commands;
+using Magic.Application.Denominations.Queries.Denominations;
 using Magic.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,9 @@ namespace MagicServices.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<InquiryResponseDto>> GetServiceList(CancellationToken cancellationToken = default) =>
             Ok(await Mediator.Send(new GetServiceQuery(), cancellationToken));
+        [HttpGet("services-with-denomination")]
+        public async Task<ActionResult<GetServicesWithDenominationResponse>> GetServicesWithDenomination(CancellationToken cancellationToken = default)
+    => Ok(await Mediator.Send(new GetServicesWithDenominationQuery(), cancellationToken));
 
         [HttpPost("insert-service")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]

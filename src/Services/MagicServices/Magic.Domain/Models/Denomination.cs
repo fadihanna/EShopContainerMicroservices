@@ -19,7 +19,9 @@
         public ICollection<DenominationFee> DenominationFees { get; set; }
         public ICollection<DenominationInputParameter> DenominationInputParameters { get; set; }
         public ICollection<DenominationProviderCode> DenominationProviderCodes { get; set; }
- 
+        public int? DenominationGroupId { get; private set; }  // Nullable FK
+        public DenominationGroup? DenominationGroup { get; private set; }
+
         // Factory Method for Creation
         public static Denomination Create(
             string nameEn,
@@ -32,7 +34,9 @@
             int serviceId,
             int priceType,
             int providerId,
-            bool isActive)
+            bool isActive,
+            int? denominationGroupId) // Nullable
+
         {
             if (string.IsNullOrWhiteSpace(nameEn))
                 throw new ArgumentException("English name cannot be empty.", nameof(nameEn));
@@ -55,7 +59,9 @@
                 ServiceId = serviceId, // Foreign Key Value
                 PriceType = priceType,
                 ProviderId = providerId,
-                IsActive = isActive
+                IsActive = isActive,
+                DenominationGroupId = denominationGroupId  
+
             };
         }
 

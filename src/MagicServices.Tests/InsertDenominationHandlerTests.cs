@@ -33,7 +33,7 @@ namespace MagicServices.Tests
                 PriceType: 2,
                 ProviderId: 456,
                 IsActive: true,
-                Amounts: new List<AmountDto> { new AmountDto(1, 100), new AmountDto(2, 200) },
+                DenominationGroupID: null,
                 InputParamterList: new List<DenominationInputParameterList>
                 {
                     new DenominationInputParameterList("key1", "value1", 1, 10, "NameEn1", "NameAr1", "Code1", 1, true),
@@ -59,9 +59,7 @@ namespace MagicServices.Tests
             _mockDenominationSpecification.Verify(x => x.InsertAsync(It.IsAny<Denomination>(), It.IsAny<CancellationToken>()), Times.Once);
 
             // Verify that amounts were properly added
-            Assert.Equal(denominationDto.Amounts.Count, denomination.Amounts.Count);
-            Assert.All(denomination.Amounts, a => Assert.Contains(a.Value, denominationDto.Amounts.Select(dto => dto.Value)));
-
+         
             // Verify that input parameters were properly added
             Assert.Equal(denominationDto.InputParamterList.Count, denomination.DenominationInputParameters.Count);
             Assert.All(denomination.DenominationInputParameters, ip =>
@@ -82,7 +80,7 @@ namespace MagicServices.Tests
                 PriceType: 2,
                 ProviderId: 456,
                 IsActive: true,
-                Amounts: new List<AmountDto> { new AmountDto(1, 100) },
+                DenominationGroupID: 2,
                 InputParamterList: new List<DenominationInputParameterList>());
 
             var request = new InsertDenominationCommand(denominationDto);

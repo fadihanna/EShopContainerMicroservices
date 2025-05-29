@@ -21,6 +21,7 @@ public static class DenominationExtensions
             PriceType: denomination.PriceType,
             ProviderId: denomination.ProviderId,
             IsActive: denomination.IsActive,
+            DenominationGroupID :denomination.DenominationGroupId,
             InputParamterList: denomination.DenominationInputParameters?.Select(ip => new DenominationInputParameterList(
                 Key: ip.Key,
                 Value: ip.Value,
@@ -47,7 +48,8 @@ public static class DenominationExtensions
             dto.ServiceId,
             dto.PriceType,
             dto.ProviderId,
-            dto.IsActive
+            dto.IsActive,
+            dto.DenominationGroupID
         );
 
 

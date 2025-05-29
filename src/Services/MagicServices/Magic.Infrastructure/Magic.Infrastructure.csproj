@@ -9,6 +9,20 @@
   <ItemGroup>
     <Compile Remove="Migrations\20250226132806_Initial.cs" />
     <Compile Remove="Migrations\20250226132806_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20250303135207_ServiceCategoryIcon.cs" />
+    <Compile Remove="Migrations\20250303135207_ServiceCategoryIcon.Designer.cs" />
+    <Compile Remove="Migrations\20250303142920_ServiceIconNameTbl.cs" />
+    <Compile Remove="Migrations\20250303142920_ServiceIconNameTbl.Designer.cs" />
+    <Compile Remove="Migrations\20250305144925_AmountTBL.cs" />
+    <Compile Remove="Migrations\20250305144925_AmountTBL.Designer.cs" />
+    <Compile Remove="Migrations\20250305145946_RemoveDenominationAmount.cs" />
+    <Compile Remove="Migrations\20250305145946_RemoveDenominationAmount.Designer.cs" />
+    <Compile Remove="Migrations\20250305150153_FixDenominationAmountTableName.cs" />
+    <Compile Remove="Migrations\20250305150153_FixDenominationAmountTableName.Designer.cs" />
+    <Compile Remove="Migrations\20250407121511_YourMigrationName.cs" />
+    <Compile Remove="Migrations\20250407121511_YourMigrationName.Designer.cs" />
+    <Compile Remove="Migrations\20250409131840_cascadeddeleted.cs" />
+    <Compile Remove="Migrations\20250409131840_cascadeddeleted.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

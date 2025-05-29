@@ -16,5 +16,7 @@ namespace Magic.Application.Queries
             var serviceList = await _serviceSpecification.GetAllAsync(cancellationToken);
             return new GetServiceResponse(serviceList!.ToServiceDtoList().ToList());
         }
+
+
     }
 }
