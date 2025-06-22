@@ -11,7 +11,8 @@ Id: Service.Id,
                 SortOrder: Service.SortOrder,
                 IsActive: Service.IsActive,
                 ServiceCategoryId : Service.ServiceCategoryId,
-                IconName : Service.IconName
+                IconName : Service.IconName,
+                NavigationScreen : Service.NavigationScreen
             ));
         }
 
@@ -28,7 +29,8 @@ Id: Service.Id,
                 SortOrder: Service.SortOrder,
                 IsActive : Service.IsActive,
                 ServiceCategoryId: Service.ServiceCategoryId,
-                IconName : Service.IconName
+                IconName : Service.IconName, 
+                NavigationScreen: Service.NavigationScreen
             );
         }
         public static Service DtoToService(this ServiceDto ServiceDto)
@@ -42,8 +44,7 @@ Id: Service.Id,
                 dto.NameAR,
                 dto.IconName,
                 dto.IsActive,
-                dto.SortOrder,
-                dto.ServiceCategoryId
+               dto.NavigationScreen
             );
         }
     }

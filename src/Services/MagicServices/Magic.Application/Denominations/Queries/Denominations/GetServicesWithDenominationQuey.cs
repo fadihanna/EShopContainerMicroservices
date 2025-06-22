@@ -1,5 +1,5 @@
 ﻿using Magic.Application.Denominations.Responses;
-using System;
+using Magic.Application.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -38,23 +38,18 @@ namespace Magic.Application.Denominations.Queries.Denominations
                 ServiceCategoryId = service.ServiceCategoryId,
                 IsActive = service.IsActive,
                 IconName = service.IconName,
-
                 DenominationGroup = service.Denominations
-                    .GroupBy(d => d.DenominationGroup)  
-                    .Select(group => new DenominationGroupDto
-                    {
-                        Id = group.Key.Id,
-                        NameEN = group.Key.NameEN,
-                        NameAR = group.Key.NameAR,
-                        SortOrder = group.Key.SortOrder,
-                        IsInquiryRequired = group.Key.IsInquiryRequired,
-                        IsActive = group.Key.IsActive,
-                        Denominations = group.Select(d => new DenominationItemDto
-                        {
-                            Id = d.Id,
-                            Value = d.MaxValue.ToString()
-                        }).ToList()
-                    }).ToList()
+         .GroupBy(d => d.DenominationGroup)
+         .Select(group => new DenominationGroupDto
+         {
+             Id = group.Key?.Id ?? 0,  
+             NameEN = group.Key?.NameEN ?? string.Empty,
+             NameAR = group.Key?.NameAR ?? string.Empty,
+             SortOrder = group.Key?.SortOrder ?? 0,
+             IsInquiryRequired = group.Key?.IsInquiryRequired ?? false,
+             IsActive = group.Key?.IsActive ?? false,
+             Denominations = group.Select(d => new DenominationItemDto(d.Id, d.Value.ToString())).ToList()
+         }).ToList()
             }).ToList();
 
             return new GetServicesWithDenominationResponse(dtoList);

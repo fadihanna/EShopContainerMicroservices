@@ -15,7 +15,9 @@
                 NameEN: serviceCategory.NameEN,
                 SortOrder: serviceCategory.SortOrder,
                 IsActive: serviceCategory.IsActive,
-                IconName:serviceCategory.IconName
+                IconName:serviceCategory.IconName,
+                NavigationScreen :serviceCategory.NavigationScreen   
+                
             );
         }
         public static ServiceCategory DtoToServiceCategory(ServiceCategoryDto serviceCategoryDto)
@@ -28,7 +30,8 @@
                 dto.NameAR,
                 dto.NameEN,
                 dto.IconName,
-                dto.IsActive,
+                dto.IsActive, 
+                dto.NavigationScreen,
                 dto.SortOrder
             );
         }
@@ -43,7 +46,9 @@
                 nameAr: serviceCategoryDto.NameAR,
                 iconName : serviceCategoryDto.IconName,
                 isActive: serviceCategoryDto.IsActive,
-                sortOrder: serviceCategoryDto.SortOrder
+                sortOrder: serviceCategoryDto.SortOrder,
+                navigationScreen :serviceCategoryDto.NavigationScreen
+                
 
             );
             return newServiceCategory;

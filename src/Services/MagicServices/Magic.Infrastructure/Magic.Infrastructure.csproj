@@ -23,6 +23,10 @@
     <Compile Remove="Migrations\20250407121511_YourMigrationName.Designer.cs" />
     <Compile Remove="Migrations\20250409131840_cascadeddeleted.cs" />
     <Compile Remove="Migrations\20250409131840_cascadeddeleted.Designer.cs" />
+    <Compile Remove="Migrations\20250527122332_DenominationGroupddd.cs" />
+    <Compile Remove="Migrations\20250527122332_DenominationGroupddd.Designer.cs" />
+    <Compile Remove="Migrations\20250603111812_denominationGroupandDetails.cs" />
+    <Compile Remove="Migrations\20250603111812_denominationGroupandDetails.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

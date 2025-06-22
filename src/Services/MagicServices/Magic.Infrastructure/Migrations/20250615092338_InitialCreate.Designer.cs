@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Magic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250305145946_RemoveDenominationAmount")]
-    partial class RemoveDenominationAmount
+    [Migration("20250615092338_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,10 +39,16 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DenominationGroupId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsInquiryRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPartial")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
@@ -77,46 +83,18 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DenominationGroupId");
 
                     b.HasIndex("ProviderId");
 
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Denomination", (string)null);
-                });
-
-            modelBuilder.Entity("Magic.Domain.Models.DenominationAmount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DenominationId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DenominationId");
-
-                    b.ToTable("Amounts");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.DenominationFee", b =>
@@ -162,6 +140,39 @@ namespace Magic.Infrastructure.Migrations
                     b.HasIndex("DenominationId");
 
                     b.ToTable("DenominationFee", (string)null);
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.DenominationGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInquiryRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameAR")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("DenominationGroups");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.DenominationInputParameter", b =>
@@ -220,8 +231,14 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<byte?>("ParameterType")
                         .HasColumnType("tinyint");
 
+                    b.Property<string>("Placeholder")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Sort")
                         .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -270,28 +287,6 @@ namespace Magic.Infrastructure.Migrations
                     b.HasIndex("ProviderId");
 
                     b.ToTable("DenominationProviderCode", (string)null);
-                });
-
-            modelBuilder.Entity("Magic.Domain.Models.Lookups.DenominationGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NameAR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DenominationGroups");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.Lookups.InternalErrorCodeLookup", b =>
@@ -818,6 +813,10 @@ namespace Magic.Infrastructure.Migrations
 
             modelBuilder.Entity("Magic.Domain.Models.Denomination", b =>
                 {
+                    b.HasOne("Magic.Domain.Models.DenominationGroup", "DenominationGroup")
+                        .WithMany("Denominations")
+                        .HasForeignKey("DenominationGroupId");
+
                     b.HasOne("Magic.Domain.Models.Lookups.Provider", "Provider")
                         .WithMany()
                         .HasForeignKey("ProviderId")
@@ -825,25 +824,16 @@ namespace Magic.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Magic.Domain.Models.Service", "Service")
-                        .WithMany()
+                        .WithMany("Denominations")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DenominationGroup");
 
                     b.Navigation("Provider");
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("Magic.Domain.Models.DenominationAmount", b =>
-                {
-                    b.HasOne("Magic.Domain.Models.Denomination", "Denomination")
-                        .WithMany("Amounts")
-                        .HasForeignKey("DenominationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Denomination");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.DenominationFee", b =>
@@ -855,6 +845,17 @@ namespace Magic.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Denomination");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.DenominationGroup", b =>
+                {
+                    b.HasOne("Magic.Domain.Models.Service", "Service")
+                        .WithMany("DenominationGroups")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.DenominationInputParameter", b =>
@@ -973,8 +974,6 @@ namespace Magic.Infrastructure.Migrations
 
             modelBuilder.Entity("Magic.Domain.Models.Denomination", b =>
                 {
-                    b.Navigation("Amounts");
-
                     b.Navigation("DenominationFees");
 
                     b.Navigation("DenominationInputParameters");
@@ -982,9 +981,21 @@ namespace Magic.Infrastructure.Migrations
                     b.Navigation("DenominationProviderCodes");
                 });
 
+            modelBuilder.Entity("Magic.Domain.Models.DenominationGroup", b =>
+                {
+                    b.Navigation("Denominations");
+                });
+
             modelBuilder.Entity("Magic.Domain.Models.Lookups.Provider", b =>
                 {
                     b.Navigation("DenominationProviderCodes");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.Service", b =>
+                {
+                    b.Navigation("DenominationGroups");
+
+                    b.Navigation("Denominations");
                 });
 #pragma warning restore 612, 618
         }

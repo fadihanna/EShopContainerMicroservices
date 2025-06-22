@@ -11,10 +11,11 @@ namespace Magic.Infrastructure.Data.Specifications
         }
         public async Task<List<Service>> GetAllWithDenominationsAsync(CancellationToken cancellationToken)
         {
-            return await  _dbContext.Services
-                .Include(s => s.Denominations)
-                    .ThenInclude(g => g.DenominationGroup)
-                .ToListAsync(cancellationToken);
+            return await _dbContext.Services
+        .Include(s => s.Denominations.Where(d => d.DenominationGroupId == null))
+        .Include(s => s.DenominationGroups)
+           .ThenInclude(g => g.Denominations)
+       .ToListAsync(cancellationToken);
         }
     }
 }

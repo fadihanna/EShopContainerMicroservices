@@ -1,37 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Magic.Application.Dtos
 {
-    public class ServiceWithDenominationDto
+    public record ServiceWithDenominationDto
     {
-        public int Id { get; set; }
-        public string NameEN { get; set; } = string.Empty;
-        public string NameAR { get; set; } = string.Empty;
-        public int SortOrder { get; set; }
-        public int ServiceCategoryId { get; set; }
-        public bool IsActive { get; set; }
-        public string IconName { get; set; } = string.Empty;
-        public List<DenominationGroupDto> DenominationGroup { get; set; } = new();
+        public int Id { get; init; }
+        public string NameEN { get; init; } = "";
+        public string NameAR { get; init; } = "";
+        public int SortOrder { get; init; }
+        public int ServiceCategoryId { get; init; }
+        public bool IsActive { get; init; }
+        public string IconName { get; init; } = "";
+        public List<DenominationGroupDto> DenominationGroup { get; init; } = new();
     }
 
-    public class DenominationGroupDto
+    public record DenominationGroupDto
     {
-        public int Id { get; set; }
-        public string NameEN { get; set; } = string.Empty;
-        public string NameAR { get; set; } = string.Empty;
-        public int SortOrder { get; set; }
-        public bool IsInquiryRequired { get; set; }
-        public bool IsActive { get; set; }
-        public List<DenominationItemDto> Denominations { get; set; } = new();
+        public int Id { get; init; }
+        public string NameEN { get; init; } = "";
+        public string NameAR { get; init; } = "";
+        public int SortOrder { get; init; }
+        public bool IsInquiryRequired { get; init; }
+        public bool IsActive { get; init; }
+        public int ServiceId { get; init; }    
+        public List<DenominationItemDto> Denominations { get; init; } = new();
     }
 
-    public class DenominationItemDto
-    {
-        public int Id { get; set; }
-        public string Value { get; set; }
-    }
+    public record DenominationItemDto(int Id, string Value);
 }

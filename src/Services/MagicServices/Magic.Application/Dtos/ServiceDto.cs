@@ -10,6 +10,7 @@ namespace Magic.Application.Dtos
         int SortOrder,
         bool IsActive,
         int ServiceCategoryId,
-        string IconName
+        string IconName,
+        string NavigationScreen 
     );
 }

@@ -10,15 +10,17 @@ public static class DatabaseExtentions
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
          var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        await SeedAsync(context, app);
+
         if (pendingMigrations.Any())
         {
-            return;
             await context.Database.MigrateAsync();
+            return;
+
         }
 
          if (await context.Providers.AnyAsync()) return;
 
-        await SeedAsync(context, app);
     }
 
     private static async Task SeedAsync(ApplicationDbContext context, WebApplication webApplication)
@@ -26,6 +28,7 @@ public static class DatabaseExtentions
         await SeedProviderAsync(context);
         await SeedServiceCategoryAsync(context);
         await SeedServiceAsync(context);
+        await SeedDenominationGroupAsync(context);
         await SeedDenominationAsync(context);
         await IdentitySeeder.SeedIdentityAsync(webApplication);
     }
@@ -33,7 +36,7 @@ public static class DatabaseExtentions
     {
         if (!await context.Providers.AnyAsync())
         {
-           // await context.Providers.AddRangeAsync(InitialData.Providers);
+          await context.Providers.AddRangeAsync(InitialData.Providers);
             await context.SaveChangesAsync();
         }
     }
@@ -41,16 +44,24 @@ public static class DatabaseExtentions
     {
         if (!await context.ServiceCategories.AnyAsync())
         {
-            //await context.ServiceCategories.AddRangeAsync(InitialData.ServiceCategories);
+            await context.ServiceCategories.AddRangeAsync(InitialData.ServiceCategories);
             await context.SaveChangesAsync();
         }
     }
-
+   
     private static async Task SeedServiceAsync(ApplicationDbContext context)
     {
         if (!await context.Services.AnyAsync())
         {
-           // await context.Services.AddRangeAsync(InitialData.Services);
+         await context.Services.AddRangeAsync(InitialData.Services);
+            await context.SaveChangesAsync();
+        }
+    } 
+    private static async Task SeedDenominationGroupAsync(ApplicationDbContext context)
+    {
+        if (!await context.DenominationGroups.AnyAsync())
+        {
+            await context.DenominationGroups.AddRangeAsync(InitialData.DenominationGroups);
             await context.SaveChangesAsync();
         }
     }
@@ -58,7 +69,7 @@ public static class DatabaseExtentions
     {
         if (!await context.Denominations.AnyAsync())
         {
-           // await context.Denominations.AddRangeAsync(InitialData.Denominations);
+          await context.Denominations.AddRangeAsync(InitialData.Denominations);
             await context.SaveChangesAsync();
         }
     }

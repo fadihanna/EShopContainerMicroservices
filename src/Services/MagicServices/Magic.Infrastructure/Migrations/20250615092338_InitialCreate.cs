@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Magic.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,21 +51,6 @@ namespace Magic.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ConsumerUser", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DenominationGroups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NameAR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DenominationGroups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,6 +136,7 @@ namespace Magic.Infrastructure.Migrations
                     NameAR = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SortOrder = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IconName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -335,6 +321,7 @@ namespace Magic.Infrastructure.Migrations
                     SortOrder = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     ServiceCategoryId = table.Column<int>(type: "int", nullable: false),
+                    IconName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -352,6 +339,30 @@ namespace Magic.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DenominationGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SortOrder = table.Column<int>(type: "int", nullable: false),
+                    IsInquiryRequired = table.Column<bool>(type: "bit", nullable: false),
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    NameEN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameAR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DenominationGroups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DenominationGroups_Service_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Service",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Denomination",
                 columns: table => new
                 {
@@ -359,7 +370,6 @@ namespace Magic.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameEN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NameAR = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MaxValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MinValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsInquiryRequired = table.Column<bool>(type: "bit", nullable: false),
@@ -368,6 +378,9 @@ namespace Magic.Infrastructure.Migrations
                     PriceType = table.Column<int>(type: "int", nullable: false),
                     ProviderId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsPartial = table.Column<bool>(type: "bit", nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DenominationGroupId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -376,6 +389,11 @@ namespace Magic.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Denomination", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Denomination_DenominationGroups_DenominationGroupId",
+                        column: x => x.DenominationGroupId,
+                        principalTable: "DenominationGroups",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Denomination_Providers_ProviderId",
                         column: x => x.ProviderId,
@@ -387,7 +405,7 @@ namespace Magic.Infrastructure.Migrations
                         column: x => x.ServiceId,
                         principalTable: "Service",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -437,6 +455,8 @@ namespace Magic.Infrastructure.Migrations
                     DenominationId = table.Column<int>(type: "int", nullable: false),
                     Key = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Placeholder = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -523,6 +543,11 @@ namespace Magic.Infrastructure.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Denomination_DenominationGroupId",
+                table: "Denomination",
+                column: "DenominationGroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Denomination_ProviderId",
                 table: "Denomination",
                 column: "ProviderId");
@@ -536,6 +561,11 @@ namespace Magic.Infrastructure.Migrations
                 name: "IX_DenominationFee_DenominationId",
                 table: "DenominationFee",
                 column: "DenominationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DenominationGroups_ServiceId",
+                table: "DenominationGroups",
+                column: "ServiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DenominationInputParameter_DenominationId",
@@ -590,9 +620,6 @@ namespace Magic.Infrastructure.Migrations
                 name: "DenominationFee");
 
             migrationBuilder.DropTable(
-                name: "DenominationGroups");
-
-            migrationBuilder.DropTable(
                 name: "DenominationInputParameter");
 
             migrationBuilder.DropTable(
@@ -621,6 +648,9 @@ namespace Magic.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaymentProviders");
+
+            migrationBuilder.DropTable(
+                name: "DenominationGroups");
 
             migrationBuilder.DropTable(
                 name: "Providers");

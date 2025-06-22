@@ -7,6 +7,7 @@
     , string NameAR
     , int SortOrder
     , bool IsActive,
-      string IconName
+      string IconName,
+      string NavigationScreen 
     );
 }

@@ -20,6 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<ConsumerUser, IdentityRole
     public DbSet<DenominationInputParameter> DenominationInputParameters => Set<DenominationInputParameter>();
     public DbSet<DenominationProviderCode> DenominationProviderCodes => Set<DenominationProviderCode>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Notification> Notifications { get; set; }
 
     public DbSet<ConsumerUser> ConsumerUsers => Set<ConsumerUser>();
     public DbSet<Transaction> Transactions => Set<Transaction>();

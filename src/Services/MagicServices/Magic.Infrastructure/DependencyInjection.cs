@@ -1,4 +1,5 @@
 ﻿using Magic.Application.Exceptions;
+using Magic.Application.Extensions;
 using Magic.Application.Interfaces.Specifications;
 using Magic.Domain.Enums;
 using Magic.Domain.Specifications;
@@ -52,6 +53,9 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, ApplicationDbContext>();
         services.AddTransient<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IRefreshTokenSpecification, RefreshTokenSpecification>();
+        services.AddScoped<IDenominationGroupSpecification, DenominationGroupSpecification>();
+        services.AddScoped<INotificationSpecification, NotificationSpecification>();
+
         services.AddScoped<IUserSpecification, UserSpecification>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<ITokenValidatorService, TokenValidatorService>();

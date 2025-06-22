@@ -9,14 +9,15 @@
 
         public static DenominationGroupDto ToDenominationGroupDto(this DenominationGroup group)
         {
-            return new DenominationGroupDto(
-                Id: group.Id,
-                NameEN: group.NameEN,
-                NameAR: group.NameAR,
-                IsActive: group.IsActive,
-                SortOrder: group.SortOrder,
-                IsInquiryRequired: group.IsInquiryRequired
-            );
+            return new DenominationGroupDto
+            {
+                Id = group.Id,
+                NameEN = group.NameEN,
+                NameAR = group.NameAR,
+                IsActive = group.IsActive,
+                SortOrder = group.SortOrder,
+                IsInquiryRequired = group.IsInquiryRequired
+            };
         }
 
         public static DenominationGroup DtoToDenominationGroup(this DenominationGroupDto dto)

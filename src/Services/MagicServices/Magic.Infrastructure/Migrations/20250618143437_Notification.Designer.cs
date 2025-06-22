@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Magic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250226132806_Initial")]
-    partial class Initial
+    [Migration("20250618143437_Notification")]
+    partial class Notification
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,10 +39,16 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DenominationGroupId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsInquiryRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPartial")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
@@ -81,6 +87,8 @@ namespace Magic.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DenominationGroupId");
 
                     b.HasIndex("ProviderId");
 
@@ -132,6 +140,39 @@ namespace Magic.Infrastructure.Migrations
                     b.HasIndex("DenominationId");
 
                     b.ToTable("DenominationFee", (string)null);
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.DenominationGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInquiryRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameAR")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("DenominationGroups");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.DenominationInputParameter", b =>
@@ -190,8 +231,14 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<byte?>("ParameterType")
                         .HasColumnType("tinyint");
 
+                    b.Property<string>("Placeholder")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Sort")
                         .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -240,28 +287,6 @@ namespace Magic.Infrastructure.Migrations
                     b.HasIndex("ProviderId");
 
                     b.ToTable("DenominationProviderCode", (string)null);
-                });
-
-            modelBuilder.Entity("Magic.Domain.Models.Lookups.DenominationGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NameAR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DenominationGroups");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.Lookups.InternalErrorCodeLookup", b =>
@@ -321,6 +346,40 @@ namespace Magic.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NotificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.PaymentProvider", b =>
@@ -406,6 +465,10 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -420,6 +483,10 @@ namespace Magic.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NavigationScreen")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -450,6 +517,10 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -464,6 +535,10 @@ namespace Magic.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NavigationScreen")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -780,6 +855,10 @@ namespace Magic.Infrastructure.Migrations
 
             modelBuilder.Entity("Magic.Domain.Models.Denomination", b =>
                 {
+                    b.HasOne("Magic.Domain.Models.DenominationGroup", "DenominationGroup")
+                        .WithMany("Denominations")
+                        .HasForeignKey("DenominationGroupId");
+
                     b.HasOne("Magic.Domain.Models.Lookups.Provider", "Provider")
                         .WithMany()
                         .HasForeignKey("ProviderId")
@@ -787,10 +866,12 @@ namespace Magic.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Magic.Domain.Models.Service", "Service")
-                        .WithMany()
+                        .WithMany("Denominations")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DenominationGroup");
 
                     b.Navigation("Provider");
 
@@ -806,6 +887,17 @@ namespace Magic.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Denomination");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.DenominationGroup", b =>
+                {
+                    b.HasOne("Magic.Domain.Models.Service", "Service")
+                        .WithMany("DenominationGroups")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.DenominationInputParameter", b =>
@@ -931,9 +1023,21 @@ namespace Magic.Infrastructure.Migrations
                     b.Navigation("DenominationProviderCodes");
                 });
 
+            modelBuilder.Entity("Magic.Domain.Models.DenominationGroup", b =>
+                {
+                    b.Navigation("Denominations");
+                });
+
             modelBuilder.Entity("Magic.Domain.Models.Lookups.Provider", b =>
                 {
                     b.Navigation("DenominationProviderCodes");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.Service", b =>
+                {
+                    b.Navigation("DenominationGroups");
+
+                    b.Navigation("Denominations");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,9 +10,9 @@ public static class DenominationExtensions
     public static DenominationDto ToDenominationDto(this Denomination denomination)
     {
         return new DenominationDto(
+            Id : denomination.Id,   
             NameEN: denomination.NameEN,
             NameAR: denomination.NameAR,
-           // Value: denomination.Value,
             MaxValue: denomination.MaxValue,
             MinValue: denomination.MinValue,
             IsInquiryRequired: denomination.IsInquiryRequired,
@@ -22,6 +22,8 @@ public static class DenominationExtensions
             ProviderId: denomination.ProviderId,
             IsActive: denomination.IsActive,
             DenominationGroupID :denomination.DenominationGroupId,
+            IsPartial  : denomination.IsPartial,
+            Value: denomination.Value,  
             InputParamterList: denomination.DenominationInputParameters?.Select(ip => new DenominationInputParameterList(
                 Key: ip.Key,
                 Value: ip.Value,
@@ -31,7 +33,9 @@ public static class DenominationExtensions
                 NameAr: ip.NameAR,
                 Code: ip.Code,
                 Sort: ip.Sort,
-                IsRequired: ip.IsRequired
+                IsRequired: ip.IsRequired,
+                Placeholder :ip.Placeholder,
+                Type:ip.Type
             )).ToList() ?? new List<DenominationInputParameterList>() 
         );
     }
@@ -40,7 +44,7 @@ public static class DenominationExtensions
         var denomination = Denomination.Create(
             dto.NameEN,
             dto.NameAR,
-           // dto.Value,
+          dto.Value,
             dto.MinValue,
             dto.MaxValue,
             dto.IsInquiryRequired,

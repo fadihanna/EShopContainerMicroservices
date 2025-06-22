@@ -30,9 +30,12 @@ namespace MagicServices.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<InquiryResponseDto>> GetServiceList(CancellationToken cancellationToken = default) =>
             Ok(await Mediator.Send(new GetServiceQuery(), cancellationToken));
-        [HttpGet("services-with-denomination")]
-        public async Task<ActionResult<GetServicesWithDenominationResponse>> GetServicesWithDenomination(CancellationToken cancellationToken = default)
+        [HttpGet("services-with-denomination-group")]
+        public async Task<ActionResult<GetServicesWithDenominationResponse>> GetServicesWithDenominationGroup(CancellationToken cancellationToken = default)
     => Ok(await Mediator.Send(new GetServicesWithDenominationQuery(), cancellationToken));
+        [HttpGet("services-with-denomination")]
+        public async Task<ActionResult<GetServicesDenominationsResponse>> GetServicesWithDenomination(CancellationToken cancellationToken = default)
+=> Ok(await Mediator.Send(new GetServicesDenominationsQuery(), cancellationToken));
 
         [HttpPost("insert-service")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
@@ -63,6 +66,11 @@ namespace MagicServices.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> UpdateService([FromBody] UpdateServiceCommand model,int Id, CancellationToken cancellationToken = default) =>
         Ok(await Mediator.Send(new UpdateServiceCommand(model.service,Id), cancellationToken));
+        [HttpGet("services/by-category/{categoryId}")]
+        public async Task<ActionResult<GetServiceByCategoryResponse>> GetServicesByCategory(int categoryId, CancellationToken cancellationToken)
+        {
+            return Ok(await Mediator.Send(new GetServiceByCategoryQuery(categoryId), cancellationToken));
+        }
     }
 
 }

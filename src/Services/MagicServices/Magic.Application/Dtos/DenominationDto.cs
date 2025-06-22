@@ -1,7 +1,8 @@
 ﻿namespace Magic.Application.Dtos;
 
 public record DenominationDto(
-    string NameEN
+    int Id
+    ,string NameEN
     , string NameAR
    // , decimal Value
     , decimal MaxValue
@@ -13,6 +14,8 @@ public record DenominationDto(
     , int ProviderId
     , bool IsActive,
      int? DenominationGroupID,
+     bool IsPartial,
+     decimal Value ,
     List<DenominationInputParameterList> InputParamterList
 );
 public record DenominationInputParameterList(
@@ -25,7 +28,9 @@ public record DenominationInputParameterList(
     string? NameAr,
     string Code,
     int? Sort,
-    bool? IsRequired 
+    bool? IsRequired ,
+    string Placeholder ,
+    string Type
     );
 
 public record AmountDto
