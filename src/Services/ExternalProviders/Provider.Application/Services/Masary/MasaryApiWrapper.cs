@@ -78,6 +78,5 @@ namespace Provider.Application.Services.Masary
                 );
             }, "GetChargeAsync");
         }
-
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MagicServices.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Consumer/api/[controller]")]
     [Route("api/{culture?}/[controller]")]
     [ApiController]
     public class ApiControllerBase : ControllerBase

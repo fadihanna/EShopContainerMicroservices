@@ -8,5 +8,6 @@
     , int SortOrder
     , bool IsActive,
       string IconName
+      //,string NavigationScreen // added for consumer george
     );
 }

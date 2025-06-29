@@ -1,4 +1,5 @@
-﻿using Magic.Application.Exceptions;
+﻿using Magic.Application.ConsumerCommand;
+using Magic.Application.Exceptions;
 using Magic.Application.Interfaces.Specifications;
 using Magic.Domain.Enums;
 using Magic.Domain.Specifications;
@@ -60,6 +61,8 @@ public static class DependencyInjection
         services.AddScoped<IRequestSepecification, RequestSpecification>();
         services.AddScoped<IServiceCategorySpecification, ServiceCategorySpecification>();
         services.AddScoped<IServiceSpecification, ServiceSpecification>();
+        services.AddScoped<IServiceSpecification, ServiceSpecification>();
+        services.AddScoped<IOrangeBLL, OrangeBLL>();
 
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {

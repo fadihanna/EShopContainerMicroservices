@@ -28,8 +28,6 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 
-
-
 var app = builder.Build();
 app.UseCors("AllowAll");
 
@@ -41,5 +39,11 @@ if (app.Environment.IsDevelopment())
 {
     await app.InitialiseDatabaseAsync();
 }
+
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers(); // Required to map attribute-based controllers
+});
 
 app.Run();
