@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Magic.Application.Dtos
+﻿namespace Magic.Application.Dtos
 {
     public  class ServiceDenominationDto
     {
@@ -26,6 +20,7 @@ namespace Magic.Application.Dtos
         public bool IsInquiryRequired { get; set; }
         public bool IsActive { get; set; }
         public bool IsPartial { get; set; }
+        public string IconName { get; set; }
         public string? Value { get; set; }
         public List<InputParameterDto> InputParameterList { get; set; }
     }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BuildingBlocks.Models;
+﻿namespace BuildingBlocks.Models;
 
 public record FeesResponseModel(
     string Status,
@@ -9,5 +6,6 @@ public record FeesResponseModel(
     string DateTime,
     double Amount,
     double Fees,
-    double TotalFees
-    );
+    double TotalAmount,
+    string ProviderReferenceNumber
+);

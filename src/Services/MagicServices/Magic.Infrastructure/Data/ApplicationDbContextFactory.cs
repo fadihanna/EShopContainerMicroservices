@@ -13,7 +13,8 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(basePath) // 👈 Set the base path to the API project
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development"}.json", optional: true)
+            //.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development"}.json", optional: true)
+            .AddEnvironmentVariables()
             .Build();
 
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();

@@ -38,7 +38,7 @@ namespace Provider.Application.Services.Masary.Extensions
                     input_parameter_list: inputParameter,
                     service_version: settings.Version,
                     account_number: settings.MasaryAccountNumber,
-                    service_id: int.Parse(inquiryRequestModel.BillerCode),
+                    service_id: int.Parse(inquiryRequestModel.ProviderCode),
                     external_id: inquiryRequestModel.RequestId
                 )
             );

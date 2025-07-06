@@ -4,7 +4,6 @@ public record DenominationDto(
     int Id
     ,string NameEN
     , string NameAR
-   // , decimal Value
     , decimal MaxValue
     , decimal MinValue
     , bool IsInquiryRequired
@@ -21,7 +20,6 @@ public record DenominationDto(
 public record DenominationInputParameterList(
     string Key,
     string Value,
-   // string Label,
     int? MinLength,
     int? MaxLength,
     string? NameEn,

@@ -15,7 +15,7 @@ message InquiryRequest {
     string billing_account = 3;
     string request_id = 4;
     int32 provider_id = 5;
-    string biller_code = 6;
+    string provider_code = 6;
 }
 message InputParameter {
   string key = 1;

@@ -32,7 +32,7 @@ namespace Provider.Application.Services.Masary
         {
             return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
             {
-                var serviceParameters = await GetServiceParametersAsync(int.Parse(providerRequest.BillerCode));
+                var serviceParameters = await GetServiceParametersAsync(int.Parse(providerRequest.ProviderCode));
                 var masaryInquiryRequest = providerRequest.ToMasaryRequest(_masarySettings.ProviderSettings.MasarySettings, serviceParameters);
                 var response = await _client.SendInquiryRequestAsync(masaryInquiryRequest, _masarySettings.ProviderSettings.MasarySettings.MasaryURLTransaction);
                 return response.MasaryToStandard();
@@ -43,7 +43,7 @@ namespace Provider.Application.Services.Masary
         {
             return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
             {
-                var serviceParameters = await GetServiceParametersAsync(int.Parse(providerRequest.BillerCode));
+                var serviceParameters = await GetServiceParametersAsync(int.Parse(providerRequest.ProviderCode));
                 var masaryPaymentRequest = providerRequest.ToMasaryRequest(_masarySettings.ProviderSettings.MasarySettings, serviceParameters);
                 var response = await _client.SendPaymentRequestAsync(masaryPaymentRequest, _masarySettings.ProviderSettings.MasarySettings.MasaryURLTransaction);
                 return response.MasaryToStandard(providerRequest);
@@ -62,11 +62,11 @@ namespace Provider.Application.Services.Masary
                 }).ToList();
             }, "GetServiceParametersAsync");
         }
-     public async Task<FeesResponseModel> SendInquiryFeesRequestAsync(FeesRequestModel feesRequestModel)
+        public async Task<FeesResponseModel> SendInquiryFeesRequestAsync(FeesRequestModel feesRequestModel)
         {
             return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
             {
-                var fees = await _masaryRepository.GetServiceChargeAsync(int.Parse(feesRequestModel.BillerCode), feesRequestModel.Amount);
+                var fees = await _masaryRepository.GetServiceChargeAsync(int.Parse(feesRequestModel.ProviderCode), feesRequestModel.Amount);//int.Parse(feesRequestModel.TransactionId)
 
                 return new FeesResponseModel(
                     Status: "Success",
@@ -74,10 +74,10 @@ namespace Provider.Application.Services.Masary
                     DateTime: DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
                     Amount: feesRequestModel.Amount,
                     Fees: fees,
-                    TotalFees: feesRequestModel.Amount + fees
+                    TotalAmount: feesRequestModel.Amount + fees,
+                    ProviderReferenceNumber: feesRequestModel.RequestId.ToString()
                 );
             }, "GetChargeAsync");
         }
-
     }
 }

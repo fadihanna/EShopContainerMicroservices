@@ -1,10 +1,9 @@
 ﻿using BuildingBlocks.Exceptions;
-using Magic.Domain.Specifications;
 
 namespace Magic.Application.Common.Payment.Queries
 {
-    public record GetTransactionByIdQuery(int Id)
-    : IQuery<GetTransactionByIdResponse>;
+    public record GetTransactionByIdQuery(int Id) 
+        : IQuery<GetTransactionByIdResponse>;
     public record GetTransactionByIdResponse(TransactionDto transactionDto);
     public class GetTransactionByIdHandler
     : IQueryHandler<GetTransactionByIdQuery, GetTransactionByIdResponse>

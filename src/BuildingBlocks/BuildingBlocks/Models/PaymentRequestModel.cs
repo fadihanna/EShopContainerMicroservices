@@ -7,7 +7,7 @@
          decimal TotalAmount,
          int DenominationId,
          string BillingAccount,
-         string BillerCode,
+         string ProviderCode,
          string RequestId,
          int quantity,
          int PaymentProviderId,

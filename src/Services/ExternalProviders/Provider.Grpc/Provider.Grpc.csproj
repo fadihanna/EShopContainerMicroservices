@@ -10,11 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\providerinquiryfees.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="Protos\providerinquiryfees.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\providerfeesservice.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\providerinquiryservice.proto" GrpcServices="Server" />
   </ItemGroup>
 

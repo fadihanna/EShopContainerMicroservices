@@ -54,6 +54,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="..\..\ExternalProviders\Provider.Grpc\Protos\providerfeesservice.proto" GrpcServices="Client">
+      <Link>Protos\providerfeesservice.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\..\ExternalProviders\Provider.Grpc\Protos\providerinquiryservice.proto" GrpcServices="Client">
       <Link>Protos\providerinquiryservice.proto</Link>
     </Protobuf>

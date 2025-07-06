@@ -2,8 +2,6 @@
 {
     public class Denomination : Entity<int>
     {
-        // Properties
-
         public string NameEN { get; private set; } = string.Empty;
         public string NameAR { get; private set; } = string.Empty;
       //  public decimal Value { get; private set; }
@@ -16,7 +14,8 @@
         public int ProviderId { get; private set; }
         public bool IsActive { get; private set; }
         public bool IsPartial { get; private set; }
-        public decimal Value { get; private set; }  
+        public decimal Value { get; private set; }
+        public string IconName { get; private set; }
         public Service Service { get; private set; } = default!;
         public Provider Provider { get; private set; } = default!;
         public ICollection<DenominationFee> DenominationFees { get; set; }

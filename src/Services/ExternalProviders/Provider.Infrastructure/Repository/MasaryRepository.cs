@@ -37,10 +37,10 @@ namespace Provider.Infrastructure.Repository.Masary
                 .Include(s => s.ServiceParameter)
                 .FirstOrDefaultAsync(s => s.ServiceId == serviceId);
 
-            if (service == null)
-            {
-                throw new KeyNotFoundException("Service not found.");
-            }
+                if (service == null)
+                {
+                    throw new KeyNotFoundException("Service not found.");
+                }
 
             return service.ServiceParameter
                .Select(p => new MasaryServiceParameter
@@ -50,6 +50,5 @@ namespace Provider.Infrastructure.Repository.Masary
                })
                .ToList();
         }
-
     }
 }

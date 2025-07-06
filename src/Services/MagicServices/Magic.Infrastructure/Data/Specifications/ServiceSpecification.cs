@@ -1,6 +1,4 @@
 ﻿using Magic.Domain.Specifications;
-using MassTransit;
-using Microsoft.EntityFrameworkCore;
 
 namespace Magic.Infrastructure.Data.Specifications
 {
@@ -9,13 +7,20 @@ namespace Magic.Infrastructure.Data.Specifications
         public ServiceSpecification(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
-        public async Task<List<Service>> GetAllWithDenominationsAsync(CancellationToken cancellationToken)
+        public async Task<List<Service>> GetServiceDenominationGroupAsync(int categoryId, CancellationToken cancellationToken)
         {
-            return await _dbContext.Services
-        .Include(s => s.Denominations.Where(d => d.DenominationGroupId == null))
-        .Include(s => s.DenominationGroups)
-           .ThenInclude(g => g.Denominations)
-       .ToListAsync(cancellationToken);
+            return await _dbContext.Services.Where(s => s.ServiceCategoryId == categoryId)
+            .Include(s => s.DenominationGroups)
+            .ThenInclude(s => s.Denominations)
+            .ThenInclude(x=>x.DenominationInputParameters)
+            .ToListAsync(cancellationToken);
+        }
+        public async Task<List<Service>> GetServiceDenominationAsync(int categoryId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Services.Where(s => s.ServiceCategoryId == categoryId)
+            .Include(s => s.Denominations)
+            .ThenInclude(x=>x.DenominationInputParameters)
+            .ToListAsync(cancellationToken);
         }
     }
 }

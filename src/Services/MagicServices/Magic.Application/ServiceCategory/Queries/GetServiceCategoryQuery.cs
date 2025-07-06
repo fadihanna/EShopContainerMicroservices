@@ -1,6 +1,6 @@
 ﻿namespace Magic.Application.ServiceCategories.Queries.ServiceCategories
 {
-    public class GetServiceCategoriesQuery: IQuery<GetServiceCategoriesResponse>;
+    public class GetServiceCategoriesQuery : IQuery<GetServiceCategoriesResponse>;
     public record GetServiceCategoriesResponse(List<ServiceCategoryDto> serviceCategoryListDto);
     public class GetServiceCategoriesHandler
     : IQueryHandler<GetServiceCategoriesQuery, GetServiceCategoriesResponse>

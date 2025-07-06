@@ -46,6 +46,7 @@ public static class DependencyInjection
         services.AddScoped<IDenominationSpecification, DenominationSpecification>();
         services.AddScoped<IProviderSpecification, ProviderSpecification>();
         services.AddScoped<IExternalProviderInquiryService, ExternalProviderInquiryService>();
+        services.AddScoped<IExternalProviderFeesService, ExternalProviderFeesService>();
         services.AddScoped<ILookUpSpecification, LookUpSpecification>();
         services.AddScoped<ICacheService, CacheService>();
         services.AddScoped<ILocalizationService, LocalizationService>();
@@ -66,6 +67,10 @@ public static class DependencyInjection
         services.AddScoped<IServiceSpecification, ServiceSpecification>();
 
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
+        {
+            options.Address = new Uri("http://localhost:6001");
+        });
+        services.AddGrpcClient<ProviderFeesProtoService.ProviderFeesProtoServiceClient>(options =>
         {
             options.Address = new Uri("http://localhost:6001");
         });

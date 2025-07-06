@@ -22,7 +22,7 @@
             if (denominationProvider.IsNullResult)
                 throw new InquiryResponseException(DomainEnums.InternalErrorCode.EntityNotFound);
 
-            var inquiryRequestModel = request.Request.ToStandardRequest(denominationProvider.BillerCode, denominationProvider.ProviderId);
+            var inquiryRequestModel = request.Request.ToStandardRequest(denominationProvider.ProviderCode, denominationProvider.ProviderId);
             
             var response = await _externalProviderInquiryService.InquiryAsync(inquiryRequestModel, cancellationToken);
             return response.ToModelResponse();

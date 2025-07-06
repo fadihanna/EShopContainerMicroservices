@@ -22,7 +22,7 @@ namespace Magic.Infrastructure.Data.Specifications
                 .FirstOrDefaultAsync(predicate, cancellationToken);
         }
 
-        public async Task<(int ProviderId, string BillerCode, bool IsNullResult)> GetDenominationProviderCodeByIdAsync(int id, CancellationToken cancellationToken)
+        public async Task<(int ProviderId, string ProviderCode, bool IsNullResult)> GetDenominationProviderCodeByIdAsync(int id, CancellationToken cancellationToken)
         {
             var result = await (from d in _dbContext.Denominations
                                 join dpc in _dbContext.DenominationProviderCodes
@@ -31,14 +31,14 @@ namespace Magic.Infrastructure.Data.Specifications
                                 select new
                                 {
                                     d.ProviderId,
-                                    dpc.BillerCode
+                                    dpc.ProviderCode
                                 })
                         .FirstOrDefaultAsync(cancellationToken);
 
             if (result == null)
                 return (default, default, true);
 
-            return (result.ProviderId, result.BillerCode, false);
+            return (result.ProviderId, result.ProviderCode, false);
         }
     }
 }

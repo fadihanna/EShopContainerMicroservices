@@ -4,7 +4,7 @@ public record PaymentRequestDto(
     decimal Fees,
     string Brn,
     int DenominationId,
-    string BillerCode,
+    string ProviderCode,
     string BillingAccount,
     int Quantity,
     string InquiryReferenceNumber,

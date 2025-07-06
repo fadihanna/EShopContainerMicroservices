@@ -22,17 +22,17 @@
 
 
         public static DenominationInputParameter Create(
-        string key,
-        string value,
-        int? minLength,
-        int? maxLength,
-        string nameEn,
-        string nameAr,
-        string code,
-        int? sort,
-        bool? isRequired,
-        int denominationId
-    )
+            string key,
+            string value,
+            int? minLength,
+            int? maxLength,
+            string nameEn,
+            string nameAr,
+            string code,
+            int? sort,
+            bool? isRequired,
+            int denominationId
+        )
         {
             return new DenominationInputParameter
             {

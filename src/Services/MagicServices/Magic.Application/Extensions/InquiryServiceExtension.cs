@@ -5,14 +5,14 @@ namespace Magic.Application.Extensions
 {
     public static class InquiryServiceExtension
     {
-        public static InquiryRequestModel ToStandardRequest(this InquiryRequestDto inquiryRequestDto, string billerCode, int providerId)
+        public static InquiryRequestModel ToStandardRequest(this InquiryRequestDto inquiryRequestDto, string providerCode, int providerId)
         {
             return new InquiryRequestModel(
                 InputParameterList: inquiryRequestDto.InputParameterList.Select(p => new BuildingBlocksModels.InputParameter(Key: p.Key, Value: p.Value)).ToList(),
                 BillingAccount: inquiryRequestDto.BillingAccount,
                 DenominationId: inquiryRequestDto.DenominationId,
                 RequestId: string.Empty,
-                BillerCode: billerCode,
+                ProviderCode: providerCode,
                 ProviderId: providerId
             );
         }

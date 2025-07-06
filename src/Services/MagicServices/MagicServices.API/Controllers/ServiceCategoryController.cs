@@ -11,28 +11,28 @@ namespace MagicServices.API.Controllers
         {
         }
 
-        [HttpPost("insert-serviceCategory")]
+        [HttpPost("insert-category")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<ActionResult<int>> InsertServiceCategory([FromBody] InsertServiceCategoryCommand command, CancellationToken cancellationToken = default) =>
             Ok(await Mediator.Send(command, cancellationToken));
 
-        [HttpGet("get-serviceCategory-list")]
+        [HttpGet("get-category-list")]
         [ProducesResponseType(typeof(GetServiceCategoriesResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult<GetServiceCategoriesResponse>> GetServiceCategoryList(CancellationToken cancellationToken = default) =>
-            Ok(await Mediator.Send(new GetServiceCategoriesQuery(), cancellationToken));
+            Ok((await Mediator.Send(new GetServiceCategoriesQuery(), cancellationToken))?.serviceCategoryListDto);
 
-        [HttpGet("get-serviceCategory/{id}")]
+        [HttpGet("get-category/{id}")]
         [ProducesResponseType(typeof(ServiceCategoryDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<ServiceCategoryDto>> GetServiceCategoryById(
            int id, CancellationToken cancellationToken = default) =>
-            Ok(await Mediator.Send(new GetServiceCategoryByIdQuery(id), cancellationToken));
+            Ok((await Mediator.Send(new GetServiceCategoryByIdQuery(id), cancellationToken))?.serviceCategoryDto);
 
-        [HttpDelete("delete-serviceCategory/{id}")]
+        [HttpDelete("delete-category/{id}")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<ActionResult<int>> DeleteServiceCategory(int id, CancellationToken cancellationToken = default) =>
             Ok(await Mediator.Send(new DeleteServiceCategoryCommand(id), cancellationToken));
 
-        [HttpPut("update-serviceCategory/{id}")]
+        [HttpPut("update-category/{id}")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<ActionResult<int>> UpdateServiceCategory([FromBody] UpdateServiceCategoryCommand command, int id, CancellationToken cancellationToken = default)
         {

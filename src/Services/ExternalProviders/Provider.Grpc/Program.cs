@@ -1,3 +1,5 @@
+using Provider.Application;
+using Provider.Application.Configuration;
 using Provider.Application.Logging;
 using Provider.Application.Services.Masary;
 using Provider.Grpc;
@@ -5,10 +7,6 @@ using Provider.Infrastructure;
 using Provider.Infrastructure.Mockup;
 using Provider.Infrastructure.Services.External.Masary.Services;
 using Serilog;
-using Provider.Application;
-using Provider.Application.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Provider.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services

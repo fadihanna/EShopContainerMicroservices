@@ -7,9 +7,6 @@
             RuleFor(x => x.Request)
                 .NotNull().WithMessage("Inquiry request cannot be null.");
 
-            RuleFor(x => x.Request.BillingAccount)
-                .NotEmpty().WithMessage("Billing Account is required.");
-
             RuleFor(x => x.Request.DenominationId)
                 .NotNull().WithMessage("Denomination ID cannot be null.")
                 .NotEqual(0).WithMessage("Denomination ID cannot be Zero.")

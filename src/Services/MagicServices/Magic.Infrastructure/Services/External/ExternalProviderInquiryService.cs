@@ -21,7 +21,7 @@ namespace Magic.Infrastructure.Services.External
                 BillingAccount = request.BillingAccount,
                 DenominationId = request.DenominationId,
                 RequestId = request.RequestId,
-                BillerCode = request.BillerCode,
+                ProviderCode = request.ProviderCode,
                 ProviderId = request.ProviderId
             };
 
@@ -38,8 +38,8 @@ namespace Magic.Infrastructure.Services.External
                 Status: response.Status,
                 StatusText: response.StatusText,
                 DateTime: response.DateTime,
-                Fees: 0,
-                Amount: 0,
+                Fees: response.Fees,
+                Amount: response.Amount,
                 DetailsList: response.DetailsList.Select(d => new Details(Key: d.Key, Value: d.Value)).ToList()
            );
         }

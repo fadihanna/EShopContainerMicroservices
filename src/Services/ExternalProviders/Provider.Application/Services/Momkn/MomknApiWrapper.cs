@@ -25,7 +25,7 @@ namespace Provider.Application.Services.Momkn
         }
         public async Task<FeesResponseModel> SendInquiryFeesRequestAsync(FeesRequestModel feesRequestModel)
         {
-            FeesResponseModel feesResponseModel = new FeesResponseModel("0","0",DateTime.Now.ToString(), 10,10,10);
+            FeesResponseModel feesResponseModel = new FeesResponseModel("0","0",DateTime.Now.ToString(), 10,10,10, string.Empty);
           //  var response = await _client.SendPaymentRequestAsync(providerRequest.ToMomknRequest());
             return feesResponseModel;
         }

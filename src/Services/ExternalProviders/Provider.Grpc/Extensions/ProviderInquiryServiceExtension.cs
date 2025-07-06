@@ -1,6 +1,5 @@
 ﻿using BuildingBlocks.Models;
 using Provider.Grpc.Protos;
-using Details = Provider.Grpc.Protos.Details;
 using InputParameter = BuildingBlocks.Models.InputParameter;
 
 namespace Provider.Grpc.Extensions
@@ -21,23 +20,23 @@ namespace Provider.Grpc.Extensions
                 BillingAccount: request.BillingAccount,
                 RequestId: request.RequestId,
                 ProviderId: request.ProviderId,
-                BillerCode: request.BillerCode
+                ProviderCode: request.ProviderCode
             );
         }
-        public static InquiryFeesResponse ToGrpcResponse(this FeesResponseModel inquiryResponseModel)
+        public static InquiryResponse ToGrpcResponse(this InquiryResponseModel inquiryResponseModel)
         {
             return StandardToGrpc(inquiryResponseModel);
         }
-        private static InquiryFeesResponse StandardToGrpc(FeesResponseModel responseModel)
+        private static InquiryResponse StandardToGrpc(InquiryResponseModel responseModel)
         {
-            return new InquiryFeesResponse
+            return new InquiryResponse
             {
                 Status = responseModel.Status,
                 StatusText = responseModel.StatusText,
                 DateTime = responseModel.DateTime,
                 Amount = responseModel.Amount,
                 Fees = responseModel.Fees
-             };
+            };
         }
     }
 }

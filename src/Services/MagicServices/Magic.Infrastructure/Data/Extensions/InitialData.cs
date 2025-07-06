@@ -38,28 +38,28 @@ namespace Magic.Infrastructure.Data.Extensions
         public static IEnumerable<DenominationGroup> DenominationGroups =>
             new List<DenominationGroup>
             {
-              DenominationGroup.Create(  "Orange Air Recharge" ,"شحن هوا " ,1,false,25,true),
-              DenominationGroup.Create(  "Orange Units" ,"وحدات " ,2,false,25,true),
-              DenominationGroup.Create(  "Orange Mega" ,"ميجا نت  " ,3,false,25,true),
+              DenominationGroup.Create("Orange Air Recharge" ,"شحن هوا " ,1,false,1,true),
+              DenominationGroup.Create("Orange Units" ,"وحدات " ,2,false,1,true),
+              DenominationGroup.Create("Orange Mega" ,"ميجا نت  " ,3,false,1,true),
 
             };
         public static IEnumerable<Denomination> Denominations =>
         new List<Denomination>
         {
-            Denomination.Create("Orange Air Recharge","شحن هوا اورانج",0,5,200,false,1,25,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Orange),true,null),
-            Denomination.Create("Vodafone Air Recharge","شحن هوا فوادافون",0,5,200,false,2,26,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
-            Denomination.Create("Etisalat Air Recharge","شحن هوا اتصالات",0,5,200,false,3,27,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
-            Denomination.Create("WE Air Recharge","شحن هوا وي",0,5,200,false,4,28,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("Orange Air Recharge","شحن هوا اورانج",0,5,200,false,1,1,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Orange),true,null),
+            Denomination.Create("Vodafone Air Recharge","شحن هوا فوادافون",0,5,200,false,2,2,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("Etisalat Air Recharge","شحن هوا اتصالات",0,5,200,false,3,3,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("WE Air Recharge","شحن هوا وي",0,5,200,false,4,4,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
 
-            Denomination.Create("Orange Voucher 13.5","كارت اورانج 13.5",13.5m,13.5m,13.5m,false,1,29,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Orange),true,null),
-            Denomination.Create("Vodafone Voucher 13.5","كارت فوادافون 13.5",13.5m,13.5m,13.5m,false,1,30,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
-            Denomination.Create("Etisalat Voucher 13.5","كارت اتصالات 13.5",13.5m,13.5m,13.5m,false,1,31,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
-            Denomination.Create("WE Voucher 13.5","كارت وي 13.5",13.5m,13.5m,13.5m,false,1,32,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("Orange Voucher 13.5","كارت اورانج 13.5",13.5m,13.5m,13.5m,false,1,5,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Orange),true,null),
+            Denomination.Create("Vodafone Voucher 13.5","كارت فوادافون 13.5",13.5m,13.5m,13.5m,false,1,6,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("Etisalat Voucher 13.5","كارت اتصالات 13.5",13.5m,13.5m,13.5m,false,1,7,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("WE Voucher 13.5","كارت وي 13.5",13.5m,13.5m,13.5m,false,1,8,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
 
-            Denomination.Create("Orange Bills","فواتير اورانج",0,5,1000,false,1,33,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Orange),true, null),
-            Denomination.Create("Vodafone Bills","فواتير فوادافون",0,5,1000,false,1,34,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
-            Denomination.Create("Etisalat Bills","فواتير اتصالات",0,5,1000,false,1,35,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
-            Denomination.Create("WE Bills","فواتير وي",0,5,1000,false,1,36,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("Orange Bills","فواتير اورانج",0,5,1000,false,1,9,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Orange),true, null),
+            Denomination.Create("Vodafone Bills","فواتير فوادافون",0,5,1000,false,1,10,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("Etisalat Bills","فواتير اتصالات",0,5,1000,false,1,11,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+            Denomination.Create("WE Bills","فواتير وي",0,5,1000,false,1,12,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
         };
     }
 }

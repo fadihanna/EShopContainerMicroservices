@@ -2,6 +2,6 @@
 {
     public interface IDenominationSpecification : IGenericRepositoryAsync<Denomination>
     {
-        Task<(int ProviderId, string BillerCode, bool IsNullResult)> GetDenominationProviderCodeByIdAsync(int id, CancellationToken cancellationToken);
+        Task<(int ProviderId, string ProviderCode, bool IsNullResult)> GetDenominationProviderCodeByIdAsync(int id, CancellationToken cancellationToken);
     }
 }

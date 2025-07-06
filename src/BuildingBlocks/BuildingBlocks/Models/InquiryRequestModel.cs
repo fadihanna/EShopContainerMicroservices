@@ -5,5 +5,5 @@ public record InquiryRequestModel(
     string BillingAccount,
     string RequestId,
     int ProviderId,
-    string BillerCode
+    string ProviderCode
 );

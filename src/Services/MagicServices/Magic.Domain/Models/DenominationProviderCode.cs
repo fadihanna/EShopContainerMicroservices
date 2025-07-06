@@ -4,14 +4,14 @@
     {
         public int DenominationId { get; private set; }
         public int ProviderId { get; private set; }
-        public string BillerCode { get; private set; } = default!;
+        public string ProviderCode { get; private set; } = default!;
         public Denomination Denomination { get; private set; } = default!;
         public Provider Provider { get; private set; } = default!;
 
         public static DenominationProviderCode Create(
             int denominationId,
             int providerId,
-            string billerCode)
+            string providerCode)
         {
             if (denominationId <= 0)
                 throw new ArgumentException("DenominationId must be a positive number.", nameof(denominationId));
@@ -23,17 +23,17 @@
             {
                 DenominationId = denominationId,
                 ProviderId = providerId,
-                BillerCode = billerCode
+                ProviderCode = providerCode
             };
         }
 
-        public void Update(int providerId, string billerCode)
+        public void Update(int providerId, string providerCode)
         {
             if (providerId <= 0)
                 throw new ArgumentException("ProviderId must be a positive number.", nameof(providerId));
 
             ProviderId = providerId;
-            BillerCode = billerCode;
+            ProviderCode = ProviderCode;
         }
     }
 }
