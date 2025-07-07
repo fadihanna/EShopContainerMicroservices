@@ -1,12 +1,5 @@
 ﻿using BuildingBlocks.Models;
 using Provider.Grpc.Protos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Details = BuildingBlocks.Models.Details;
-using InputParameter = Provider.Grpc.Protos.InputParameter;
 
 namespace Magic.Infrastructure.Services.External
 {
@@ -36,20 +29,22 @@ namespace Magic.Infrastructure.Services.External
 
             var response = await _providerPaymentProto.PaymentAsync(paymentRequestProto);
 
-            PaymentResponseData paymentResponseData = new PaymentResponseData()
-            {
-                Fees = decimal.Parse(response.Fees),
-                Amount = decimal.Parse(response.Amount),
-                ResponseCode = response.Status,
-                TotalAmount = decimal.Parse(response.TotalAmount)
-            };
-            var paymentResponseModel = new PaymentResponseModel
-            {
-                ProviderTransactionId = response.TransactionId,
-                PaymentResponseData = paymentResponseData
-            };
 
-            return paymentResponseModel;
+            return new PaymentResponseModel
+                    (
+                        IsSuccess: response.Status == "2",
+                        Status: response.Status,
+                        StatusText: response.StatusText,
+                         TransactionTime: response.TransactionTime,
+                         TransactionId: 1,
+                         ProviderTransactionId: response.ProviderTransactionId,
+                         UserId: "1",
+                         Amount: response.Amount,
+                         Fees: response.Fees,
+                         TotalAmount: response.TotalAmount,
+                         BillingAccount: string.Empty,
+                         DetailsList: response.DetailsList?.Select(d => new ResponseDetail(Key: d.Key, Value: d.Value)).ToList()
+                    );
         }
     }
 }

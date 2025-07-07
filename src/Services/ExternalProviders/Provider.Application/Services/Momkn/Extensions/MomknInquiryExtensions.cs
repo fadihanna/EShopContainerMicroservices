@@ -26,7 +26,7 @@ namespace Provider.Application.Services.Momkn.Extensions
                 DateTime: string.Empty,
                 Fees: 0,
                 Amount: 0,
-                DetailsList: new List<Details>()
+                DetailsList: new List<ResponseDetail>()
             );
         }
     }

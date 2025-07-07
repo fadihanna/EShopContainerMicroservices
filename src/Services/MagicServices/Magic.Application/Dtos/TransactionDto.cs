@@ -15,8 +15,4 @@
      //List<InputParameter> InputParameterList,
      bool IsRefunded = false
     );
-    public record InputParameter(
-    string Key,
-    string Value
-    );
 }

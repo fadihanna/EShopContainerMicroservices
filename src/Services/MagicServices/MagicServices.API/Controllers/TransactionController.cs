@@ -31,11 +31,10 @@ namespace MagicServices.API.Controllers
         [HttpPost("add-transaction")]
         [ProducesResponseType(typeof(PaymentResponseDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<PaymentResponseDto>> PaymentRequest(
-        [FromBody] InsertTransactionBodyDto model,
-        [FromQuery] string userId,
+        [FromBody] InsertTransactionCommand model,
          CancellationToken cancellationToken = default)
         {
-            return Ok(await Mediator.Send(new InsertTransactionCommand(model.Transaction, userId), cancellationToken));
+            return Ok((await Mediator.Send(new InsertTransactionCommand(model.Transaction), cancellationToken)).paymentResponseDto);
         }
 
         [HttpGet("get-transaction-invoiceId")]

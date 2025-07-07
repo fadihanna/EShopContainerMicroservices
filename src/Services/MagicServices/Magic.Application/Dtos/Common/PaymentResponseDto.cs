@@ -10,5 +10,5 @@ public record PaymentResponseDto(
      string Fees,
      string totalAmount,
      string billingAccount,
-     List<Details> DetailsList
+     List<ResponseDetail> DetailsList
 );

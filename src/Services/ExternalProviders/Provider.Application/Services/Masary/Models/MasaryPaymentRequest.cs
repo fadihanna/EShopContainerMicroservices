@@ -7,7 +7,8 @@ public record MasaryPaymentRequest(
     string? action,
     int? version,
     string? language,
-    MasaryPaymentRequestData? MasaryPaymentRequestData
+    MasaryPaymentRequestData? MasaryPaymentRequestData,
+    string? requestType
 );
 
 

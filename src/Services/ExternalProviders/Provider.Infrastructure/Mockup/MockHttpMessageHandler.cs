@@ -16,9 +16,10 @@ namespace Provider.Infrastructure.Mockup
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var parentPath = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName;
+            string mockupFileName = request.Content.ReadAsStringAsync().Result.Contains("Payment") ? "MasaryPaymentResponse.json" : "MasaryInquiryResponse.json";
             string mockupPath = _configuration["ProviderSettings:MasarySettings:MockupInquiryResponsePath"];
 
-            string fileName = Path.Combine(parentPath, mockupPath, "MasaryInquiryResponse.json");
+            string fileName = Path.Combine(parentPath, mockupPath, mockupFileName);
 
             string result = File.ReadAllText(fileName);
 

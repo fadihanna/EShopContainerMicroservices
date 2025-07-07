@@ -1,6 +1,5 @@
 ﻿using BuildingBlocks.Models;
 using Provider.Grpc.Protos;
-using Details = BuildingBlocks.Models.Details;
 using InputParameter = Provider.Grpc.Protos.InputParameter;
 
 namespace Magic.Infrastructure.Services.External
@@ -38,7 +37,7 @@ namespace Magic.Infrastructure.Services.External
                 DateTime: response.DateTime,
                 Fees: response.Fees,
                 Amount: response.Amount,
-                DetailsList: response.DetailsList.Select(d => new Details(Key: d.Key, Value: d.Value)).ToList()
+                DetailsList: response.DetailsList.Select(d => new ResponseDetail(Key: d.Key, Value: d.Value)).ToList()
            );
         }
     }

@@ -56,12 +56,12 @@ namespace Provider.Application.Services.Masary.Extensions
                     if (colonIndex < 0)
                     {
                         // Handle lines without colons (like the last Arabic line)
-                        return new Details("Note", line.Trim());
+                        return new ResponseDetail("Note", line.Trim());
                     }
 
                     var key = line.Substring(0, colonIndex).Trim();
                     var value = line.Substring(colonIndex + 1).Trim();
-                    return new Details(key.Trim(), value);
+                    return new ResponseDetail(key.Trim(), value);
                 })
                 .ToList();
              return new InquiryResponseModel(

@@ -37,7 +37,6 @@ public class MasaryApiClient : IMasaryApiClient
         {
             throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
         }
-
         return JsonSerializer.Deserialize<TResponse>(result) ?? throw new Exception($"Deserialization failed.");
     }
 }

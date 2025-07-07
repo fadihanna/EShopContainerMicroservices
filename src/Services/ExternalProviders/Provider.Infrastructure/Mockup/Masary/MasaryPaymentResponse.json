@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "language": "ar",
+  "action": "TransactionPayment",
+  "version": 2,
+  "data": {
+    "transaction_id": "322702204609",
+    "status": "SUCCESS",
+    "status_text": "ناجح",
+    "date_time": "15/08/2022 02:06:08",
+    "details_list": [
+      [
+        {
+          "key": "pmt_id",
+          "value": "322702204609"
+        },
+        {
+          "key": "bill_description",
+          "value": "محفوظ معوض ع الحميد - ش عوضهاشم من ال شاح ا0"
+        },
+        {
+          "key": "bill_date",
+          "value": ""
+        },
+        {
+          "key": "amount_due",
+          "value": "9.0"
+        },
+        {
+          "key": "fee_amount",
+          "value": "1.14"
+        },
+        {
+          "key": "amount",
+          "value": "10.14"
+        }
+      ]
+    ]
+  }
+}

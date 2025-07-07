@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Models;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Provider.Application.Configuration;
 using Provider.Application.Dtos;
 using Provider.Application.Services.Masary.Models;
@@ -42,7 +43,8 @@ namespace Provider.Application.Services.Masary.Extensions
                  service_charge: inquiryRequestModel.Fees,
                  total_amount: inquiryRequestModel.Amount + inquiryRequestModel.Fees,
                  inquiry_transaction_id: inquiryRequestModel.InquiryReferenceNumber
-         )
+         ),
+             requestType:"Payment"
      );
         }
         public static PaymentResponseModel MasaryToStandard(this MasaryPaymentResponse masaryPaymentResponse, PaymentRequestModel providerRequest)
@@ -52,35 +54,20 @@ namespace Provider.Application.Services.Masary.Extensions
         private static PaymentResponseModel StandardFromMasary(MasaryPaymentResponse masaryPaymentResponse, PaymentRequestModel providerRequest)
         {
             return new PaymentResponseModel
-            {
-                IsSuccess = masaryPaymentResponse.success,
-                Status = new Status
-                {
-                    StatusCode = masaryPaymentResponse.success
-                        ? masaryPaymentResponse.PaymentResponseData?.status ?? string.Empty
-                        : masaryPaymentResponse.error_code.ToString(),
-                    StatusText = masaryPaymentResponse.success
-                        ? masaryPaymentResponse.PaymentResponseData?.status_text ?? string.Empty
-                        : masaryPaymentResponse.error_text ?? string.Empty
-                },
-                PaymentResponseData = masaryPaymentResponse.success && masaryPaymentResponse.PaymentResponseData != null
-                    ? new BuildingBlocks.Models.PaymentResponseData
-                    {
-                        TransactionId = masaryPaymentResponse.PaymentResponseData.transaction_id ?? string.Empty,
-                        Datetime = masaryPaymentResponse.PaymentResponseData.date_time ?? string.Empty,
-                        ResponseCode = masaryPaymentResponse.PaymentResponseData.response_code ?? string.Empty,
-                        Amount = providerRequest.Amount,
-                        Fees = providerRequest.Fees,
-                        TotalAmount = providerRequest.Fees + providerRequest.Amount,
-                        paymentResponseDetails = masaryPaymentResponse.PaymentResponseData.paymentResponseDetails?
-                            .Select(d => new BuildingBlocks.Models.PaymentResponseDetails
-                            {
-                                Key = d.key ?? string.Empty,
-                                Value = d.value ?? string.Empty
-                            }).ToList() ?? new List<BuildingBlocks.Models.PaymentResponseDetails>()
-                    }
-                    : null
-            };
+                    (
+                        IsSuccess: masaryPaymentResponse.success,
+                        Status: masaryPaymentResponse.data.status,
+                        StatusText: masaryPaymentResponse.data.status_text,
+                         TransactionTime: masaryPaymentResponse.data.date_time,
+                         TransactionId: 1,
+                         ProviderTransactionId: masaryPaymentResponse.data.transaction_id,
+                         UserId: "1",
+                         Amount: providerRequest.Amount.ToString(),
+                         Fees: providerRequest.Fees.ToString(),
+                         TotalAmount: providerRequest.TotalAmount.ToString(),
+                         BillingAccount: string.Empty,
+                         DetailsList: masaryPaymentResponse.data?.details_list?.FirstOrDefault()?.Select(d => new ResponseDetail(Key: d.key, Value: d.value)).ToList()
+                    );
         }
     }
 }

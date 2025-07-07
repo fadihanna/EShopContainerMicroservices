@@ -1,12 +1,9 @@
 ﻿using BuildingBlocks.Enums;
 using BuildingBlocks.Exceptions;
-using BuildingBlocks.Models;
-using Magic.Application.Common.Interfaces;
-using Magic.Application.Dtos.Common;
 
 namespace Magic.Application.Common.Payment.Commands
 {
-    public record InsertTransactionCommand(PaymentRequestDto Transaction, string userId)
+    public record InsertTransactionCommand(PaymentRequestDto Transaction)
        : ICommand<InsertTransactionResponse>;
 
     public record InsertTransactionResponse(PaymentResponseDto paymentResponseDto);
@@ -48,7 +45,7 @@ namespace Magic.Application.Common.Payment.Commands
                 RequestDate = DateTime.UtcNow,
                 ResponseDate = DateTime.UtcNow,
                 Status = Convert.ToInt32(RequestStatus.PaymentInitiate),
-                UserId = command.userId
+                UserId = "1"
             }, cancellationToken);
 
 
@@ -64,9 +61,10 @@ namespace Magic.Application.Common.Payment.Commands
                 RequestId = command.Transaction.RequestId,
                 PaymentProviderId = command.Transaction.ProviderId,
                 InquiryReferenceNumber = command.Transaction.ProviderReferenceNumber,
-                UserId = command.userId,
+                UserId = "1",
                 ProviderTransactionId = "123456789",
-                ProviderId = DPC.ProviderId
+                ProviderId = DPC.ProviderId,
+                InputParameterList = command.Transaction.InputParameterList
             };
             // call provider api
             var response = await _externalProviderPaymentService.PaymentAsync(paymentRequestModel, cancellationToken);
@@ -74,8 +72,17 @@ namespace Magic.Application.Common.Payment.Commands
             //await PaymentProcessor(command, cancellationToken);
 
             var transaction = TransactionExtensions.CreateTransaction(paymentRequestModel);
+            try
+            {
+
             await _transactionSpecification.InsertAsync(transaction, cancellationToken);
 
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
             for (int i = 0; i < command.Transaction.Quantity; i++) // in case of vouchers
             { }
             await _requestSepecification.UpdateRequestStatusAsync(request, Convert.ToInt32(RequestStatus.PaymentSuccess), cancellationToken);
@@ -100,7 +107,7 @@ namespace Magic.Application.Common.Payment.Commands
             Fees: Convert.ToString(command.Transaction.Fees),
             totalAmount: Convert.ToString(paymentRequestModel.TotalAmount),
             billingAccount: paymentRequestModel.BillingAccount,
-            DetailsList: null
+            DetailsList: response.DetailsList
  );
             return new InsertTransactionResponse(paymentResponseDto);
         }

@@ -7,11 +7,7 @@ public record InquiryResponseModel(
     string DateTime,
     double Amount,
     double Fees,
-    List<Details> DetailsList
+    List<ResponseDetail> DetailsList
 );
 
-public record Details(
-    string Key,
-    string Value
-);
 

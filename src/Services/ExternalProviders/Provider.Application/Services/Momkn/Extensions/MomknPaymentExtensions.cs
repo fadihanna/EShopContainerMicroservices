@@ -20,7 +20,8 @@ namespace Provider.Application.Services.Momkn.Extensions
         private static PaymentResponseModel StandardFromMomkn(MomknPaymentResponse momknInquiryResponse)
         {
             //TODO
-            return new PaymentResponseModel();
+            return null;
+            //return new PaymentResponseModel(false,string.Empty,string.Empty,str);
         }
     }
 }

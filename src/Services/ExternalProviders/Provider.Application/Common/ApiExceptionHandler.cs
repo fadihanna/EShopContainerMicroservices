@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Models;
 using Serilog;
+using static System.TimeZoneInfo;
 
 namespace Provider.Application.Common
 {
@@ -21,22 +22,19 @@ namespace Provider.Application.Common
                 if (providerRequest != null)
                 {
                     return (T)(object)new PaymentResponseModel
-                    {
-                        IsSuccess = true,
-                        Status = new Status
-                        {
-                            StatusCode = "204",
-                            StatusText = "Timeout: Transaction is pending and will be retried."
-                        },
-                        PaymentResponseData = new PaymentResponseData
-                        {
-                            Amount = providerRequest.Amount,
-                            Fees = providerRequest.Fees,
-                            TotalAmount = providerRequest.Amount + providerRequest.Fees,
-                            RequestID = providerRequest.RequestId,
-                            TransactionId = providerRequest.RequestId
-                        }
-                    };
+                    (
+                        IsSuccess: true,
+                        Status: "204",
+                        StatusText: "Timeout: Transaction is pending and will be retried.",
+                         TransactionTime: DateTime.Now.ToString(),
+                         TransactionId: 0,
+                         ProviderTransactionId: "0",
+                         UserId: "1",
+                         Amount: "0",
+                         Fees: "0",
+                         TotalAmount: "0",
+                         BillingAccount: string.Empty,new List<ResponseDetail>()
+                    );
                 }
 
                 throw;
