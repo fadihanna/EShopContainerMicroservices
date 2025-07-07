@@ -18,6 +18,7 @@ namespace Provider.Grpc
         {
             app.MapGrpcService<ProviderInquiryService>();
             app.MapGrpcService<ProviderFeesService>();
+            app.MapGrpcService<ProviderPaymentService>();
 
             app.MapGrpcReflectionService();
             app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");

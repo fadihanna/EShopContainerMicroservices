@@ -63,5 +63,9 @@
     <Protobuf Include="..\..\PaymentGateway\PaymentGateway.Grpc\Protos\paymentgatewayservice.proto" GrpcServices="Client">
       <Link>Protos\paymentgatewayservice.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\..\ExternalProviders\Provider.Grpc\Protos\providerpaymentservice.proto" GrpcServices="Client">
+      <Link>Protos\providerpaymentservice.proto</Link>
+    </Protobuf>
+
   </ItemGroup>
 </Project>

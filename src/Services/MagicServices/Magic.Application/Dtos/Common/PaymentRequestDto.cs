@@ -1,5 +1,5 @@
 ﻿namespace Magic.Application.Dtos.Common;
-public record PaymentRequestDto(
+/*public record PaymentRequestDto(
     decimal Amount,
     decimal Fees,
     string Brn,
@@ -13,4 +13,17 @@ public record PaymentRequestDto(
     string RequestId,
     string UserId,
     int CenterId
+);*/
+
+public record PaymentRequestDto
+(
+     double Amount,
+     double Fees,
+     int DenominationId,
+     string BillingAccount,
+     string RequestId,
+     string ProviderReferenceNumber,
+     int Quantity,
+     int ProviderId
+//  List<InputParameter> InputParameterList
 );

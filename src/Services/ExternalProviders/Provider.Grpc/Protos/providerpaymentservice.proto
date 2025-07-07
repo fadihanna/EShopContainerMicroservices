@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option csharp_namespace = "Provider.Grpc.Protos";
+
+package Provider;
+
+service ProviderPaymentProtoService {
+  rpc Payment (PaymentRequest) returns (PaymentResponse);
+}
+
+message PaymentRequest {
+  repeated InputParameterPayment inputParameterList = 1;
+  double amount = 2;
+  double fees = 3;
+  double totalAmount = 4;
+  int32 denominationId = 5;
+  string billingAccount = 6;
+  //string billerCode = 7;
+  string requestId = 7;
+  int32 quantity = 8;
+  int32 paymentProviderId = 9;
+  string inquiryReferenceNumber = 10;
+  string providerTransactionId = 11;
+  int32 provider_Id = 12;
+  string provider_code = 13;
+
+}
+
+message InputParameterPayment {
+  string key = 1;
+  string value = 2;
+}
+
+message PaymentResponse {
+  string providerTransactionId = 1;
+  string transactionId = 2;
+  string status = 3;
+  string statusText = 4;
+  string transactionTime = 5;
+  string amount = 6;
+  string fees = 7;
+  string totalAmount = 8;
+  string billingAccount = 9;
+  repeated DetailsPayment detailsList = 10;
+}
+
+message DetailsPayment {
+  string key = 1;
+  string value = 2;
+}

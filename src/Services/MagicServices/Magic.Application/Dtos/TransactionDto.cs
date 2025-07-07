@@ -1,6 +1,7 @@
 ﻿namespace Magic.Application.Dtos
 {
     public record TransactionDto(
+     int Id,
      string UserId,
      decimal Amount,
      decimal Fees,
