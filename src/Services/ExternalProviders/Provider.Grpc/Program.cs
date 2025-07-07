@@ -13,10 +13,11 @@ builder.Services
     .AddInfrastructureServices(builder.Configuration)
     .AddGrpcServices(builder.Configuration)
     .AddApplicationServices(builder.Configuration);
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHttpClient<IMasaryApiClient, MasaryApiClient>()
-        .ConfigurePrimaryHttpMessageHandler(() => new MockHttpMessageHandler());
+        .ConfigurePrimaryHttpMessageHandler(() => new MockHttpMessageHandler(builder.Configuration));
 }
 else
 {

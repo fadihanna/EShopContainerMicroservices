@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Models;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Provider.Grpc.Protos;
 using InputParameter = BuildingBlocks.Models.InputParameter;
 
@@ -31,11 +32,17 @@ namespace Provider.Grpc.Extensions
         {
             return new InquiryResponse
             {
+                TransactionId = responseModel.TransactionId,
                 Status = responseModel.Status,
                 StatusText = responseModel.StatusText,
                 DateTime = responseModel.DateTime,
                 Amount = responseModel.Amount,
-                Fees = responseModel.Fees
+                Fees = responseModel.Fees,
+                DetailsList = {
+                    responseModel.DetailsList?.Select(p =>
+                        new Protos.Details { Key = p.Key, Value = p.Value }
+                    ) ?? Enumerable.Empty<Protos.Details>()
+                }
             };
         }
     }

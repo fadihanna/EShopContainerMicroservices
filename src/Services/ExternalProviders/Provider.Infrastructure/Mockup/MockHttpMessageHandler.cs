@@ -1,31 +1,30 @@
-﻿using System.Net;
+﻿using Microsoft.Extensions.Configuration;
+using System.Net;
 using System.Text;
-using System.Text.Json;
 
 namespace Provider.Infrastructure.Mockup
 {
 
     public class MockHttpMessageHandler : HttpMessageHandler
     {
+        private readonly IConfiguration _configuration;
+
+        public MockHttpMessageHandler(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var mockResponse = new
-            {
-                success = true,
-                transaction_id = "20604413943744",
-                ServiceVersion = 534,
-                chargeAmount = 3.0,
-                amount = 50.0,
-                parameterInput = "01010435825",
-                StatusText = "ناجح",
-                InfoText = (string?)null,
-                inquiry_transaction_id = (string?)null
-            };
+            var parentPath = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName;
+            string mockupPath = _configuration["ProviderSettings:MasarySettings:MockupInquiryResponsePath"];
 
-            var jsonResponse = JsonSerializer.Serialize(mockResponse);
+            string fileName = Path.Combine(parentPath, mockupPath, "MasaryInquiryResponse.json");
+
+            string result = File.ReadAllText(fileName);
+
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
+                Content = new StringContent(result, Encoding.UTF8, "application/json")
             };
 
             return await Task.FromResult(response);

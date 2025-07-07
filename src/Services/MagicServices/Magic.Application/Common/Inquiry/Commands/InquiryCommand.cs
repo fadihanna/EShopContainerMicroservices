@@ -25,7 +25,9 @@
             var inquiryRequestModel = request.Request.ToStandardRequest(denominationProvider.ProviderCode, denominationProvider.ProviderId);
             
             var response = await _externalProviderInquiryService.InquiryAsync(inquiryRequestModel, cancellationToken);
-            return response.ToModelResponse();
+            //TODO
+            //RequestID to be inserted in requests table
+            return response.ToModelResponse(1);
         }
     }
 }

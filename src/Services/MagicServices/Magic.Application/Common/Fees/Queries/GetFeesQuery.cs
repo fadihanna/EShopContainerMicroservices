@@ -19,7 +19,7 @@
             if (denominationProvider.IsNullResult)
                 throw new InquiryResponseException(DomainEnums.InternalErrorCode.EntityNotFound);
 
-            var feesRequestModel = query.Request.ToStandardRequest();
+            var feesRequestModel = query.Request.ToStandardRequest(denominationProvider.ProviderCode);
 
             var response = await _externalProviderFeesService.FeesAsync(feesRequestModel, cancellationToken);
 

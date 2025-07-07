@@ -16,7 +16,7 @@ namespace Magic.Application.Extensions
                 ProviderId: providerId
             );
         }
-        public static InquiryResponseDto ToModelResponse(this InquiryResponseModel inquiryResponseDto)
+        public static InquiryResponseDto ToModelResponse(this InquiryResponseModel inquiryResponseDto, int requestId)
         {
             return new InquiryResponseDto
             (
@@ -26,7 +26,8 @@ namespace Magic.Application.Extensions
                 DateTime: inquiryResponseDto.DateTime,
                 Amount: inquiryResponseDto.Amount,
                 Fees: inquiryResponseDto.Fees,
-                DetailsList: inquiryResponseDto.DetailsList.Select(p => new ApplicationModels.Details(Key: p.Key, Value: p.Value)).ToList()
+                RequestId: requestId,
+                DetailsList: inquiryResponseDto.DetailsList.Select(p => new ApplicationModels.Details(Key: p.Key.Trim(), Value: p.Value)).ToList()
             );
         }
     }

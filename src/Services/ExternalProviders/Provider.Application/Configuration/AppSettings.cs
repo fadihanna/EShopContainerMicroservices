@@ -103,7 +103,7 @@ public class MasarySettings
     public string Terminal { get; set; } = string.Empty;
     public string TransactionInquiryAction { get; set; } = string.Empty;
     public string TransactionPaymentAction { get; set; } = string.Empty;
-
+    public string MockupPath { get; set; } = string.Empty;
     public int Version { get; set; }
 }
 

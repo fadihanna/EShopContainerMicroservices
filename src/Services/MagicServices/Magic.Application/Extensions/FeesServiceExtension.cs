@@ -2,12 +2,12 @@
 {
     public static class FeesServiceExtension
     {
-        public static FeesRequestModel ToStandardRequest(this FeesRequestDto feesRequestDto)
+        public static FeesRequestModel ToStandardRequest(this FeesRequestDto feesRequestDto, string providerCode)
         {
             return new FeesRequestModel(
                 RequestId: feesRequestDto.RequestId,
                 Amount: feesRequestDto.Amount,
-                ProviderCode: feesRequestDto.ProviderCode,
+                ProviderCode: providerCode,
                 ProviderId: feesRequestDto.ProviderId
             );
         }

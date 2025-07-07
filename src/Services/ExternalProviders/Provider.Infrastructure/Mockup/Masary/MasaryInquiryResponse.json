@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "language": "ar",
+  "action": "TransactionInquiry",
+  "version": 2,
+  "data": {
+    "transaction_id": "406414792908",
+    "status": 2,
+    "status_text": "ناجح",
+    "date_time": "05/03/2023 14:43:45",
+    "info_text": "Billing Account: 03100058253\nClient Name:  ساره احمد سعدالدين محمود \nDue Date: 2023-04-02\nالقيمة المستحقة للفاتورة 1267",
+    "amount": 1267.0,
+    "min_amount": 1.0,
+    "max_amount": 100000.0
+  }
+}

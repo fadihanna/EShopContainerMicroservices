@@ -49,14 +49,29 @@ namespace Provider.Application.Services.Masary.Extensions
         }
         private static InquiryResponseModel StandardFromMasary(MasaryInquiryResponse? masaryInquiryResponse)
         {
-            return new InquiryResponseModel(
-                TransactionId: masaryInquiryResponse?.transaction_id ?? "N/A",
-                Status: masaryInquiryResponse?.InquiryResponseDetails?.status ?? "Unknown",
-                StatusText: masaryInquiryResponse?.StatusText ?? "No status text",
+            var detailsList = masaryInquiryResponse.data.info_text.Split('\n')
+                .Select(line =>
+                {
+                    var colonIndex = line.IndexOf(':');
+                    if (colonIndex < 0)
+                    {
+                        // Handle lines without colons (like the last Arabic line)
+                        return new Details("Note", line.Trim());
+                    }
+
+                    var key = line.Substring(0, colonIndex).Trim();
+                    var value = line.Substring(colonIndex + 1).Trim();
+                    return new Details(key.Trim(), value);
+                })
+                .ToList();
+             return new InquiryResponseModel(
+                TransactionId: masaryInquiryResponse?.data?.transaction_id ?? "N/A",
+                Status: masaryInquiryResponse?.data.status == 2 ? "Success" : "Fail",
+                StatusText: masaryInquiryResponse?.data?.status_text,
                 DateTime: DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                Amount: masaryInquiryResponse?.amount ?? 0.0,
-                Fees: masaryInquiryResponse?.chargeAmount ?? 0.0,
-                              DetailsList: new List<Details>()
+                Amount: masaryInquiryResponse?.data?.amount ?? 0.0,
+                Fees: 0.0,
+                DetailsList: detailsList
             );
         }
     }

@@ -53,6 +53,7 @@ namespace MagicServices.API.Middlewares
                 StatusText: message,
                 Amount:0,
                 Fees:0,
+                RequestId:0,
                 DateTime: DateTime.UtcNow.ToString(),
                 DetailsList: new List<Details>()
             );
@@ -71,6 +72,7 @@ namespace MagicServices.API.Middlewares
                 StatusText: errorMessage,
                 Amount: 0,
                 Fees: 0,
+                RequestId:0,
                 DateTime: DateTime.UtcNow.ToString(),
                 DetailsList: new List<Details>()
             );

@@ -6,6 +6,7 @@ public record InquiryResponseDto(
     string DateTime,
     double Amount,
     double Fees,
+    int RequestId,
     List<Details> DetailsList
 );
 

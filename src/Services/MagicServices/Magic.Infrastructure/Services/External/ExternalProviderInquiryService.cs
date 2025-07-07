@@ -25,14 +25,12 @@ namespace Magic.Infrastructure.Services.External
                 ProviderId = request.ProviderId
             };
 
-            // Map InputParameterList from InquiryRequestModel to InquiryRequest
             inquiryRequestProto.InputParameterList.AddRange(
                 request.InputParameterList.Select(p => new InputParameter { Key = p.Key, Value = p.Value })
             );
 
             var response = await _providerInquiryProto.InquiryAsync(inquiryRequestProto);
 
-            // Map the response to InquiryResponseModel
             return new InquiryResponseModel(
                 TransactionId: response.TransactionId,
                 Status: response.Status,
