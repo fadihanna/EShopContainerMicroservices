@@ -45,6 +45,7 @@ public static class DependencyInjection
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         services.AddScoped<IDenominationSpecification, DenominationSpecification>();
         services.AddScoped<IProviderSpecification, ProviderSpecification>();
+        services.AddScoped<IExternalProviderPaymentService, ExternalProviderPaymentService>();
         services.AddScoped<IExternalProviderInquiryService, ExternalProviderInquiryService>();
         services.AddScoped<IExternalProviderFeesService, ExternalProviderFeesService>();
         services.AddScoped<ILookUpSpecification, LookUpSpecification>();
@@ -78,7 +79,10 @@ public static class DependencyInjection
         {
             options.Address = new Uri("http://localhost:6002");
         });
-
+        services.AddGrpcClient<ProviderPaymentProtoService.ProviderPaymentProtoServiceClient>(options =>
+        {
+            options.Address = new Uri("http://localhost:6001");
+        });
         //Mapster
         var config = TypeAdapterConfig.GlobalSettings;
         config.Scan(typeof(MappingConfig).Assembly);

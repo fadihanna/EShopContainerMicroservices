@@ -1,12 +1,15 @@
 ﻿using BuildingBlocks.Enums;
 using BuildingBlocks.Exceptions;
+using BuildingBlocks.Models;
+using Magic.Application.Common.Interfaces;
+using Magic.Application.Dtos.Common;
 
 namespace Magic.Application.Common.Payment.Commands
 {
-    public record InsertTransactionCommand(PaymentRequestModel Transaction)
+    public record InsertTransactionCommand(PaymentRequestDto Transaction, string userId)
        : ICommand<InsertTransactionResponse>;
 
-    public record InsertTransactionResponse(PaymentResponseModel PaymentResponseModel);
+    public record InsertTransactionResponse(PaymentResponseDto paymentResponseDto);
 
     public class InsertTransactionHandler
     : ICommandHandler<InsertTransactionCommand, InsertTransactionResponse>
@@ -15,16 +18,19 @@ namespace Magic.Application.Common.Payment.Commands
         private readonly IPaymentGatewayClientService _paymentGatewayClientService;
         private readonly IDenominationSpecification _denominationSpecification;
         private readonly IRequestSepecification _requestSepecification;
+        private readonly IExternalProviderPaymentService _externalProviderPaymentService;
 
         public InsertTransactionHandler(IRequestSepecification requestSepecification,
             IDenominationSpecification denominationSpecification,
             ITransactionSpecification transactionSpecification,
-            IPaymentGatewayClientService paymentGatewayClientService)
+            IPaymentGatewayClientService paymentGatewayClientService, IExternalProviderPaymentService externalProviderPaymentService)
         {
             _transactionSpecification = transactionSpecification;
             _denominationSpecification = denominationSpecification;
             _requestSepecification = requestSepecification;
             _paymentGatewayClientService = paymentGatewayClientService;
+            _externalProviderPaymentService = externalProviderPaymentService;
+
         }
         public async Task<InsertTransactionResponse> Handle(InsertTransactionCommand command, CancellationToken cancellationToken)
         {
@@ -36,42 +42,73 @@ namespace Magic.Application.Common.Payment.Commands
 
             var request = await _requestSepecification.InsertRequestAsync(new Request()
             {
-                Amount = command.Transaction.TotalAmount,
+                Amount = Convert.ToDecimal(command.Transaction.Amount),
                 BillingAccount = command.Transaction.BillingAccount,
                 DenominationId = command.Transaction.DenominationId,
-                RequestDate = DateTime.UtcNow, //test
-                ResponseDate = DateTime.UtcNow, // test
+                RequestDate = DateTime.UtcNow,
+                ResponseDate = DateTime.UtcNow,
                 Status = Convert.ToInt32(RequestStatus.PaymentInitiate),
-                UserId = "george" // test,
+                UserId = command.userId
             }, cancellationToken);
 
+
+            PaymentRequestModel paymentRequestModel = new PaymentRequestModel()
+            {
+                Amount = Convert.ToDecimal(command.Transaction.Amount),
+                ProviderCode = DPC.ProviderCode,
+                BillingAccount = command.Transaction.BillingAccount,
+                DenominationId = denomination.Id,
+                Fees = Convert.ToDecimal(command.Transaction.Fees),
+                quantity = command.Transaction.Quantity,
+                TotalAmount = Convert.ToDecimal(command.Transaction.Amount) + Convert.ToDecimal(command.Transaction.Fees),
+                RequestId = command.Transaction.RequestId,
+                PaymentProviderId = command.Transaction.ProviderId,
+                InquiryReferenceNumber = command.Transaction.ProviderReferenceNumber,
+                UserId = command.userId,
+                ProviderTransactionId = "123456789",
+                ProviderId = DPC.ProviderId
+            };
             // call provider api
+            var response = await _externalProviderPaymentService.PaymentAsync(paymentRequestModel, cancellationToken);
 
-            await PaymentProcessor(command, cancellationToken);
+            //await PaymentProcessor(command, cancellationToken);
 
-            var transaction = TransactionExtensions.CreateTransaction(command.Transaction);
+            var transaction = TransactionExtensions.CreateTransaction(paymentRequestModel);
             await _transactionSpecification.InsertAsync(transaction, cancellationToken);
 
-            for (int i = 0; i < command.Transaction.quantity; i++) // in case of vouchers
+            for (int i = 0; i < command.Transaction.Quantity; i++) // in case of vouchers
             { }
             await _requestSepecification.UpdateRequestStatusAsync(request, Convert.ToInt32(RequestStatus.PaymentSuccess), cancellationToken);
 
-            var paymentResponseModel = new PaymentResponseModel
+            /*var paymentResponseModel = new PaymentResponseModel
             {
                 TransactionId = transaction.Id, // invoiceId
                 ProviderTransactionId = "20259238123", // from api
                 UserId = "george",
-                TotalAmount = command.Transaction.TotalAmount,
+                TotalAmount = paymentRequestModel.TotalAmount,
                 Message = "Success",
                 Code = "200"
-            };
-            return new InsertTransactionResponse(paymentResponseModel);
+            };*/
+
+            var paymentResponseDto = new PaymentResponseDto(
+            providerTransactionId: paymentRequestModel.ProviderTransactionId,
+            transactionId: paymentRequestModel.InquiryReferenceNumber,
+            Status: "Success",
+            StatusText: "Payment completed successfully",
+            TransactionTime: DateTime.UtcNow.ToString(),
+            Amount: Convert.ToString(command.Transaction.Amount),
+            Fees: Convert.ToString(command.Transaction.Fees),
+            totalAmount: Convert.ToString(paymentRequestModel.TotalAmount),
+            billingAccount: paymentRequestModel.BillingAccount,
+            DetailsList: null
+ );
+            return new InsertTransactionResponse(paymentResponseDto);
         }
         private async Task<PaymentGatewayResponseDto> PaymentProcessor(InsertTransactionCommand command, CancellationToken cancellationToken)
         {
             var paymentRequest = new PaymentGatewayRequestDto(
-                Amount: Convert.ToDouble(command.Transaction.TotalAmount),
-                Provider: command.Transaction.PaymentProviderId.ToString(),
+                Amount: Convert.ToDouble(command.Transaction.Amount) + Convert.ToDouble(command.Transaction.Fees),
+                Provider: command.Transaction.ProviderId.ToString(),
                 Currency: "EGP"
             );
             var paymentResponse = await _paymentGatewayClientService.ProcessPaymentAsync(paymentRequest, cancellationToken);

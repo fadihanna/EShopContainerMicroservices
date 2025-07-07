@@ -11,6 +11,7 @@ namespace Magic.Application.Extensions
         private static TransactionDto DtoFromTransaction(this Transaction transaction)
         {
             return new TransactionDto(
+                Id: transaction.Id,
                 UserId: transaction.UserId,
                 Amount: transaction.Amount,
                 Fees: transaction.Fees,
@@ -20,7 +21,7 @@ namespace Magic.Application.Extensions
                 PaymentProviderId: transaction.PaymentProviderId,
                 Status: transaction.Status,
                 BillingAccount: transaction.BillingAccount,
-                quantity:0,
+                quantity: 0,
                 IsRefunded: transaction.IsRefunded
             );
         }
@@ -51,7 +52,7 @@ namespace Magic.Application.Extensions
         {
             var newTransaction = Magic.Domain.Models.Transaction.Create(
                 isRefunded: false,
-                userId: "george",
+                userId: transactionDto.UserId,
                 amount: transactionDto.Amount,
                 fees: transactionDto.Fees,
                 totalAmount: transactionDto.TotalAmount,

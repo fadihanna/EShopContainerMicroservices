@@ -1,13 +1,14 @@
 ﻿namespace Magic.Application.Dtos.Common;
-public record PaymentResponseDto (
+
+public record PaymentResponseDto(
      string providerTransactionId,
-     string invoiceId,
-     string code,
-     string message,
-     DateTime transactionTime,
+     string transactionId,
+     string Status,
+     string StatusText,
+     string TransactionTime,
+     string Amount,
+     string Fees,
      string totalAmount,
      string billingAccount,
-     int denominationId,
-     string userId,
      List<Details> DetailsList
 );
