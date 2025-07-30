@@ -22,7 +22,9 @@ namespace Magic.Application.Extensions
                 Status: transaction.Status,
                 BillingAccount: transaction.BillingAccount,
                 quantity: 0,
-                IsRefunded: transaction.IsRefunded
+                IsRefunded: transaction.IsRefunded,
+                CreatedAt :  Convert.ToDateTime(transaction.CreatedAt),
+                providerTransactionId : transaction.ProviderTransactionId   
             );
         }
         public static Transaction DtoToTransaction(TransactionDto transactionDto)

@@ -37,7 +37,7 @@ namespace MagicServices.API.Controllers
             return Ok((await Mediator.Send(new InsertTransactionCommand(model.Transaction), cancellationToken)).paymentResponseDto);
         }
 
-        [HttpGet("get-transaction-invoiceId")]
+        [HttpGet("transaction-details")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -45,17 +45,17 @@ namespace MagicServices.API.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PaymentResponseModel>> GetTransactionByInvoiceId(
-          int Id, CancellationToken cancellationToken = default)
-           => Ok(await Mediator.Send(new GetTransactionByIdQuery(Id), cancellationToken));
+          int transactionId, CancellationToken cancellationToken = default)
+           => Ok(await Mediator.Send(new GetTransactionByIdQuery(transactionId), cancellationToken));
 
-        [HttpGet("get-transactions-userId")]
+        [HttpGet("transaction-history")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<List<PaymentResponseModel>>> GetTransactionByUserId(
+        public async Task<ActionResult<List<TransactionDto>>> GetTransactionByUserId(
              string userId, CancellationToken cancellationToken = default)
               => Ok(await Mediator.Send(new GetTransactionByUserIdQuery(userId), cancellationToken));
 

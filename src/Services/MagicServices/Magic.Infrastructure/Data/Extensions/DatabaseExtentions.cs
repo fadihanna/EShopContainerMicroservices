@@ -10,14 +10,13 @@ public static class DatabaseExtentions
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
          var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-        await SeedAsync(context, app);
+        //await SeedAsync(context, app);
 
-        if (pendingMigrations.Any())
+        /*if (pendingMigrations.Any())
         {
             await context.Database.MigrateAsync();
             return;
-
-        }
+        }*/
 
          if (await context.Providers.AnyAsync()) return;
 

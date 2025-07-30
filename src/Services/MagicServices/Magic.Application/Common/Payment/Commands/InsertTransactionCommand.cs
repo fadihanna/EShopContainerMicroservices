@@ -81,7 +81,7 @@ namespace Magic.Application.Common.Payment.Commands
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
             for (int i = 0; i < command.Transaction.Quantity; i++) // in case of vouchers
             { }

@@ -16,9 +16,9 @@ namespace Magic.Infrastructure.Data.Specifications
         {
             throw new NotImplementedException();
         }
-        public async Task<Transaction> GetByInvoiceId(int invoiceId, CancellationToken cancellationToken)
+        public async Task<Transaction> GetByInvoiceId(int id, CancellationToken cancellationToken)
         {
-            return await _context.Transactions.FirstOrDefaultAsync(x => x.Id == invoiceId);
+            return await _context.Transactions.FirstOrDefaultAsync(x => x.Id == id);
         }
         public Task<Transaction> GetByStatusId(int Status, CancellationToken cancellationToken)
         {

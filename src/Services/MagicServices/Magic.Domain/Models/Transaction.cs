@@ -20,7 +20,9 @@ namespace Magic.Domain.Models
         public int PaymentProviderId { get; set; }
         public PaymentProvider PaymentProvider { get; set; }
         public int Status { get; set; } = 1;
-        public string BillingAccount { get; set; }
+        public string? BillingAccount { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public string? ProviderTransactionId { get; set; }
 
         public static Transaction Create(
             bool isRefunded,
@@ -57,7 +59,8 @@ namespace Magic.Domain.Models
                 DenominationId = denominationId,
                 PaymentProviderId = paymentProviderId, 
                 Status = status,
-                BillingAccount = billingAccount
+                BillingAccount = billingAccount,
+                CreatedAt = DateTime.UtcNow
             };
         }
     }

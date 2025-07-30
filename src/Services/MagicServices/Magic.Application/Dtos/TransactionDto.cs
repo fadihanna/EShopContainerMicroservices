@@ -13,6 +13,8 @@
      string BillingAccount,
      int quantity,
      //List<InputParameter> InputParameterList,
+     DateTime CreatedAt,
+     string providerTransactionId,
      bool IsRefunded = false
     );
 }

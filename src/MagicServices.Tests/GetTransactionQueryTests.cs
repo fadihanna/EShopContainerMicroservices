@@ -75,6 +75,7 @@ namespace MagicServices.Tests
             var mockedTransaction = new Magic.Domain.Models.Transaction
             {
                 Id = 1000,
+                ProviderTransactionId ="2025023123",
                 UserId = "george",
                 Amount = 50,
                 Fees = 5,
@@ -84,7 +85,7 @@ namespace MagicServices.Tests
             };
 
             _mockTransactionSpecification
-                .Setup(x => x.GetByInvoiceId(mockedTransaction.Id, It.IsAny<CancellationToken>()))
+                .Setup(x => x.GetByInvoiceId( mockedTransaction.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mockedTransaction);
 
             var query = new GetTransactionByIdQuery(mockedTransaction.Id);
