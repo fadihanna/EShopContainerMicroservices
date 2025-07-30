@@ -1,0 +1,14 @@
+{
+  "result": {
+    "userServiceDataFileds": { "billing_amount": 296.4 },
+    "inquire_id": "0034250726161718283"
+  },
+  "status": {
+    "level": "0",
+    "code": "success",
+    "msg": {
+      "UserMessage": "success",
+      "UserMessageAr": "عملية ناجحة"
+    }
+  }
+}

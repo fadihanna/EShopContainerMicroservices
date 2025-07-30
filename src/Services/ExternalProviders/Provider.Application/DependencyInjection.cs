@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Provider.Application.Common;
 using Provider.Application.Logging;
+using Provider.Application.Services.Damen;
 using Provider.Application.Services.Masary;
 using System.Resources;
 
@@ -17,6 +18,7 @@ namespace Provider.Application
             services.AddScoped<ProviderServiceInquiryImplement>();
             services.AddScoped<ExternalApiProviderFactory>();
             services.AddScoped<MasaryApiWrapper>();
+            services.AddScoped<DamenApiWrapper>();
             services.AddTransient<LoggingHandler>();
             services.AddTransient<ApiExceptionHandler>();
             services.AddHttpContextAccessor();

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "userServiceDataFileds": {},
+    "balance": "866986.0749",
+    "referance_id": "866000034202507261989",
+    "formatedReferance_id": "8660000342507261989",
+    "inquire_id": "003425072616171395",
+    "pool_name": "Magicpay Credit",
+    "providerData": {}
+  },
+  "status": {
+    "level": "0",
+    "code": "success",
+    "msg": {
+      "UserMessage": "success",
+      "UserMessageAr": "عملية ناجحة"
+    }
+  }
+}

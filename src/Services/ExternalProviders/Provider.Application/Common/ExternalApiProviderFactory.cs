@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Provider.Application.Common.Interfaces;
+using Provider.Application.Services.Damen;
 using Provider.Application.Services.Masary;
 using Provider.Application.Services.Momkn;
 
@@ -20,6 +21,8 @@ public class ExternalApiProviderFactory
         {
             CommonEnums.Provider.Masary => _serviceProvider.GetRequiredService<MasaryApiWrapper>(),
             CommonEnums.Provider.Momkn => _serviceProvider.GetRequiredService<MomknApiWrapper>(),
+            CommonEnums.Provider.Damen => _serviceProvider.GetRequiredService<DamenApiWrapper>(),
+
             _ => throw new NotImplementedException($"No provider found for ID: {provider}")
         };
     }

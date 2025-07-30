@@ -1,10 +1,13 @@
 using Provider.Application;
 using Provider.Application.Configuration;
 using Provider.Application.Logging;
+using Provider.Application.Services.Damen;
 using Provider.Application.Services.Masary;
 using Provider.Grpc;
 using Provider.Infrastructure;
 using Provider.Infrastructure.Mockup;
+using Provider.Infrastructure.Mockup.Damen;
+using Provider.Infrastructure.Services.External.Damen.Services;
 using Provider.Infrastructure.Services.External.Masary.Services;
 using Serilog;
 
@@ -18,6 +21,8 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHttpClient<IMasaryApiClient, MasaryApiClient>()
         .ConfigurePrimaryHttpMessageHandler(() => new MockHttpMessageHandler(builder.Configuration));
+    builder.Services.AddHttpClient<IDamenApiClient, DamenApiClient>()
+        .ConfigurePrimaryHttpMessageHandler(() => new DamenMockHttpMessageHandler(builder.Configuration));
 }
 else
 {

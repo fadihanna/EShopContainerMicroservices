@@ -92,6 +92,7 @@ public class ProviderSettings
 {
     public MasarySettings MasarySettings { get; set; }
     public MomknSettings MomknSettings { get; set; }
+    public DamenSettings DamenSettings { get; set; }
 }
 
 public class MasarySettings
@@ -109,4 +110,14 @@ public class MasarySettings
 
 public class MomknSettings
 {
+ }
+
+public class DamenSettings
+{
+    public string DamenBaseURL { get; set; } = string.Empty;
+    public string DamenClientID { get; set; } = string.Empty;
+    public string DamenKey { get; set; } = string.Empty;
+    public string DamenAppVersion { get; set; } = string.Empty;
+    public string MockupPath { get; set; } = string.Empty;
+
 }

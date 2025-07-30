@@ -24,4 +24,9 @@
     <ProjectReference Include="..\Provider.Domain\Provider.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Fawry\Extensions\" />
+    <Folder Include="Services\Fawry\Models\" />
+  </ItemGroup>
+
 </Project>

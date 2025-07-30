@@ -31,11 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Grpc", "Services\E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Application", "Services\ExternalProviders\Provider.Application\Provider.Application.csproj", "{87FC029D-18B6-4E27-B3CA-035C07B45B73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicServices.Tests", "MagicServices.Tests\MagicServices.Tests.csproj", "{A760DF6E-BE8E-419B-9C57-A7815FCA07FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicServices.Tests", "MagicServices.Tests\MagicServices.Tests.csproj", "{A760DF6E-BE8E-419B-9C57-A7815FCA07FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PaymentGateway", "PaymentGateway", "{810BA686-1D94-4C41-96E1-8A61324E8D41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Grpc", "Services\PaymentGateway\PaymentGateway.Grpc\PaymentGateway.Grpc.csproj", "{D246535D-86F7-4399-8345-8F7CC3D7EFFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.Grpc", "Services\PaymentGateway\PaymentGateway.Grpc\PaymentGateway.Grpc.csproj", "{D246535D-86F7-4399-8345-8F7CC3D7EFFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
