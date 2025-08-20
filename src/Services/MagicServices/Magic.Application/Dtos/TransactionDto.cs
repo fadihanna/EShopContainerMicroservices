@@ -13,6 +13,7 @@
      string BillingAccount,
      int quantity,
      //List<InputParameter> InputParameterList,
+     string ProviderTransactionId,
      bool IsRefunded = false
-    );
+     );
 }

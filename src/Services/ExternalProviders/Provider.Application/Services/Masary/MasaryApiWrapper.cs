@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Models;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Provider.Application.Common;
 using Provider.Application.Common.Interfaces;
 using Provider.Application.Configuration;
@@ -28,7 +29,7 @@ namespace Provider.Application.Services.Masary
             _exceptionHandler = exceptionHandler;
         }
 
-        public async Task<InquiryResponseModel> SendInquiryRequestAsync(InquiryRequestModel providerRequest)
+/*        public async Task<InquiryResponseModel> SendInquiryRequestAsync(InquiryRequestModel providerRequest)
         {
             return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
             {
@@ -38,16 +39,87 @@ namespace Provider.Application.Services.Masary
                 return response.MasaryToStandard();
             }, "SendInquiryRequestAsync");
         }
-
-        public async Task<PaymentResponseModel> SendPaymentRequestAsync(PaymentRequestModel providerRequest)
+*/        public async Task<InquiryResponseModel> SendInquiryRequestAsync(InquiryRequestModel providerRequest)
         {
             return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
             {
-                var serviceParameters = await GetServiceParametersAsync(int.Parse(providerRequest.ProviderCode));
-                var masaryPaymentRequest = providerRequest.ToMasaryRequest(_masarySettings.ProviderSettings.MasarySettings, serviceParameters);
-                var response = await _client.SendPaymentRequestAsync(masaryPaymentRequest, _masarySettings.ProviderSettings.MasarySettings.MasaryURLTransaction);
-                return response.MasaryToStandard(providerRequest);
-            }, "SendPaymentRequestAsync", providerRequest);
+                var json = @"{
+          ""success"": true,
+          ""language"": ""ar"",
+          ""action"": ""TransactionInquiry"",
+          ""version"": 2,
+          ""data"": {
+            ""transaction_id"": ""406414792908"",
+            ""status"": 2,
+            ""status_text"": ""ناجح"",
+            ""date_time"": ""05/03/2023 14:43:45"",
+            ""info_text"": ""Billing Account: 03100058253\nClient Name:  ساره احمد سعدالدين محمود \nDue Date: 2023-04-02\nالقيمة المستحقة للفاتورة 1267"",
+            ""amount"": 1267.0,
+            ""min_amount"": 1.0,
+            ""max_amount"": 100000.0
+          }
+        }";
+                var mockResponse = JsonConvert.DeserializeObject<InquiryResponseModel>(json);
+                return mockResponse;
+            }, "SendInquiryRequestAsync");
+        }
+
+        /* public async Task<PaymentResponseModel> SendPaymentRequestAsync(PaymentRequestModel providerRequest)
+         {
+             return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
+             {
+                 var serviceParameters = await GetServiceParametersAsync(int.Parse(providerRequest.ProviderCode));
+                 var masaryPaymentRequest = providerRequest.ToMasaryRequest(_masarySettings.ProviderSettings.MasarySettings, serviceParameters);
+                 var response = await _client.SendPaymentRequestAsync(masaryPaymentRequest, _masarySettings.ProviderSettings.MasarySettings.MasaryURLTransaction);
+                 return response.MasaryToStandard(providerRequest);
+             }, "SendPaymentRequestAsync", providerRequest);
+         }*/
+
+        public async Task<PaymentResponseModel> SendPaymentRequestAsync(PaymentRequestModel providerRequest)
+        {
+            var json = @"{
+  ""success"": true,
+  ""language"": ""ar"",
+  ""action"": ""TransactionPayment"",
+  ""version"": 2,
+  ""data"": {
+    ""transaction_id"": ""322702204609"",
+    ""status"": ""SUCCESS"",
+    ""status_text"": ""ناجح"",
+    ""date_time"": ""15/08/2022 02:06:08"",
+    ""details_list"": [
+      [
+        {
+          ""key"": ""pmt_id"",
+          ""value"": ""322702204609""
+        },
+        {
+          ""key"": ""bill_description"",
+          ""value"": ""محفوظ معوض ع الحميد - ش عوضهاشم من ال شاح ا0""
+        },
+        {
+          ""key"": ""bill_date"",
+          ""value"": """"
+        },
+        {
+          ""key"": ""amount_due"",
+          ""value"": ""9.0""
+        },
+        {
+          ""key"": ""fee_amount"",
+          ""value"": ""1.14""
+        },
+        {
+          ""key"": ""amount"",
+          ""value"": ""10.14""
+        }
+      ]
+    ]
+  }
+}";
+            var mockResponse = JsonConvert.DeserializeObject<PaymentResponseModel>(json);
+            return mockResponse;
+
         }
 
         public async Task<List<ServiceParameterDto>> GetServiceParametersAsync(int serviceId)

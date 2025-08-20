@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Enums;
 using BuildingBlocks.Exceptions;
+using BuildingBlocks.Models;
 
 namespace Magic.Application.Common.Payment.Commands
 {
@@ -69,9 +70,38 @@ namespace Magic.Application.Common.Payment.Commands
             // call provider api
             var response = await _externalProviderPaymentService.PaymentAsync(paymentRequestModel, cancellationToken);
 
-            //await PaymentProcessor(command, cancellationToken);
+            // var paymentGatewayResult = await PaymentProcessor(command, cancellationToken);
+
+            // Step 1: create checkout
+            var paymentGatewayResult = await PaymentProcessorInitiate(command, cancellationToken);
+
+            // Create pending transaction record
+            var transaction = TransactionExtensions.CreateTransaction(paymentRequestModel);
+            transaction.Status = Convert.ToInt32(RequestStatus.PaymentInitiate);
+            transaction.ProviderTransactionId = paymentGatewayResult.PaymentProviderTransactionId; // EBE checkoutId
+
+            await _transactionSpecification.InsertAsync(transaction, cancellationToken);
+
+            // Return checkoutId to frontend (so iframe can be loaded)
+            var paymentResponseDto = new PaymentResponseDto(
+                providerTransactionId: null,
+                transactionId: transaction.Id.ToString(),
+                Status: "Pending",
+                StatusText: "Checkout created, awaiting payment",
+                TransactionTime: DateTime.UtcNow.ToString(),
+                Amount: Convert.ToString(command.Transaction.Amount),
+                Fees: Convert.ToString(command.Transaction.Fees),
+                totalAmount: Convert.ToString(paymentRequestModel.TotalAmount),
+                billingAccount: paymentRequestModel.BillingAccount,
+                DetailsList: null
+            );
+            return new InsertTransactionResponse(paymentResponseDto);
+
+/*
+
 
             var transaction = TransactionExtensions.CreateTransaction(paymentRequestModel);
+
             try
             {
 
@@ -87,7 +117,7 @@ namespace Magic.Application.Common.Payment.Commands
             { }
             await _requestSepecification.UpdateRequestStatusAsync(request, Convert.ToInt32(RequestStatus.PaymentSuccess), cancellationToken);
 
-            /*var paymentResponseModel = new PaymentResponseModel
+            *//*var paymentResponseModel = new PaymentResponseModel
             {
                 TransactionId = transaction.Id, // invoiceId
                 ProviderTransactionId = "20259238123", // from api
@@ -95,7 +125,7 @@ namespace Magic.Application.Common.Payment.Commands
                 TotalAmount = paymentRequestModel.TotalAmount,
                 Message = "Success",
                 Code = "200"
-            };*/
+            };*//*
 
             var paymentResponseDto = new PaymentResponseDto(
             providerTransactionId: paymentRequestModel.ProviderTransactionId,
@@ -110,13 +140,16 @@ namespace Magic.Application.Common.Payment.Commands
             DetailsList: response.DetailsList
  );
             return new InsertTransactionResponse(paymentResponseDto);
-        }
-        private async Task<PaymentGatewayResponseDto> PaymentProcessor(InsertTransactionCommand command, CancellationToken cancellationToken)
+*/        }
+
+
+        private async Task<PaymentGatewayResponseDto> PaymentProcessorInitiate(InsertTransactionCommand command, CancellationToken cancellationToken)
         {
             var paymentRequest = new PaymentGatewayRequestDto(
                 Amount: Convert.ToDouble(command.Transaction.Amount) + Convert.ToDouble(command.Transaction.Fees),
                 Provider: command.Transaction.ProviderId.ToString(),
-                Currency: "EGP"
+                Currency: "EGP",
+                checkoutId : ""
             );
             var paymentResponse = await _paymentGatewayClientService.ProcessPaymentAsync(paymentRequest, cancellationToken);
 

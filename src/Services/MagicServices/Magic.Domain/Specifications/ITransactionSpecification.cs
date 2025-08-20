@@ -16,5 +16,7 @@ namespace Magic.Domain.Specifications
         Task<List<Transaction>> GetAllAsync(CancellationToken cancellationToken);
         Task<Transaction> GetByDenominationId(DateTime CreatedAt, int DenominationId);
         Task<Transaction> GetByStatusId(int Status, CancellationToken cancellationToken);
+        Task<int> UpdateAsync(int Id, CancellationToken cancellationToken);
+        Task<Transaction> GetByRequestId(int requestId, CancellationToken cancellationToken);
     }
 }

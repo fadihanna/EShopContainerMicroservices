@@ -1,7 +1,8 @@
-﻿using PaymentGateway.Dto.Order.Request;
+﻿/*using PaymentGateway.Dto.Order.Request;
 using PaymentGateway.Dto.Payment;
 using PaymentGateway.Dto;
 using PaymentGateway.Grpc.Protos;
+using PaymentGateway.Grpc.ClientApi.EbeGateway;
 
 namespace PaymentGateway.Grpc.ClientApi.Paymob
 {
@@ -83,7 +84,6 @@ namespace PaymentGateway.Grpc.ClientApi.Paymob
                         Message = "Failed to create order with Paymob."
                     };
                 }
-
                 // payment
 
                 var paymentRequest = new PaymobPaymentRequest
@@ -147,3 +147,4 @@ namespace PaymentGateway.Grpc.ClientApi.Paymob
         }
     }
 }
+*/

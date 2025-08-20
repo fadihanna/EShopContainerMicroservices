@@ -1,13 +1,21 @@
+﻿using PaymentGateway.Grpc.ClientApi;
+using PaymentGateway.Grpc.ClientApi.EbeGateway;
 using PaymentGateway.Grpc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
+
+builder.Services.AddHttpClient<IEbeGatewayService, EbeGatewayService>();
+
+builder.Services.AddScoped<IPaymentProvider, EbePaymentProvider>();
+
 builder.Services.AddGrpc();
+builder.Services.AddGrpcReflection();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.MapGrpcService<PaymentGatewayService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.MapGrpcReflectionService();
+
+app.MapGet("/", () => "Use a gRPC client to communicate with this service.");
 
 app.Run();

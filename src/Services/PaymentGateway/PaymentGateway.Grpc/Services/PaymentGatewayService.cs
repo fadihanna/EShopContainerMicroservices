@@ -1,22 +1,20 @@
-﻿
-using Grpc.Core;
+﻿using Grpc.Core;
 using PaymentGateway.Grpc.ClientApi;
-using PaymentGateway.Grpc.ClientApi.Paymob;
 using PaymentGateway.Grpc.Protos;
 
 namespace PaymentGateway.Grpc.Services
 {
     public class PaymentGatewayService : PaymentGatewayProtoService.PaymentGatewayProtoServiceBase
     {
-        private readonly IPayMobService _payMobService;
-        public PaymentGatewayService(IPayMobService payMobService)
+        private readonly IPaymentProvider _provider;
+        public PaymentGatewayService(IPaymentProvider provider)
         {
-            _payMobService = payMobService;
+            _provider = provider;
         }
-        public override async Task<PaymentGateway.Grpc.Protos.PaymentResponse> ProcessPayment(PaymentGateway.Grpc.Protos.PaymentRequest request, ServerCallContext context)
+
+        public override async Task<PaymentResponse> ProcessPayment(PaymentRequest request, ServerCallContext context)
         {
-            IPaymentProvider provider = GetPaymentProvider(request.Provider);
-            var result = await provider.ProcessPayment(request);
+            var result = await _provider.ProcessPayment(request);
 
             return new PaymentResponse
             {
@@ -25,12 +23,16 @@ namespace PaymentGateway.Grpc.Services
                 Message = result.Message
             };
         }
-        private IPaymentProvider GetPaymentProvider(string providerId)
+
+        public override async Task<PaymentResponse> VerifyPayment(PaymentRequest request, ServerCallContext context)
         {
-            return providerId switch
+            var result = await _provider.VerifyPayment(request.CheckoutId);
+
+            return new PaymentResponse
             {
-                "1" => new PaymobPaymentProvider(_payMobService),
-                _ => throw new NotSupportedException($"Provider '{providerId}' is not supported.")
+                Success = result.Success,
+                PaymentprovidertransactionId = result.TransactionId,
+                Message = result.Message
             };
         }
     }

@@ -14,20 +14,6 @@ namespace MagicServices.API.Controllers
         public TransactionController(IHostEnvironment environment) : base(environment)
         {
         }
-
-
-        /* [HttpPost("add-transaction")]
-         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-         public async Task<ActionResult<PaymentResponseDto>> PaymentRequest(
-            [FromBody] InsertTransactionCommand model,[FromQuery]string userId ,CancellationToken cancellationToken = default)
-             => Ok(await Mediator.Send(new InsertTransactionCommand(model.Transaction,userId), cancellationToken));
- */
-
         [HttpPost("add-transaction")]
         [ProducesResponseType(typeof(PaymentResponseDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<PaymentResponseDto>> PaymentRequest(
@@ -36,7 +22,14 @@ namespace MagicServices.API.Controllers
         {
             return Ok((await Mediator.Send(new InsertTransactionCommand(model.Transaction), cancellationToken)).paymentResponseDto);
         }
-
+        [HttpPost("confirm-transaction")]
+        [ProducesResponseType(typeof(PaymentResponseDto), StatusCodes.Status200OK)]
+        public async Task<ActionResult<PaymentResponseDto>> ConfirmTransaction(
+        [FromQuery] int requestId,
+         CancellationToken cancellationToken = default)
+        {
+            return Ok((await Mediator.Send(new ConfirmTransactionCommand(requestId), cancellationToken)).paymentResponseDto);
+        }
         [HttpGet("get-transaction-invoiceId")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

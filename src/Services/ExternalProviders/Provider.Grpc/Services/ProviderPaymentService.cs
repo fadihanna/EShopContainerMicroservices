@@ -17,7 +17,6 @@ namespace Provider.Grpc.Services
         {
             var response = await _providerServiceImplement.Payment(request.ToStandardRequest());
             return Provider.Grpc.Extensions.ProviderPaymentServiceExtension.ToGrpcResponse(response);
-
         }
     }
 }

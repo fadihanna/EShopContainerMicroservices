@@ -7,9 +7,10 @@
         FeesInitiate = 3,
         FeesSuccess = 4,
         PaymentInitiate = 5,
-        PaymentSuccess = 6,
-        Success = 7,
-        Fail = 8,
-        ApiCall = 9,
+        PaymentConfirm = 6,
+        PaymentSuccess = 7,
+        Success = 8,
+        Fail = 9,
+        ApiCall = 10,
     }
 }

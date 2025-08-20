@@ -3,5 +3,6 @@
     public record PaymentGatewayRequestDto(
     string Provider,
     double Amount,
-    string Currency);
+    string Currency,
+    string checkoutId);
 }

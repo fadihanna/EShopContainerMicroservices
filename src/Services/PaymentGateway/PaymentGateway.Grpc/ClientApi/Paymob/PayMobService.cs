@@ -1,4 +1,4 @@
-﻿using MagicPaymentAPI.DTO;
+﻿/*using MagicPaymentAPI.DTO;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using PaymentGateway.Dto.Login;
@@ -55,3 +55,4 @@ namespace PaymentGateway.Grpc.ClientApi.Paymob
         }
     }
 }
+*/

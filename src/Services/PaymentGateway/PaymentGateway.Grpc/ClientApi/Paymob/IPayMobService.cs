@@ -1,4 +1,4 @@
-﻿using PaymentGateway.Dto.Login;
+﻿/*using PaymentGateway.Dto.Login;
 using PaymentGateway.Dto.Order.Request;
 using PaymentGateway.Dto.Order.Response;
 using PaymentGateway.Dto.Payment;
@@ -12,3 +12,4 @@ namespace PaymentGateway.Grpc.ClientApi.Paymob
         public Task<PaymobPaymentResponse> Payment(PaymobPaymentRequest paymentRequest);
     }   
 }
+*/

@@ -20,6 +20,12 @@ namespace Magic.Infrastructure.Data.Specifications
         {
             return await _context.Transactions.FirstOrDefaultAsync(x => x.Id == invoiceId);
         }
+
+        public async Task<Transaction> GetByRequestId(int requestId, CancellationToken cancellationToken)
+        {
+            return await _context.Transactions.FirstOrDefaultAsync(x => x.RequestId == requestId);
+        }
+
         public Task<Transaction> GetByStatusId(int Status, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
@@ -34,6 +40,10 @@ namespace Magic.Infrastructure.Data.Specifications
             await _context.SaveChangesAsync(cancellationToken);
             return transaction.Id;
         }
-        
+
+        public Task<int> UpdateAsync(int Id, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

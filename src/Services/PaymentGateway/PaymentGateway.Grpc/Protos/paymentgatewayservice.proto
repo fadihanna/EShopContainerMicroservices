@@ -6,12 +6,14 @@ package PaymentGateway;
 
 service PaymentGatewayProtoService {
   rpc ProcessPayment (PaymentRequest) returns (PaymentResponse);
+  rpc VerifyPayment (PaymentRequest) returns (PaymentResponse);
 }
 
 message PaymentRequest {
   string provider = 1; // e.g., "Paymob"
   double amount = 2;
   string currency = 3;
+  string checkoutId = 4;
 }
 
 message PaymentResponse {

@@ -31,7 +31,7 @@ namespace Provider.Grpc.Extensions
         {
             try
             {
-                return new PaymentResponse
+                /*return new PaymentResponse
                 {
                     Status = Convert.ToString(responseModel.Status),
                     ProviderTransactionId = "1",
@@ -46,7 +46,24 @@ namespace Provider.Grpc.Extensions
                     responseModel.DetailsList?.Select(p =>
                         new DetailsPayment { Key = p.Key, Value = p.Value }
                     ) ?? Enumerable.Empty<DetailsPayment>()
-                }
+                }*/
+                return new PaymentResponse
+                {
+                    Status = Convert.ToString("SUCCESS"),
+                    ProviderTransactionId = "1",
+                    TotalAmount = "5",
+                    Amount = "5",
+                    BillingAccount = "01229411164",
+                    Fees = "2",
+                    StatusText = "SUCCESS",
+                    TransactionId = "322702204609",
+                    TransactionTime = "2025-01-01"
+                    /*DetailsList = {
+                    responseModel.DetailsList?.Select(p =>
+                        new DetailsPayment { Key = p.Key, Value = p.Value }
+                    ) ?? Enumerable.Empty<DetailsPayment>()
+                }*/
+
                 };
             }
             catch (Exception e)

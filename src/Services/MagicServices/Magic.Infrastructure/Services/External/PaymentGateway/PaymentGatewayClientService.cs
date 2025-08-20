@@ -29,5 +29,24 @@ namespace Magic.Infrastructure.Services.External.PaymentGateway
                 PaymentProviderTransactionId: response.PaymentprovidertransactionId
            );
         }
+
+        public async Task<PaymentGatewayResponseDto> VerifyPaymentAsync(PaymentGatewayRequestDto request, CancellationToken cancellationToken)
+        {
+            PaymentRequest paymentRequestProto = new PaymentRequest
+            {
+                Provider = request.Provider,
+                Amount = request.Amount,
+                Currency = request.Currency,
+                CheckoutId = request.checkoutId
+            };
+            // error
+            var response = await _paymentGatewayProto.VerifyPaymentAsync(paymentRequestProto);
+
+            return new PaymentGatewayResponseDto(
+                Success: response.Success,
+                Message: response.Message,
+                PaymentProviderTransactionId: response.PaymentprovidertransactionId
+           );
+        }
     }
 }

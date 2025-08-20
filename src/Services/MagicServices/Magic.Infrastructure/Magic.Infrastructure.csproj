@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\PaymentGateway\PaymentGateway.Grpc\PaymentGateway.Grpc.csproj" />
     <ProjectReference Include="..\Magic.Application\Magic.Application.csproj" />
   </ItemGroup>
 

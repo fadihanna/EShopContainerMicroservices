@@ -2,6 +2,7 @@ using Magic.Application;
 using Magic.Infrastructure;
 using Magic.Infrastructure.Data.Extensions;
 using MagicServices.API;
+using PaymentGateway.Grpc.ClientApi.EbeGateway;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +31,6 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod()
                           .AllowAnyHeader());
 });
-
 
 
 var app = builder.Build();

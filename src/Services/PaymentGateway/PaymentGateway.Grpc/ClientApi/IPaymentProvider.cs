@@ -5,6 +5,8 @@ namespace PaymentGateway.Grpc.ClientApi
 {
     public interface IPaymentProvider
     {
-        Task<PaymentResult> ProcessPayment(PaymentRequest request);
+        Task<PaymentResult>ProcessPayment(PaymentRequest request);
+        Task<PaymentResult> VerifyPayment(string checkoutId); // ebe verify after use pays 
+
     }
 }

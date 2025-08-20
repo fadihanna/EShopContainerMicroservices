@@ -21,6 +21,8 @@ namespace Magic.Domain.Models
         public PaymentProvider PaymentProvider { get; set; }
         public int Status { get; set; } = 1;
         public string BillingAccount { get; set; }
+        public string ProviderTransactionId { get; set; }
+
 
         public static Transaction Create(
             bool isRefunded,
@@ -32,7 +34,8 @@ namespace Magic.Domain.Models
             int denominationId,
             int paymentProviderId,
             int status,
-            string billingAccount
+            string billingAccount,
+            string providerTransactionId
             )
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -57,7 +60,9 @@ namespace Magic.Domain.Models
                 DenominationId = denominationId,
                 PaymentProviderId = paymentProviderId, 
                 Status = status,
-                BillingAccount = billingAccount
+                BillingAccount = billingAccount,
+                ProviderTransactionId = providerTransactionId
+
             };
         }
     }

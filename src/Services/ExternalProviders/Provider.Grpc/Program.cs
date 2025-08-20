@@ -29,12 +29,12 @@ else
     builder.Services.AddHttpClient<IMasaryApiClient, MasaryApiClient>()
         .AddHttpMessageHandler<LoggingHandler>();
 }
-builder.Host.UseSerilog((context, services, configuration) =>
+/*builder.Host.UseSerilog((context, services, configuration) =>
 {
     configuration
         .ReadFrom.Configuration(context.Configuration)
         .Enrich.FromLogContext();
-});
+});*/
  
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Appsettings"));
 

@@ -20,6 +20,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PaymentGateway.Grpc.ClientApi;
+using PaymentGateway.Grpc.ClientApi.EbeGateway;
 using PaymentGateway.Grpc.Protos;
 using Provider.Grpc.Protos;
 using System.Text;
@@ -66,7 +68,7 @@ public static class DependencyInjection
         services.AddScoped<IRequestSepecification, RequestSpecification>();
         services.AddScoped<IServiceCategorySpecification, ServiceCategorySpecification>();
         services.AddScoped<IServiceSpecification, ServiceSpecification>();
-
+        //services.AddScoped<IPaymentProvider, EbePaymentProvider>();
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {
             options.Address = new Uri("http://localhost:6001");
@@ -77,7 +79,7 @@ public static class DependencyInjection
         });
         services.AddGrpcClient<PaymentGatewayProtoService.PaymentGatewayProtoServiceClient>(options =>
         {
-            options.Address = new Uri("http://localhost:6002");
+            options.Address = new Uri("http://localhost:6001");
         });
         services.AddGrpcClient<ProviderPaymentProtoService.ProviderPaymentProtoServiceClient>(options =>
         {
