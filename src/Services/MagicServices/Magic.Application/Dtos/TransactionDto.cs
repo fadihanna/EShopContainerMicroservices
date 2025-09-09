@@ -14,6 +14,7 @@
      int quantity,
      //List<InputParameter> InputParameterList,
      string ProviderTransactionId,
+     string PaymentProviderTransactionId,
      bool IsRefunded = false
      );
 }

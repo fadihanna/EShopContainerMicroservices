@@ -8,5 +8,6 @@
         Task<List<Request>> GetRequestByUserId(string userId, CancellationToken cancellationToken);
         Task<List<Request>> GetRequestByDenominationId(int denominationId, CancellationToken cancellationToken);
         Task UpdateRequestStatusAsync(int requestId, int requestStatus, CancellationToken cancellationToken);
+        Task<Request> GetRequest(int id, CancellationToken cancellationToken);
     }
 }

@@ -49,5 +49,9 @@ namespace Magic.Infrastructure.Data.Specifications
                                               .SetProperty(r => r.ResponseDate, DateTime.UtcNow),
                                        cancellationToken);
         }
+        public async Task<Request> GetRequest(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Requests.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

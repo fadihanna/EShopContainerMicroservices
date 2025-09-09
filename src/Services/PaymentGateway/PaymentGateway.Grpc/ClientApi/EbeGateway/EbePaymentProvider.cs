@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PaymentGateway.Dto;
+using PaymentGateway.Grpc.ClientApi;
+using PaymentGateway.Grpc.ClientApi.EbeGateway;
 using PaymentGateway.Grpc.Dto.Ebe;
 using PaymentGateway.Grpc.Protos;
 
-namespace PaymentGateway.Grpc.ClientApi.EbeGateway
-{
     public class EbePaymentProvider : IPaymentProvider
     {
         private readonly IEbeGatewayService _ebeGatewayService;
@@ -57,4 +57,3 @@ namespace PaymentGateway.Grpc.ClientApi.EbeGateway
             return new PaymentGateway.Dto.PaymentResult() { Success = true, Message = JsonConvert.SerializeObject(response), TransactionId = checkoutId };
         }
     }
-}

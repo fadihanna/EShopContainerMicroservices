@@ -47,7 +47,8 @@ namespace Magic.Infrastructure.Services.Internal
                 Audience = _config.IdentityConfig.JwtSettings.ValidAudience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Convert.FromBase64String(key)), SecurityAlgorithms.HmacSha256Signature)
             };
-
+            
+            tokenDescriptor.Expires = DateTime.Now.AddDays(365); // test
             // Create token
             SecurityToken? token = jwtTokenHandler.CreateToken(tokenDescriptor);
             string jwtToken = jwtTokenHandler.WriteToken(token);

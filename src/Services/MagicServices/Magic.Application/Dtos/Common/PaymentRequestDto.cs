@@ -8,6 +8,7 @@ public record PaymentRequestDto
      string RequestId,
      string ProviderReferenceNumber,
      int Quantity,
-     int ProviderId,
-    List<InputParameter> InputParameterList
+     //int ProviderId,
+    List<InputParameter> InputParameterList,
+    string checkoutId
 );

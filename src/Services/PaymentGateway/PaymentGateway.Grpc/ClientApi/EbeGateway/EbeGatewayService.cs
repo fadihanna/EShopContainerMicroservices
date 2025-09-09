@@ -16,7 +16,7 @@ public class EbeGatewayService : IEbeGatewayService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var url = $"{baseUrl}/v3/payments/{checkoutId}?entityId={entityId}";
+        var url = $"{baseUrl}checkouts/{checkoutId}/payment?entityId={entityId}";
         var response = await _httpClient.GetAsync(url);
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
@@ -27,7 +27,7 @@ public class EbeGatewayService : IEbeGatewayService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var formData = new Dictionary<string, string>
+        /*var formData = new Dictionary<string, string>
         {
             { "entityId", request.EntityId },
             { "entityType", request.EntityType },
@@ -37,9 +37,20 @@ public class EbeGatewayService : IEbeGatewayService
             { "amount", request.Amount.ToString("F2") },
             { "currency", request.Currency },
             { "paymentType", request.PaymentType }
+        };*/
+        var formData = new Dictionary<string, string>
+        {
+            { "entityId", request.EntityId },
+            { "entityType", request.EntityType },
+            { "merchant.id", "7070000026" },
+            //{ "checkoutType", request.CheckoutType },
+            //{ "checkoutId", request.CheckoutId },
+            { "amount", request.Amount.ToString("F2") },
+            { "currency", request.Currency },
+            { "paymentType", request.PaymentType }
         };
 
-        var response = await _httpClient.PostAsync($"{baseUrl}/v3/checkouts", new FormUrlEncodedContent(formData));
+        var response = await _httpClient.PostAsync($"{baseUrl}", new FormUrlEncodedContent(formData));
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<PrepareCheckoutResponseDto>(json);

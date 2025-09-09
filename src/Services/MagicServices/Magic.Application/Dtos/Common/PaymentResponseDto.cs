@@ -2,6 +2,7 @@
 
 public record PaymentResponseDto(
      string providerTransactionId,
+     string paymentProviderTransactionId,
      string transactionId,
      string Status,
      string StatusText,
@@ -10,5 +11,6 @@ public record PaymentResponseDto(
      string Fees,
      string totalAmount,
      string billingAccount,
-     List<ResponseDetail> DetailsList
+     List<ResponseDetail> DetailsList,
+     int requestId
 );

@@ -17,5 +17,6 @@
         public string ProviderCode { get; set; }
         public int ProviderId { get; set; }
         public string UserId { get; set; }
+        public string PaymentProviderTransactionId { get; set; }
     }
 }

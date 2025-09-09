@@ -23,7 +23,8 @@ namespace Magic.Application.Extensions
                 BillingAccount: transaction.BillingAccount,
                 quantity: 0,
                 IsRefunded: transaction.IsRefunded,
-                ProviderTransactionId : transaction.ProviderTransactionId
+                ProviderTransactionId : transaction.ProviderTransactionId,
+                PaymentProviderTransactionId : transaction.PaymentProviderTransactionId
             );
         }
         public static Transaction DtoToTransaction(TransactionDto transactionDto)
@@ -43,7 +44,9 @@ namespace Magic.Application.Extensions
                 dto.PaymentProviderId,
                 dto.Status,
                 dto.BillingAccount,
-                dto.ProviderTransactionId
+                dto.ProviderTransactionId,
+                dto.PaymentProviderTransactionId
+
             );
         }
         public static List<TransactionDto> ToTransactionDtoList(this IEnumerable<Transaction> transactions)
@@ -58,12 +61,13 @@ namespace Magic.Application.Extensions
                 amount: transactionDto.Amount,
                 fees: transactionDto.Fees,
                 totalAmount: transactionDto.TotalAmount,
-                requestId: 3,
+                requestId: Convert.ToInt32(transactionDto.RequestId),
                 denominationId: transactionDto.DenominationId,
-                paymentProviderId: 1,
+                paymentProviderId: transactionDto.PaymentProviderId,
                 status: 1,
                 billingAccount: transactionDto.BillingAccount,
-                providerTransactionId : transactionDto.ProviderTransactionId
+                providerTransactionId : transactionDto.ProviderTransactionId,
+                paymentProviderTransactionId : transactionDto.PaymentProviderTransactionId
             );
             return newTransaction;
         }

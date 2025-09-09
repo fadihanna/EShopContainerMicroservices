@@ -37,7 +37,7 @@ namespace Magic.Infrastructure.Services.External
                         StatusText: response.StatusText,
                          TransactionTime: response.TransactionTime,
                          TransactionId: 1,
-                         ProviderTransactionId: response.ProviderTransactionId,
+                         ProviderTransactionId: response.TransactionId,
                          UserId: "1",
                          Amount: response.Amount,
                          Fees: response.Fees,

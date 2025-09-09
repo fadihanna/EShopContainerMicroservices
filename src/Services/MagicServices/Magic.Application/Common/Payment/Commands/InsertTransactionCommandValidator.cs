@@ -8,10 +8,6 @@
                  .NotNull().WithMessage("Payment Provider cannot be null.")
                  .NotEqual(0).WithMessage("Payment Provider cannot be Zero");*/
 
-            RuleFor(x => x.Transaction.ProviderId)
-               .NotNull().WithMessage("Provider cannot be null.")
-               .NotEqual(0).WithMessage("Payment Provider cannot be Zero");
-
             RuleFor(x => x.Transaction.Amount)
                  .NotNull().WithMessage("Amount cannot be null.")
                  .NotEqual(0).WithMessage("Amount cannot be Zero.")

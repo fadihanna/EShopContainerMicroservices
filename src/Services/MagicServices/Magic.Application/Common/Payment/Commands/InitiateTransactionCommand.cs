@@ -7,13 +7,12 @@ using PaymentGateway.Grpc.ClientApi.EbeGateway;
 
 namespace Magic.Application.Common.Payment.Commands
 {
-    public record InsertTransactionCommand(PaymentRequestDto Transaction,string userId)
-       : ICommand<InsertTransactionResponse>;
+    public record InitiateTransactionCommand(PaymentRequestDto Transaction, string userId)
+       : ICommand<InitiateTransactionResponse>;
 
-    public record InsertTransactionResponse(PaymentResponseDto paymentResponseDto);
-
-    public class InsertTransactionHandler
-    : ICommandHandler<InsertTransactionCommand, InsertTransactionResponse>
+    public record InitiateTransactionResponse(PaymentResponseDto paymentResponseDto);
+    public class InitiateTransactionHandler
+    : ICommandHandler<InitiateTransactionCommand,InitiateTransactionResponse>
     {
         private readonly ITransactionSpecification _transactionSpecification;
         private readonly IPaymentGatewayClientService _paymentGatewayClientService;
@@ -22,10 +21,10 @@ namespace Magic.Application.Common.Payment.Commands
         private readonly IExternalProviderPaymentService _externalProviderPaymentService;
         private readonly IPaymentProvider _paymentProvider;
         private readonly IAuthenticationService _authenticationService;
-        public InsertTransactionHandler(IRequestSepecification requestSepecification,
+        public InitiateTransactionHandler(IRequestSepecification requestSepecification,
             IDenominationSpecification denominationSpecification,
             ITransactionSpecification transactionSpecification,
-            IPaymentGatewayClientService paymentGatewayClientService, IExternalProviderPaymentService externalProviderPaymentService, IPaymentProvider paymentProvider,IAuthenticationService authenticationService)
+            IPaymentGatewayClientService paymentGatewayClientService, IExternalProviderPaymentService externalProviderPaymentService, IPaymentProvider paymentProvider, IAuthenticationService authenticationService)
         {
             _transactionSpecification = transactionSpecification;
             _denominationSpecification = denominationSpecification;
@@ -35,24 +34,13 @@ namespace Magic.Application.Common.Payment.Commands
             _paymentProvider = paymentProvider;
             _authenticationService = authenticationService;
         }
-        public async Task<InsertTransactionResponse> Handle(InsertTransactionCommand command, CancellationToken cancellationToken)
+        public async Task<InitiateTransactionResponse> Handle(InitiateTransactionCommand command, CancellationToken cancellationToken)
         {
             var denomination = await _denominationSpecification.GetByIdAsync(o => o.IsActive && o.Id.Equals(command.Transaction.DenominationId), cancellationToken);
             if (denomination == null)
                 throw new NotFoundException("Denomination", command.Transaction.DenominationId);
 
             var DPC = await _denominationSpecification.GetDenominationProviderCodeByIdAsync(denomination.Id, cancellationToken);
-
-            var request = await _requestSepecification.InsertRequestAsync(new Request()
-            {
-                Amount = Convert.ToDecimal(command.Transaction.Amount),
-                BillingAccount = command.Transaction.BillingAccount,
-                DenominationId = command.Transaction.DenominationId,
-                RequestDate = DateTime.UtcNow,
-                ResponseDate = DateTime.UtcNow,
-                Status = Convert.ToInt32(RequestStatus.PaymentInitiate),
-                UserId =command.userId 
-            }, cancellationToken);
 
             PaymentRequestModel paymentRequestModel = new PaymentRequestModel()
             {
@@ -63,41 +51,36 @@ namespace Magic.Application.Common.Payment.Commands
                 Fees = Convert.ToDecimal(command.Transaction.Fees),
                 quantity = command.Transaction.Quantity,
                 TotalAmount = Convert.ToDecimal(command.Transaction.Amount) + Convert.ToDecimal(command.Transaction.Fees),
-                RequestId = Convert.ToString(request),
+                RequestId = command.Transaction.RequestId,
                 PaymentProviderId = 3, // ebe
                 InquiryReferenceNumber = command.Transaction.ProviderReferenceNumber,
                 UserId = command.userId,
                 ProviderId = DPC.ProviderId,
                 InputParameterList = command.Transaction.InputParameterList,
             };
-            // call provider api
-            var response = await _externalProviderPaymentService.PaymentAsync(paymentRequestModel, cancellationToken);
+           
+            var paymentGatewayResult = await _paymentProvider.ProcessPayment(new PaymentGateway.Grpc.Protos.PaymentRequest() { Amount = Convert.ToDouble(paymentRequestModel.Amount), Currency = "EGP", Provider = paymentRequestModel.ProviderId.ToString(), CheckoutId = "0" });
 
-            // var paymentGatewayResult = await PaymentProcessor(command, cancellationToken);
+          //paymentRequestModel.PaymentProviderTransactionId = paymentGatewayResult.TransactionId;
+          
+            var request = await _requestSepecification.InsertRequestAsync(new Request()
+            {
+                Amount = Convert.ToDecimal(command.Transaction.Amount),
+                BillingAccount = command.Transaction.BillingAccount,
+                DenominationId = command.Transaction.DenominationId,
+                RequestDate = DateTime.UtcNow,
+                ResponseDate = DateTime.UtcNow,
+                Status = Convert.ToInt32(RequestStatus.PaymentInitiate),
+                UserId = command.userId
+            }, cancellationToken);
 
-            //  create checkout
-            // var paymentGatewayResult = await PaymentProcessorInitiate(command, cancellationToken);
-            
-            /*var paymentGatewayResult = await _paymentProvider.ProcessPayment(new PaymentGateway.Grpc.Protos.PaymentRequest() { Amount = Convert.ToDouble(paymentRequestModel.Amount),Currency = "EGP",Provider = paymentRequestModel.ProviderId.ToString(),CheckoutId = "0"});
-            paymentRequestModel.PaymentProviderTransactionId = paymentGatewayResult.TransactionId;*/
 
-            paymentRequestModel.ProviderTransactionId = response.ProviderTransactionId;
-            paymentRequestModel.PaymentProviderTransactionId = command.Transaction.checkoutId;
-
-            // Create pending transaction record
-            var transaction = TransactionExtensions.CreateTransaction(paymentRequestModel);
-            transaction.Status = Convert.ToInt32(RequestStatus.PaymentSuccess);
-
-            await _transactionSpecification.InsertAsync(transaction, cancellationToken);
-
-            // Return checkoutId to frontend (so iframe can be loaded)
             var paymentResponseDto = new PaymentResponseDto(
-                providerTransactionId: response.ProviderTransactionId,
-                //paymentProviderTransactionId : paymentGatewayResult.TransactionId,
-                paymentProviderTransactionId: command.Transaction.checkoutId,
-                transactionId: transaction.Id.ToString(),
-                Status: transaction.Status.ToString(),
-                StatusText: "Payment Successful",
+                providerTransactionId: "",
+                paymentProviderTransactionId: paymentGatewayResult.TransactionId,
+                transactionId: paymentGatewayResult.TransactionId,
+                Status: Convert.ToString(RequestStatus.PaymentInitiate),
+                StatusText: "Payment Checkout Screen Initiated",
                 TransactionTime: DateTime.UtcNow.ToString(),
                 Amount: Convert.ToString(command.Transaction.Amount),
                 Fees: Convert.ToString(command.Transaction.Fees),
@@ -106,28 +89,7 @@ namespace Magic.Application.Common.Payment.Commands
                 DetailsList: null,
                 requestId : request
             );
-            return new InsertTransactionResponse(paymentResponseDto);
-/*
-
-
-            var transaction = TransactionExtensions.CreateTransaction(paymentRequestModel);
-
-            try
-            {
-
-            await _transactionSpecification.InsertAsync(transaction, cancellationToken);
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-            for (int i = 0; i < command.Transaction.Quantity; i++) // in case of vouchers
-            { }
-            await _requestSepecification.UpdateRequestStatusAsync(request, Convert.ToInt32(RequestStatus.PaymentSuccess), cancellationToken);
-
-            */    
+            return new InitiateTransactionResponse(paymentResponseDto);
         }
         private async Task<PaymentGatewayResponseDto> PaymentProcessorInitiate(InsertTransactionCommand command, CancellationToken cancellationToken)
         {
@@ -135,7 +97,7 @@ namespace Magic.Application.Common.Payment.Commands
                 Amount: Convert.ToDouble(command.Transaction.Amount) + Convert.ToDouble(command.Transaction.Fees),
                 Provider: "3", // ebe
                 Currency: "EGP",
-                checkoutId : ""
+                checkoutId: ""
             );
             var paymentResponse = await _paymentGatewayClientService.ProcessPaymentAsync(paymentRequest, cancellationToken);
 

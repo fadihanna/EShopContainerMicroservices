@@ -8,11 +8,28 @@ using System.Security.Claims;
 
 namespace MagicServices.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class TransactionController : ApiControllerBase
     {
         public TransactionController(IHostEnvironment environment) : base(environment)
         {
+        }
+        [HttpPost("initiate-transaction")]
+        [ProducesResponseType(typeof(PaymentResponseDto), StatusCodes.Status200OK)]
+        public async Task<ActionResult<PaymentResponseDto>> InitiateTransaction(
+        [FromBody] InsertTransactionCommand model,
+         CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                return Ok((await Mediator.Send(new InitiateTransactionCommand(model.Transaction, userId), cancellationToken)).paymentResponseDto);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         [HttpPost("add-transaction")]
         [ProducesResponseType(typeof(PaymentResponseDto), StatusCodes.Status200OK)]
@@ -20,15 +37,26 @@ namespace MagicServices.API.Controllers
         [FromBody] InsertTransactionCommand model,
          CancellationToken cancellationToken = default)
         {
-            return Ok((await Mediator.Send(new InsertTransactionCommand(model.Transaction), cancellationToken)).paymentResponseDto);
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                return Ok((await Mediator.Send(new InsertTransactionCommand(model.Transaction,userId), cancellationToken)).paymentResponseDto);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
         [HttpPost("confirm-transaction")]
         [ProducesResponseType(typeof(PaymentResponseDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<PaymentResponseDto>> ConfirmTransaction(
-        [FromQuery] int requestId,
+        [FromQuery] int requestId,string checkoutId,
          CancellationToken cancellationToken = default)
         {
-            return Ok((await Mediator.Send(new ConfirmTransactionCommand(requestId), cancellationToken)).paymentResponseDto);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return Ok((await Mediator.Send(new ConfirmTransactionCommand(requestId,userId,checkoutId),cancellationToken)).paymentResponseDto);
         }
         [HttpGet("get-transaction-invoiceId")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]

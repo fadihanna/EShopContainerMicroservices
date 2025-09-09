@@ -1,4 +1,5 @@
-﻿using Magic.Domain.Specifications;
+﻿using BuildingBlocks.Enums;
+using Magic.Domain.Specifications;
 namespace Magic.Infrastructure.Data.Specifications
 {
     public class TransactionSpecification : ITransactionSpecification
@@ -41,9 +42,13 @@ namespace Magic.Infrastructure.Data.Specifications
             return transaction.Id;
         }
 
-        public Task<int> UpdateAsync(int Id, CancellationToken cancellationToken)
+        public async Task<int> UpdateAsync(int Id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var entity =  await _context.Transactions.Where(x => x.Id == Id).FirstOrDefaultAsync();
+            entity.Status = Convert.ToInt32(RequestStatus.PaymentConfirm);
+            _context.Transactions.Update(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

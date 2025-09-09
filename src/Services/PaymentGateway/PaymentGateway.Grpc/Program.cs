@@ -18,4 +18,9 @@ app.MapGrpcReflectionService();
 
 app.MapGet("/", () => "Use a gRPC client to communicate with this service.");
 
+foreach (var service in builder.Services)
+{
+    if (service.ServiceType.FullName.Contains("PaymentGateway.Grpc.ClientApi"))
+        Console.WriteLine($"{service.ServiceType} -> {service.ImplementationType}");
+}
 app.Run();
