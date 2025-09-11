@@ -20,9 +20,9 @@ namespace Magic.Domain.Models
         public int PaymentProviderId { get; set; }
         public PaymentProvider PaymentProvider { get; set; }
         public int Status { get; set; } = 1;
-        public string BillingAccount { get; set; }
-        public string ProviderTransactionId { get; set; }
-        public string PaymentProviderTransactionId { get; set; }
+        public string? BillingAccount { get; set; }
+        public string? ProviderTransactionId { get; set; }
+        public string? PaymentProviderTransactionId { get; set; }
 
         public static Transaction Create(
             bool isRefunded,
