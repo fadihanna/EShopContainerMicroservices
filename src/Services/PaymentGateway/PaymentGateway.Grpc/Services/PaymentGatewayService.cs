@@ -23,7 +23,6 @@ namespace PaymentGateway.Grpc.Services
                 Message = result.Message
             };
         }
-
         public override async Task<PaymentResponse> VerifyPayment(PaymentRequest request, ServerCallContext context)
         {
             var result = await _provider.VerifyPayment(request.CheckoutId);

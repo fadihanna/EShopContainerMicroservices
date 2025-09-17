@@ -38,7 +38,7 @@ namespace Magic.Infrastructure.Services.External
                          TransactionTime: response.TransactionTime,
                          TransactionId: 1,
                          ProviderTransactionId: response.TransactionId,
-                         UserId: "1",
+                         UserId: request.UserId,
                          Amount: response.Amount,
                          Fees: response.Fees,
                          TotalAmount: response.TotalAmount,

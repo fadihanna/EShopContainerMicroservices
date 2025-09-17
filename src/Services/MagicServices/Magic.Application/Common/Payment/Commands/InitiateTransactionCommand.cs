@@ -12,7 +12,7 @@ namespace Magic.Application.Common.Payment.Commands
 
     public record InitiateTransactionResponse(PaymentResponseDto paymentResponseDto);
     public class InitiateTransactionHandler
-    : ICommandHandler<InitiateTransactionCommand,InitiateTransactionResponse>
+    : ICommandHandler<InitiateTransactionCommand, InitiateTransactionResponse>
     {
         private readonly ITransactionSpecification _transactionSpecification;
         private readonly IPaymentGatewayClientService _paymentGatewayClientService;
@@ -58,11 +58,10 @@ namespace Magic.Application.Common.Payment.Commands
                 ProviderId = DPC.ProviderId,
                 InputParameterList = command.Transaction.InputParameterList,
             };
-           
-            var paymentGatewayResult = await _paymentProvider.ProcessPayment(new PaymentGateway.Grpc.Protos.PaymentRequest() { Amount = Convert.ToDouble(paymentRequestModel.Amount), Currency = "EGP", Provider = paymentRequestModel.ProviderId.ToString(), CheckoutId = "0" });
+            var paymentGatewayResult = await _paymentProvider.ProcessPayment(new PaymentGateway.Grpc.Protos.PaymentRequest() { Amount = Convert.ToDouble(paymentRequestModel.TotalAmount), Currency = "EGP", Provider = paymentRequestModel.ProviderId.ToString(), CheckoutId = "0" });
 
-          //paymentRequestModel.PaymentProviderTransactionId = paymentGatewayResult.TransactionId;
-          
+            //paymentRequestModel.PaymentProviderTransactionId = paymentGatewayResult.TransactionId;
+
             var request = await _requestSepecification.InsertRequestAsync(new Request()
             {
                 Amount = Convert.ToDecimal(command.Transaction.Amount),
@@ -87,7 +86,7 @@ namespace Magic.Application.Common.Payment.Commands
                 totalAmount: Convert.ToString(paymentRequestModel.TotalAmount),
                 billingAccount: paymentRequestModel.BillingAccount,
                 DetailsList: null,
-                requestId : request
+                requestId: request
             );
             return new InitiateTransactionResponse(paymentResponseDto);
         }
