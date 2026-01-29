@@ -5,8 +5,8 @@ namespace Provider.Application.Data
 {
     public interface IProviderDbContext
     {
-        public DbSet<MasaryService> MasaryService { get; }
-        public DbSet<MasaryServiceCharge> MasaryServiceCharge { get; }
-        public DbSet<MasaryServiceParameter> MasaryServiceParameter { get; }
+        DbSet<MasaryService> MasaryService { get; }
+        DbSet<MasaryServiceCharge> MasaryServiceCharge { get; }
+        DbSet<MasaryServiceParameter> MasaryServiceParameter { get; }
     }
 }

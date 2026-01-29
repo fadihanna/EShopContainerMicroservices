@@ -4,6 +4,7 @@ using Provider.Application.Logging;
 using Provider.Application.Services.Masary;
 using Provider.Grpc;
 using Provider.Infrastructure;
+using Provider.Infrastructure.Data.Extensions;
 using Provider.Infrastructure.Mockup;
 using Provider.Infrastructure.Services.External.Masary.Services;
 using Serilog;
@@ -27,10 +28,10 @@ else
 builder.Host.UseSerilog((context, services, configuration) =>
 {
     configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext();
+        .Enrich.FromLogContext()
+        .WriteTo.Console();  // Only console, no SQL Server yet
 });
- 
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Appsettings"));
 
 builder.Services.AddGrpc();
@@ -38,6 +39,15 @@ builder.Services.AddGrpcReflection();
 
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
+if (builder.Environment.IsDevelopment())
+{
+    await app.InitialiseDatabaseAsync();
+}
+// Now reconfigure Serilog with SQL Server sink after database exists
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 app.UseGrpcServices(builder.Services);
 
 app.Run();

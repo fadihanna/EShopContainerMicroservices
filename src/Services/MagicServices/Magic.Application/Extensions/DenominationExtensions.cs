@@ -10,20 +10,20 @@ public static class DenominationExtensions
     public static DenominationDto ToDenominationDto(this Denomination denomination)
     {
         return new DenominationDto(
-            Id : denomination.Id,   
+            Id: denomination.Id,
             NameEN: denomination.NameEN,
             NameAR: denomination.NameAR,
-            MaxValue: denomination.MaxValue,
-            MinValue: denomination.MinValue,
+            MaxValue: denomination.MaxValue ?? 0,
+            MinValue: denomination.MinValue ?? 0,
             IsInquiryRequired: denomination.IsInquiryRequired,
-            SortOrder: denomination.SortOrder,
+            SortOrder: denomination.SortOrder ?? 0,
             ServiceId: denomination.ServiceId,
-            PriceType: denomination.PriceType,
+            PriceType: denomination.PriceType ?? 0,
             ProviderId: denomination.ProviderId,
             IsActive: denomination.IsActive,
-            DenominationGroupID :denomination.DenominationGroupId,
-            IsPartial  : denomination.IsPartial,
-            Value: denomination.Value,  
+            DenominationGroupID: denomination.DenominationGroupId,
+            IsPartial: denomination.IsPartial,
+            Value: denomination.Value,
             InputParamterList: denomination.DenominationInputParameters?.Select(ip => new DenominationInputParameterList(
                 Key: ip.Key,
                 Value: ip.Value,
@@ -34,9 +34,9 @@ public static class DenominationExtensions
                 Code: ip.Code,
                 Sort: ip.Sort,
                 IsRequired: ip.IsRequired,
-                Placeholder :ip.Placeholder,
-                Type:ip.Type
-            )).ToList() ?? new List<DenominationInputParameterList>() 
+                Placeholder: ip.Placeholder,
+                Type: ip.Type
+            )).ToList() ?? new List<DenominationInputParameterList>()
         );
     }
     public static Denomination DtoToDenomination(this DenominationDto dto)
@@ -68,7 +68,7 @@ public static class DenominationExtensions
           code: ip.Code,
           sort: ip.Sort,
           isRequired: ip.IsRequired,
-          denominationId: denomination.Id 
+          denominationId: denomination.Id
       )).ToList() ?? new List<DenominationInputParameter>());
 
         return denomination;

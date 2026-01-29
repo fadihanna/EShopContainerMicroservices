@@ -3,15 +3,20 @@
 #Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
 #For more information, please see https://aka.ms/containercompat
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/MagicServices/MagicServices.API/MagicServices.API.csproj", "Services/MagicServices/MagicServices.API/"]
+COPY ["Services/MagicServices/Magic.Application/Magic.Application.csproj", "Services/MagicServices/Magic.Application/"]
+COPY ["BuildingBlocks/BuildingBlocks.Messaging/BuildingBlocks.Messaging.csproj", "BuildingBlocks/BuildingBlocks.Messaging/"]
+COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
+COPY ["Services/MagicServices/Magic.Domain/Magic.Domain.csproj", "Services/MagicServices/Magic.Domain/"]
+COPY ["Services/MagicServices/Magic.Infrastructure/Magic.Infrastructure.csproj", "Services/MagicServices/Magic.Infrastructure/"]
 RUN dotnet restore "./Services/MagicServices/MagicServices.API/MagicServices.API.csproj"
 COPY . .
 WORKDIR "/src/Services/MagicServices/MagicServices.API"

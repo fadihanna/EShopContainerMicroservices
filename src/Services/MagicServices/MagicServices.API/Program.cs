@@ -10,18 +10,22 @@ builder.Services
     .AddApplicationServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration)
     .AddApiServices(builder.Configuration);
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(5001); // For HTTP
-    // serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps()); // For HTTPS
-});
+
+//TODO: Configure Kestrel for Docker
+//var port = Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS");
+//var ports = Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORTS");
+//builder.WebHost.ConfigureKestrel(serverOptions =>
+//{
+//    serverOptions.ListenAnyIP(int.Parse(port)); // Match Docker EXPOSE and ports mapping
+//    serverOptions.ListenAnyIP(int.Parse(ports), listenOptions => listenOptions.UseHttps());
+//});
 builder.Services.AddEndpointsApiExplorer();
 // Configure Serilog from appsettings.json
 builder.Host.UseSerilog((context, services, configuration) =>
 {
-    //configuration
-    //    .ReadFrom.Configuration(context.Configuration)
-    //    .Enrich.FromLogContext();
+    configuration
+        .Enrich.FromLogContext()
+        .WriteTo.Console();  // Only console, no SQL Server yet
 });
 builder.Services.AddCors(options =>
 {
@@ -34,16 +38,15 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+app.UseApiServices();
+// Now reconfigure Serilog with SQL Server sink after database exists
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
-app.UseApiServices();
-//app.ConfigureEndpoints();
-
-if (app.Environment.IsDevelopment())
-{
-    await app.InitialiseDatabaseAsync();
-}
 
 app.UseRouting();
 app.UseEndpoints(endpoints =>

@@ -1,0 +1,68 @@
+services:
+  magicservices.api:
+    container_name: magic-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080  # Use HTTP only
+      - ConnectionStrings__Database=Server=magicprodb;Database=MagicPro;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+      - GrpcServices__ProviderService=http://provider.grpc:8080
+      - GrpcServices__PaymentGatewayService=http://payment-gateway:8080
+    depends_on:
+      - magicprodb
+    ports:
+      - "5003:8080"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  magicprodb: 
+    container_name: magicprodb
+    environment: 
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=P@ssw0rd
+        - MSSQL_SA_PASSWORD=P@ssw0rd
+    restart: always
+    ports:
+        - "1433:1433"
+    volumes:
+      - magicprodb_data:/var/opt/mssql
+
+  provider.grpc:
+    container_name: provider-grpc
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080  # Use HTTP only
+      - ConnectionStrings__Database=Server=providerdb;Database=ProviderDb;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+      - ConnectionStrings__Database=Server=providerdb;Database=ProviderDb;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+    ports:
+      - "6003:8080"
+    depends_on:
+      - providerdb
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    restart: unless-stopped
+  
+  providerdb: 
+    container_name: providerdb
+    environment: 
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=P@ssw0rd
+        - MSSQL_SA_PASSWORD=P@ssw0rd
+    restart: always
+    ports:
+        - "1434:1433"
+    volumes:
+      - providerdb_data:/var/opt/mssql
+    healthcheck:
+        test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "P@ssw0rd" -Q "SELECT 1" || exit 1
+        interval: 10s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+
+volumes:
+  magicprodb_data:
+  providerdb_data:

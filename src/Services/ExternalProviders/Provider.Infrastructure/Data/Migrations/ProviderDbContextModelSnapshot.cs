@@ -7,7 +7,7 @@ using Provider.Infrastructure.Data;
 
 #nullable disable
 
-namespace Provider.Infrastructure.Migrations
+namespace Provider.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ProviderDbContext))]
     partial class ProviderDbContextModelSnapshot : ModelSnapshot

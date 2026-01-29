@@ -1,0 +1,26 @@
+services:
+  magicservices.api:
+    image: ${DOCKER_REGISTRY-}magicservicesapi
+    build:
+      context: .
+      dockerfile: Services/MagicServices/MagicServices.API/Dockerfile
+      
+  paymentgateway.grpc:
+    image: ${DOCKER_REGISTRY-}paymentgatewaygrpc
+    build:
+      context: .
+      dockerfile: Services/PaymentGateway/PaymentGateway.Grpc/Dockerfile
+
+  magicprodb: 
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    
+  provider.grpc:
+    image: ${DOCKER_REGISTRY-}providergrpc
+    build:
+      context: .
+      dockerfile: Services/ExternalProviders/Provider.Grpc/Dockerfile
+
+  providerdb:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    
+

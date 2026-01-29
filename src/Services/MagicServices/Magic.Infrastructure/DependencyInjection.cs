@@ -1,5 +1,4 @@
 ﻿using Magic.Application.Exceptions;
-using Magic.Application.Extensions;
 using Magic.Application.Interfaces.Specifications;
 using Magic.Domain.Enums;
 using Magic.Domain.Specifications;
@@ -27,8 +26,7 @@ using System.Text;
 namespace Magic.Infrastructure;
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureServices
-        (this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Database");
 
@@ -69,19 +67,19 @@ public static class DependencyInjection
 
         services.AddGrpcClient<ProviderInquiryProtoService.ProviderInquiryProtoServiceClient>(options =>
         {
-            options.Address = new Uri("http://localhost:6001");
+            options.Address = new Uri(configuration["GrpcServices:ProviderService"] ?? "http://localhost:6001");
         });
         services.AddGrpcClient<ProviderFeesProtoService.ProviderFeesProtoServiceClient>(options =>
         {
-            options.Address = new Uri("http://localhost:6001");
+            options.Address = new Uri(configuration["GrpcServices:ProviderService"] ?? "http://localhost:6001");
         });
         services.AddGrpcClient<PaymentGatewayProtoService.PaymentGatewayProtoServiceClient>(options =>
         {
-            options.Address = new Uri("http://localhost:6002");
+            options.Address = new Uri(configuration["GrpcServices:PaymentGatewayService"] ?? "http://localhost:7001");
         });
         services.AddGrpcClient<ProviderPaymentProtoService.ProviderPaymentProtoServiceClient>(options =>
         {
-            options.Address = new Uri("http://localhost:6001");
+            options.Address = new Uri(configuration["GrpcServices:ProviderService"] ?? "http://localhost:6001");
         });
         //Mapster
         var config = TypeAdapterConfig.GlobalSettings;
@@ -143,7 +141,7 @@ public static class DependencyInjection
                 {
                     throw new ForbiddenAccessException(InternalErrorCode.Status401Unauthorized);
                 },
-                OnForbidden = context =>    
+                OnForbidden = context =>
                 {
                     throw new ForbiddenAccessException(InternalErrorCode.Status403Forbidden);
                 },

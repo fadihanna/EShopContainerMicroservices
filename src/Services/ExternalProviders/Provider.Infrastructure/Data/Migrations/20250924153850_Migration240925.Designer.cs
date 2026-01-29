@@ -8,11 +8,11 @@ using Provider.Infrastructure.Data;
 
 #nullable disable
 
-namespace Provider.Infrastructure.Migrations
+namespace Provider.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ProviderDbContext))]
-    [Migration("20250225095147_renametables")]
-    partial class renametables
+    [Migration("20250924153850_Migration240925")]
+    partial class Migration240925
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -4,19 +4,16 @@ using Magic.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Magic.Infrastructure.Migrations
+namespace Magic.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250618102932_NavigationScreen")]
-    partial class NavigationScreen
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,6 +39,9 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<int?>("DenominationGroupId")
                         .HasColumnType("int");
 
+                    b.Property<string>("IconName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -57,10 +57,10 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("MaxValue")
+                    b.Property<decimal?>("MaxValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("MinValue")
+                    b.Property<decimal?>("MinValue")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("NameAR")
@@ -71,7 +71,7 @@ namespace Magic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PriceType")
+                    b.Property<int?>("PriceType")
                         .HasColumnType("int");
 
                     b.Property<int>("ProviderId")
@@ -80,7 +80,7 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortOrder")
+                    b.Property<int?>("SortOrder")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Value")
@@ -258,10 +258,6 @@ namespace Magic.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BillerCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -275,6 +271,10 @@ namespace Magic.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviderCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProviderId")
@@ -346,6 +346,40 @@ namespace Magic.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("Magic.Domain.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NotificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Magic.Domain.Models.PaymentProvider", b =>

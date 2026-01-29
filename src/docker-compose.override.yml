@@ -1,0 +1,85 @@
+services:
+  magicservices.api:
+    container_name: magic-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=magicprodb;Database=MagicPro;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+      - Serilog__WriteTo__3__Args__connectionString=Server=magicprodb;Database=MagicPro;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+      - GrpcServices__ProviderService=http://provider.grpc:8080
+      - GrpcServices__PaymentGatewayService=http://payment-gateway:8080
+    depends_on:
+      - magicprodb
+    ports:
+      - "5003:8080"
+      - "5004:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      
+  paymentgateway.grpc:
+    container_name: paymentgateway-grpc
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=magicprodb;Database=MagicPro;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+    ports:
+      - "7003:8080"
+      - "7004:8081"
+    depends_on:
+      - magicprodb
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    restart: unless-stopped
+
+  magicprodb: 
+    container_name: magicprodb
+    environment: 
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=P@ssw0rd
+        - MSSQL_SA_PASSWORD=P@ssw0rd
+    restart: always
+    ports:
+        - "1433:1433"
+    volumes:
+      - magicprodb_data:/var/opt/mssql
+
+  provider.grpc:
+    container_name: provider-grpc
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=providerdb;Database=ProviderDb;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+      - Serilog__WriteTo__3__Args__connectionString=Server=providerdb;Database=ProviderDb;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True
+      - ProviderSettings__MasarySettings__MockupInquiryResponsePath=/src/Services/ExternalProviders/Provider.Infrastructure/Mockup/Masary
+    ports:
+      - "6003:8080"
+      - "6004:8081"
+    depends_on:
+      - providerdb
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    restart: unless-stopped
+  
+  providerdb: 
+    container_name: providerdb
+    environment: 
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=P@ssw0rd
+        - MSSQL_SA_PASSWORD=P@ssw0rd
+    restart: always
+    ports:
+        - "1434:1433"
+    volumes:
+      - providerdb_data:/var/opt/mssql
+
+volumes:
+  magicprodb_data:
+  providerdb_data:

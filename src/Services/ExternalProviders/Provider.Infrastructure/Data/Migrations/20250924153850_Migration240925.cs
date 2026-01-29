@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace Provider.Infrastructure.Migrations
+namespace Provider.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class renametables : Migration
+    public partial class Migration240925 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

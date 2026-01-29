@@ -74,9 +74,7 @@ namespace Magic.Application.Common.Payment.Commands
             var transaction = TransactionExtensions.CreateTransaction(paymentRequestModel);
             try
             {
-
-            await _transactionSpecification.InsertAsync(transaction, cancellationToken);
-
+                await _transactionSpecification.InsertAsync(transaction, cancellationToken);
             }
             catch (Exception ex)
             {

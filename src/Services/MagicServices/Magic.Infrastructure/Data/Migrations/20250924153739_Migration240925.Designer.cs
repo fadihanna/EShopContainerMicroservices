@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Magic.Infrastructure.Migrations
+namespace Magic.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250706111338_latest6-7")]
-    partial class latest67
+    [Migration("20250924153739_Migration240925")]
+    partial class Migration240925
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,6 @@ namespace Magic.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IconName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -61,10 +60,10 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("MaxValue")
+                    b.Property<decimal?>("MaxValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("MinValue")
+                    b.Property<decimal?>("MinValue")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("NameAR")
@@ -75,7 +74,7 @@ namespace Magic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PriceType")
+                    b.Property<int?>("PriceType")
                         .HasColumnType("int");
 
                     b.Property<int>("ProviderId")
@@ -84,7 +83,7 @@ namespace Magic.Infrastructure.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortOrder")
+                    b.Property<int?>("SortOrder")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Value")

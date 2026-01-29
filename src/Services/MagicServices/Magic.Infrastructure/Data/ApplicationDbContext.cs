@@ -7,7 +7,7 @@ using System.Reflection;
 namespace Magic.Infrastructure.Data;
 public class ApplicationDbContext : IdentityDbContext<ConsumerUser, IdentityRole<int>, int>, IApplicationDbContext, IUnitOfWork
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
         : base(options) { }
 
     public DbSet<Lookups.Provider> Providers => Set<Lookups.Provider>();

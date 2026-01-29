@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Provider.Application.Data;
 using Provider.Application.Services.Masary;
 using Provider.Domain.Repositories.Masary;
@@ -17,8 +16,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-         services.AddDbContext<ProviderDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("ProviderDb")));
+        services.AddDbContext<ProviderDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("Database")));
         services.AddScoped<IProviderDbContext, ProviderDbContext>();
 
         services.AddScoped<IMasaryRepository, MasaryRepository>();

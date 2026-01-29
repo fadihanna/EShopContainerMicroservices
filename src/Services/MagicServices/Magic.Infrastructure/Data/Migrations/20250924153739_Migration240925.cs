@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Magic.Infrastructure.Migrations
+namespace Magic.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Migration240925 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,6 +74,24 @@ namespace Magic.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IconName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    NotificationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SortOrder = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PaymentProviders",
                 columns: table => new
                 {
@@ -137,6 +155,7 @@ namespace Magic.Infrastructure.Migrations
                     SortOrder = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IconName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NavigationScreen = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -321,6 +340,7 @@ namespace Magic.Infrastructure.Migrations
                     SortOrder = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     ServiceCategoryId = table.Column<int>(type: "int", nullable: false),
+                    NavigationScreen = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IconName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -370,16 +390,17 @@ namespace Magic.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameEN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NameAR = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaxValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    MinValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MaxValue = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MinValue = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     IsInquiryRequired = table.Column<bool>(type: "bit", nullable: false),
-                    SortOrder = table.Column<int>(type: "int", nullable: false),
+                    SortOrder = table.Column<int>(type: "int", nullable: true),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
-                    PriceType = table.Column<int>(type: "int", nullable: false),
+                    PriceType = table.Column<int>(type: "int", nullable: true),
                     ProviderId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsPartial = table.Column<bool>(type: "bit", nullable: false),
                     Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IconName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DenominationGroupId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -481,7 +502,7 @@ namespace Magic.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DenominationId = table.Column<int>(type: "int", nullable: false),
                     ProviderId = table.Column<int>(type: "int", nullable: false),
-                    BillerCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -627,6 +648,9 @@ namespace Magic.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "InternalErrorCodeLookups");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "RefreshToken");

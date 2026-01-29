@@ -43,6 +43,7 @@ public static class DependencyInjection
         services.AddSingleton(new ResourceManager(typeof(Resources.Resources)));
 
         // Add Feature Management (optional, if used)
+        //check README.md file ### SECTION 3
         services.AddFeatureManagement();
 
         // Add Serilog Logging

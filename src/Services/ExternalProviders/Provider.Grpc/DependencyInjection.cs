@@ -10,12 +10,15 @@ namespace Provider.Grpc
         {
             services.AddGrpc(options => { options.EnableDetailedErrors = true; });
             services.Configure<AppSettings>(configuration);
+            services.AddHealthChecks()
+                .AddSqlServer(configuration.GetConnectionString("Database")!);
 
             return services;
         }
 
         public static WebApplication UseGrpcServices(this WebApplication app, IServiceCollection services)
         {
+            app.MapGrpcService<GreeterService>();
             app.MapGrpcService<ProviderInquiryService>();
             app.MapGrpcService<ProviderFeesService>();
             app.MapGrpcService<ProviderPaymentService>();

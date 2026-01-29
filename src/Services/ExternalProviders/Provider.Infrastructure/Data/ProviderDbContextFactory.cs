@@ -18,7 +18,7 @@ namespace Provider.Infrastructure.Data
                 .Build();
 
             var builder = new DbContextOptionsBuilder<ProviderDbContext>();
-            var connectionString = configuration.GetConnectionString("ProviderDb");
+            var connectionString = configuration.GetConnectionString("Database");
             builder.UseSqlServer(connectionString);
 
             return new ProviderDbContext(builder.Options);

@@ -1,9 +1,11 @@
 ﻿using HealthChecks.UI.Client;
 using Magic.Application.Common.Configurations;
 using Magic.Application.Common.Interfaces;
+using Magic.Infrastructure.Data.Extensions;
 using MagicServices.API.Middlewares;
 using MagicServices.API.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace MagicServices.API;
@@ -13,8 +15,8 @@ public static class DependencyInjection
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
 
-        services.AddHttpContextAccessor(); // Required for IHttpContextAccessor
-        services.AddScoped<IUser, CurrentUser>(); // Register CurrentUser as IUser
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUser, CurrentUser>();
         services.AddCarter();
         services.Configure<AppSettings>(configuration);
         //services.AddExceptionHandler<CustomExceptionHandler>();
@@ -80,10 +82,12 @@ public static class DependencyInjection
 
         if (app.Environment.IsDevelopment())
         {
+            app.InitialiseDatabaseAsync();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic Services API v1");
+                c.RoutePrefix = string.Empty; // Makes Swagger available at root
             });
             app.MapControllers(); // Map controllers
         }

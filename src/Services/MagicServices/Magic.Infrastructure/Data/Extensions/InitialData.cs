@@ -56,10 +56,21 @@ namespace Magic.Infrastructure.Data.Extensions
             Denomination.Create("Etisalat Voucher 13.5","كارت اتصالات 13.5",13.5m,13.5m,13.5m,false,1,7,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
             Denomination.Create("WE Voucher 13.5","كارت وي 13.5",13.5m,13.5m,13.5m,false,1,8,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
 
-            Denomination.Create("Orange Bills","فواتير اورانج",0,5,1000,false,1,9,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Orange),true, null),
+            Denomination.Create("Orange Bills","فواتير اورانج",0,5,1000,false,1,9,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Masary),true, null),
             Denomination.Create("Vodafone Bills","فواتير فوادافون",0,5,1000,false,1,10,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
             Denomination.Create("Etisalat Bills","فواتير اتصالات",0,5,1000,false,1,11,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
             Denomination.Create("WE Bills","فواتير وي",0,5,1000,false,1,12,((int)DomainEnums.PriceType.Fixed),((int)CommonEnums.Provider.Momkn),true, null),
+        };
+        public static IEnumerable<DenominationProviderCode> DenominationProviderCodes =>
+        new List<DenominationProviderCode>
+        {
+            DenominationProviderCode.Create(9,2,"1234"),
+        };
+        public static IEnumerable<PaymentProvider> PaymentProviders =>
+        new List<PaymentProvider>
+        {
+            PaymentProvider.Create("EBE",false),
+            PaymentProvider.Create("Paymob",true)
         };
     }
 }
