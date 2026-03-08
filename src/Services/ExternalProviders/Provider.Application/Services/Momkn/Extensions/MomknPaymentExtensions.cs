@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Models;
+using BuildingBlocks.Models;
 using Provider.Application.Services.Momkn.Models;
 
 namespace Provider.Application.Services.Momkn.Extensions
@@ -9,7 +9,7 @@ namespace Provider.Application.Services.Momkn.Extensions
         {
             return MomknFromStandard(paymentRequestModel);
         }
-        private static MomknPaymentRequest MomknFromStandard(PaymentRequestModel inquiryRequestModel)
+        private static MomknPaymentRequest MomknFromStandard(PaymentRequestModel paymentRequestModel)
         {
             return new MomknPaymentRequest();
         }
@@ -17,11 +17,23 @@ namespace Provider.Application.Services.Momkn.Extensions
         {
             return StandardFromMomkn(momknPaymentResponse);
         }
-        private static PaymentResponseModel StandardFromMomkn(MomknPaymentResponse momknInquiryResponse)
+        private static PaymentResponseModel StandardFromMomkn(MomknPaymentResponse momknPaymentResponse)
         {
-            //TODO
-            return null;
-            //return new PaymentResponseModel(false,string.Empty,string.Empty,str);
+            // TODO: Implement once Momkn API contract is defined
+            return new PaymentResponseModel(
+                IsSuccess: false,
+                Status: "0",
+                StatusText: "payment not yet implemented",
+                TransactionTime: string.Empty,
+                TransactionId: 0,
+                ProviderTransactionId: string.Empty,
+                UserId: string.Empty,
+                Amount: string.Empty,
+                Fees: string.Empty,
+                TotalAmount: string.Empty,
+                BillingAccount: string.Empty,
+                DetailsList: new List<ResponseDetail>()
+            );
         }
     }
 }

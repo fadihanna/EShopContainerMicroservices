@@ -53,7 +53,7 @@ namespace Magic.Application.Extensions
         {
             return transactions?.Select(x => x.ToTransactionDto()).ToList() ?? new List<TransactionDto>();
         }
-        public static Magic.Domain.Models.Transaction CreateTransaction(PaymentRequestModel transactionDto)
+        public static Magic.Domain.Models.Transaction CreateTransaction(PaymentRequestModel transactionDto, int requestId)
         {
             var newTransaction = Magic.Domain.Models.Transaction.Create(
                 isRefunded: false,

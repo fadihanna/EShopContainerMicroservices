@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Models;
+﻿using System.Text.Json;
+using BuildingBlocks.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Provider.Application.Common;
@@ -6,6 +7,7 @@ using Provider.Application.Common.Interfaces;
 using Provider.Application.Configuration;
 using Provider.Application.Dtos;
 using Provider.Application.Services.Masary.Extensions;
+using Provider.Application.Services.Masary.Models;
 using Provider.Domain.Repositories.Masary;
 
 namespace Provider.Application.Services.Masary
@@ -64,6 +66,25 @@ namespace Provider.Application.Services.Masary
             }, "SendInquiryRequestAsync");
         }
 
+        public async Task<InquiryResponseModel> SendInquiryMockupAsync()
+        {
+            var parentPath = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName;
+            var mockupPath = _masarySettings.ProviderSettings.MasarySettings.MockupInquiryResponsePath;
+            var filePath = Path.Combine(parentPath!, mockupPath, "MasaryInquiryResponse.json");
+            var json = await File.ReadAllTextAsync(filePath);
+            var response = JsonSerializer.Deserialize<MasaryInquiryResponse>(json);
+            return response!.MasaryToStandard();
+        }
+
+        public async Task<PaymentResponseModel> SendPaymentRequestAsync(PaymentRequestModel providerRequest)
+        {
+            return await _exceptionHandler.HandleApiExceptionsAsync(async () =>
+            {
+                var serviceParameters = await GetServiceParametersAsync(int.Parse(providerRequest.ProviderCode));
+                var masaryPaymentRequest = providerRequest.ToMasaryRequest(_masarySettings.ProviderSettings.MasarySettings, serviceParameters);
+                var response = await _client.SendPaymentRequestAsync(masaryPaymentRequest, _masarySettings.ProviderSettings.MasarySettings.MasaryURLTransaction);
+                return response.MasaryToStandard(providerRequest);
+            }, "SendPaymentRequestAsync", providerRequest);
         /* public async Task<PaymentResponseModel> SendPaymentRequestAsync(PaymentRequestModel providerRequest)
          {
              return await _exceptionHandler.HandleApiExceptionsAsync(async () =>

@@ -18,7 +18,8 @@ namespace Provider.Application.Services.Masary.Extensions
 
             if (serviceParameters != null && serviceParameters.Count > 0 && inquiryRequestModel.InputParameterList != null && inquiryRequestModel.InputParameterList.Count > 0)
             {
-                for (int i = 0; i < serviceParameters.Count; i++)
+                int paramCount = Math.Min(serviceParameters.Count, inquiryRequestModel.InputParameterList.Count);
+                for (int i = 0; i < paramCount; i++)
                 {
                     inputParameter.Add(new InputParameterList(
                        Key: serviceParameters[i].Name,
@@ -29,7 +30,7 @@ namespace Provider.Application.Services.Masary.Extensions
             return new MasaryPaymentRequest(
              login: settings.MasaryAccountNumber,
              password: settings.MasaryPassword,
-             terminal_id: string.Empty,
+             terminal_id: settings.Terminal,
              action: settings.TransactionPaymentAction,
              version: settings.Version,
              language: settings.Language,
@@ -65,8 +66,8 @@ namespace Provider.Application.Services.Masary.Extensions
                          Amount: providerRequest.Amount.ToString(),
                          Fees: providerRequest.Fees.ToString(),
                          TotalAmount: providerRequest.TotalAmount.ToString(),
-                         BillingAccount: string.Empty,
-                         DetailsList: masaryPaymentResponse.data?.details_list?.FirstOrDefault()?.Select(d => new ResponseDetail(Key: d.key, Value: d.value)).ToList()
+                         BillingAccount: providerRequest.BillingAccount,
+                         DetailsList: masaryPaymentResponse.data?.details_list?.FirstOrDefault()?.Select(d => new ResponseDetail(Key: d.key, Value: d.value)).ToList() ?? new List<ResponseDetail>()
                     );
         }
     }

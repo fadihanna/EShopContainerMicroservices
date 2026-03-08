@@ -12,7 +12,7 @@ namespace Provider.Application.Common
         public async Task<InquiryResponseModel> Inquiry(InquiryRequestModel request)
         {
             var providerService = _providerFactory.GetProviderService((CommonEnums.Provider)request.ProviderId);
-            var response = await providerService.SendInquiryRequestAsync(request);
+            var response = await providerService.SendInquiryMockupAsync();
             return response;
         }
         public async Task<FeesResponseModel> GetFees(FeesRequestModel request)

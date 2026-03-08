@@ -42,7 +42,7 @@ namespace Magic.Infrastructure.Services.External
                          Amount: response.Amount,
                          Fees: response.Fees,
                          TotalAmount: response.TotalAmount,
-                         BillingAccount: string.Empty,
+                         BillingAccount: request.BillingAccount,
                          DetailsList: response.DetailsList?.Select(d => new ResponseDetail(Key: d.Key, Value: d.Value)).ToList()
                     );
         }

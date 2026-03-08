@@ -1,15 +1,14 @@
-﻿using PaymentGateway.Grpc.ClientApi;
-using PaymentGateway.Grpc.ClientApi.EbeGateway;
+﻿using MagicPaymentAPI.DTO;
+using PaymentGateway.Grpc.ClientApi.Paymob;
 using PaymentGateway.Grpc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient<IEbeGatewayService, EbeGatewayService>();
-
-builder.Services.AddScoped<IPaymentProvider, EbePaymentProvider>();
-
+// Add services to the container.
 builder.Services.AddGrpc();
-builder.Services.AddGrpcReflection();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.AddHttpClient("paymob");
+builder.Services.AddScoped<IPayMobService, PayMobService>();
 
 var app = builder.Build();
 

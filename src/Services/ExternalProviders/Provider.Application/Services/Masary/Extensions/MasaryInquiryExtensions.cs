@@ -19,7 +19,8 @@ namespace Provider.Application.Services.Masary.Extensions
 
             if (serviceParameters != null && serviceParameters.Count > 0 && inquiryRequestModel.InputParameterList != null && inquiryRequestModel.InputParameterList.Count > 0)
             {
-                for (int i = 0; i < serviceParameters.Count; i++)
+                int paramCount = Math.Min(serviceParameters.Count, inquiryRequestModel.InputParameterList.Count);
+                for (int i = 0; i < paramCount; i++)
                 {
                     inputParameter.Add(new MasaryInputParameter(
                        Key: serviceParameters[i].Name,
@@ -49,7 +50,8 @@ namespace Provider.Application.Services.Masary.Extensions
         }
         private static InquiryResponseModel StandardFromMasary(MasaryInquiryResponse? masaryInquiryResponse)
         {
-            var detailsList = masaryInquiryResponse.data.info_text.Split('\n')
+            var rawInfoText = masaryInquiryResponse?.data?.info_text ?? string.Empty;
+            var detailsList = rawInfoText.Split('\n')
                 .Select(line =>
                 {
                     var colonIndex = line.IndexOf(':');
@@ -67,7 +69,7 @@ namespace Provider.Application.Services.Masary.Extensions
              return new InquiryResponseModel(
                 TransactionId: masaryInquiryResponse?.data?.transaction_id ?? "N/A",
                 Status: masaryInquiryResponse?.data.status == 2 ? "Success" : "Fail",
-                StatusText: masaryInquiryResponse?.data?.status_text,
+                StatusText: masaryInquiryResponse?.data?.status_text ?? string.Empty,
                 DateTime: DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                 Amount: masaryInquiryResponse?.data?.amount ?? 0.0,
                 Fees: 0.0,

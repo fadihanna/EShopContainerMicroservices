@@ -36,7 +36,7 @@ namespace Magic.Infrastructure.Data.Specifications
         public async Task<int> UpdateRequestAsync(Request requests, CancellationToken cancellationToken)
         {
             _dbContext.Requests.Update(requests);
-            _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return requests.Id;
         }

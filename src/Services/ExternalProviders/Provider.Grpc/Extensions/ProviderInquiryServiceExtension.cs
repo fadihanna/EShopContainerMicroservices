@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Models;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Provider.Grpc.Protos;
 using InputParameter = BuildingBlocks.Models.InputParameter;
 

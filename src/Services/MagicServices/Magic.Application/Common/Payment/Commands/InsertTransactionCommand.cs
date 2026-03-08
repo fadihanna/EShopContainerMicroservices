@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Enums;
+using BuildingBlocks.Enums;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -35,6 +35,7 @@ namespace Magic.Application.Common.Payment.Commands
             _paymentProvider = paymentProvider;
             _authenticationService = authenticationService;
         }
+
         public async Task<InsertTransactionResponse> Handle(InsertTransactionCommand command, CancellationToken cancellationToken)
         {
             var denomination = await _denominationSpecification.GetByIdAsync(o => o.IsActive && o.Id.Equals(command.Transaction.DenominationId), cancellationToken);
@@ -70,6 +71,7 @@ namespace Magic.Application.Common.Payment.Commands
                 ProviderId = DPC.ProviderId,
                 InputParameterList = command.Transaction.InputParameterList,
             };
+
             // call provider api
             var response = await _externalProviderPaymentService.PaymentAsync(paymentRequestModel, cancellationToken);
 
@@ -121,10 +123,6 @@ namespace Magic.Application.Common.Payment.Commands
             catch (Exception ex)
             {
 
-                throw;
-            }
-            for (int i = 0; i < command.Transaction.Quantity; i++) // in case of vouchers
-            { }
             await _requestSepecification.UpdateRequestStatusAsync(request, Convert.ToInt32(RequestStatus.PaymentSuccess), cancellationToken);
 
             */    

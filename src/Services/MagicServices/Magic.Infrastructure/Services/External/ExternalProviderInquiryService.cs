@@ -24,9 +24,12 @@ namespace Magic.Infrastructure.Services.External
                 ProviderId = request.ProviderId
             };
 
-            inquiryRequestProto.InputParameterList.AddRange(
-                request.InputParameterList.Select(p => new InputParameter { Key = p.Key, Value = p.Value })
-            );
+            if (request.InputParameterList?.Count > 0)
+            {
+                inquiryRequestProto.InputParameterList.AddRange(
+                    request.InputParameterList.Select(p => new InputParameter { Key = p.Key, Value = p.Value })
+                );
+            }
 
             var response = await _providerInquiryProto.InquiryAsync(inquiryRequestProto);
 

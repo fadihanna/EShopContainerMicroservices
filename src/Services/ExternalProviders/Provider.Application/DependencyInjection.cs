@@ -22,7 +22,6 @@ namespace Provider.Application
             services.AddTransient<LoggingHandler>();
             services.AddTransient<ApiExceptionHandler>();
             services.AddHttpContextAccessor();
-            services.AddTransient<ApiExceptionHandler>();
 
             return services;
         }

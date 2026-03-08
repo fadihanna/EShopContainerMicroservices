@@ -21,7 +21,7 @@ namespace Magic.Infrastructure.Services.External.PaymentGateway
                 Currency = request.Currency
             };
 
-            var response = await _paymentGatewayProto.ProcessPaymentAsync(paymentRequestProto);
+            var response = await _paymentGatewayProto.ProcessPaymentAsync(paymentRequestProto, cancellationToken: cancellationToken);
 
             return new PaymentGatewayResponseDto(
                 Success: response.Success,
